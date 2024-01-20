@@ -199,14 +199,14 @@ namespace Base.Gameplay.UI
                 if (IsTraitMatchingMiracle(follower.FaithAttractionTrait, miracleType))
                 {
                     int amountOfBoostFromMiracle = GameManager.Player.Devotion.Miracle(miracleType);
-                    follower.ChangeFaithAmount(amountOfBoostFromMiracle);
+                    follower.ChangeFaithAttractionAmount(amountOfBoostFromMiracle);
 
                     Debug.Log($"<color=red>{follower.CitizenName}</color> from your follower is happy about <color=red>{miracleType}</color>");
                 }
             }
         }
         
-        private bool IsTraitMatchingMiracle(TraitType citizenTrait, MiracleType miracleType)
+        public bool IsTraitMatchingMiracle(TraitType citizenTrait, MiracleType miracleType)
         {
             switch (citizenTrait)
             {
@@ -242,7 +242,7 @@ namespace Base.Gameplay.UI
             if (IsTraitMatchingMiracle(citizen.FaithAttractionTrait, miracleType))
             {
                 int amountOfBoostFromMiracle = GameManager.Player.Devotion.Miracle(miracleType);
-                citizen.ChangeFaithAmount(amountOfBoostFromMiracle);
+                citizen.ChangeFaithAttractionAmount(amountOfBoostFromMiracle);
 
                 Debug.Log($"<color=red>{citizen.CitizenName}</color> from <color=red>{sector.SectorName}</color> is happy about <color=red>{miracleType}</color>");
             }

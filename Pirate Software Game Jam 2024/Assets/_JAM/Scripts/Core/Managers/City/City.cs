@@ -50,7 +50,7 @@ namespace Base.Core.Managers
             return cityNames[index];
         }
 
-        private string GenerateRandomDistrict()
+        public string GenerateRandomDistrict()
         {
             int index = UnityEngine.Random.Range(0, districtNames.Count);
             string selectedDistrict = districtNames[index];

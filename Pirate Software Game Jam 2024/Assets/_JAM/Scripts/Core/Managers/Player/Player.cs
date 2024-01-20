@@ -9,6 +9,7 @@ namespace Base.Core.Managers
     {
         // Player Data
         public string CharacterName;
+        public Resources Resources;
         
         // Player Followers Data
         public List<Citizen> FollowerCount = new();
@@ -23,11 +24,12 @@ namespace Base.Core.Managers
             for (int i = 0; i < _startingFollowerAmount; i++)
             {
                 Citizen follower = new Citizen();
-                follower.ChangeFaithAmount(3);
+                follower.ChangeFaithAttractionAmount(3);
                 FollowerCount.Add(follower);
             }
             
             Devotion = new(_startingDevotionAmount);
+            Resources = new Resources();
             CharacterName = GenerateName();
             OnInitComplete();
         }
@@ -37,6 +39,16 @@ namespace Base.Core.Managers
             string[] names = { "John", "Jane", "Alex", "Emily", "Michael", "Olivia", "David", "Sophia" };
             int index = UnityEngine.Random.Range(0, names.Length);
             return names[index];
+        }
+    }
+
+    public class Resources
+    {
+        public int ResourcesAmount;
+
+        public void AddResources(int amount)
+        {
+            ResourcesAmount += amount;
         }
     }
 }
