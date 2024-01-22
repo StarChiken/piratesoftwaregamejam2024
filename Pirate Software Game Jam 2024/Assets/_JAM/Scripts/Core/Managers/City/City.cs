@@ -5,25 +5,12 @@ namespace Base.Core.Managers
 {
     [Serializable]
     public class City : BaseManager
-    {
-        public List<Sector> SectorsCount = new();
-        public int StartingSectorsAmount = 5;
+    {   public List<Citizen> CityPopulace;
+        public int StartingPopulaceAmount = 15;
         public string CityName;
-
-        List<String> districtNames = new List<string> { "Tea Garden District", "Samurai Quarter", "Cherry Blossom Alley", "Zen Retreat Area",
-            "Silk Trade District", "Bamboo Grove District", "Geisha Entertainment Zone", "Rice Fields District","Maple Grove District", "Shogun Plaza",
-            "Pagoda Heights", "Lotus Market", "Sake Streets", "Golden Pavilion Quarter", "Koi Pond District", "Eternal Sakura Gardens",
-            "Bonsai Terrace", "Harmony Haven" };
         
         public City(Action<BaseManager> onComplete) : base(onComplete)
         {
-            for (int i = 0; i < StartingSectorsAmount; i++)
-            {
-                Sector sector = new();
-                sector.SectorName = GenerateRandomDistrict();
-                SectorsCount.Add(sector);
-            }
-
             CityName = GenerateRandomCity();
             PopulateCity();
             
@@ -32,31 +19,24 @@ namespace Base.Core.Managers
         
         private void PopulateCity()
         {
-            foreach (var sector in SectorsCount)
+            for (int i = 0; i <= StartingPopulaceAmount; i++)
             {
-                for (int i = 0; i < 10; i++)
-                {
-                    Citizen citizen = new Citizen();
-                    sector.SectorPopulace.Add(citizen);
-                }
+                Citizen citizen = new Citizen();
+                CityPopulace.Add(citizen);
             }
         }
-
         
         private string GenerateRandomCity()
         {
-            string[] cityNames = { "Edojima", "Sakuragawa", "Hinodecho", "Yamatomachi", "Hanamachi", "Nagareyama", "Kyotopia", "Osakamura" };
+            string[] cityNames = {
+                "Edojima of Cherry Blossom", "Sakuragawa the Zen Retreat", "Hinodecho Heights","Yamatomachi Bonsai Terrace",
+                "Hanamachi Twilight Haven", "Nagareyama Woods Sanctuary", "Kyotopia of Cherry Blossom", "Osakamura the Zen Retreat",
+                "Edojima Heights", "Sakuragawa Bonsai Terrace","Hinodecho Twilight Haven","Yamatomachi Woods Sanctuary","Hanamachi of Cherry Blossom",
+                "Nagareyama the Zen Retreat","Kyotopia Heights"
+            };
+            
             int index = UnityEngine.Random.Range(0, cityNames.Length);
             return cityNames[index];
-        }
-
-        public string GenerateRandomDistrict()
-        {
-            int index = UnityEngine.Random.Range(0, districtNames.Count);
-            string selectedDistrict = districtNames[index];
-            districtNames.RemoveAt(index);
-            
-            return selectedDistrict;
         }
     }
 }

@@ -2,8 +2,14 @@
 {
     public enum MiracleType
     {
-        RedMiracle,
-        BlueMiracle,
-        GreenMiracle
+        RedBasic,
+        RedIntermediate,
+        RedSuperior,
+        BlueBasic,
+        BlueIntermediate,
+        BlueSuperior,
+        GreenBasic,
+        GreenIntermediate,
+        GreenSuperior
     }
 }

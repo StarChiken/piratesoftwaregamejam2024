@@ -1,6 +1,9 @@
-using System.Collections;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
+using Resources = UnityEngine.Resources;
+using Base.Core.Managers;
 
 public class GenerationTest : MonoBehaviour
 {
@@ -64,7 +67,9 @@ public class GenerationTest : MonoBehaviour
                     buildingChildrenPositions[i] = buildingObject.transform.GetChild(i).position;
                 }
 
-                Building building = new Building($"Grid {x} {y}", buildingChildrenPositions, (BuildingSize)randomBuildingIndex, buildingObject);
+                // Shy
+                Building building = new Building($"Grid {x} {y}", buildingChildrenPositions, (BuildingSize)randomBuildingIndex, buildingObject, BuildingType.Default);
+                // Building building = new Building($"Grid {x} {y}", buildingChildrenPositions, (BuildingSize)randomBuildingIndex, buildingObject);
 
                 for (int i = 0; i < buildingObject.transform.childCount; i++)
                 {
@@ -77,21 +82,63 @@ public class GenerationTest : MonoBehaviour
         }
     }
 
-    [System.Serializable]
+    [Serializable]
     public class Building
     {
+        // Etho
         public string name;
         public Vector2[] gridPositions;
         public BuildingSize buildingSize;
         public GameObject buildingObject;
         public Mesh buildingMesh;
 
-        public Building(string _name, Vector2[] _gridPositions, BuildingSize _buildingSize, GameObject _buildingObject)
+        // Shy
+        public BuildingType buildingType;
+        public ActionOptions buildingActionOptions;
+        public List<Citizen> tempListForDoAction = new();
+        
+        public Building(string _name, Vector2[] _gridPositions, BuildingSize _buildingSize, GameObject _buildingObject, BuildingType buildingType)
         {
             name = _name;
             buildingSize = _buildingSize;
             gridPositions = _gridPositions;
             buildingObject = _buildingObject;
+            
+            // Shy
+            this.buildingType = buildingType;
+        }
+        // Shy
+        public void DoBuildingAction()
+        {
+            switch (buildingActionOptions)
+            {
+                case ActionOptions.DoAction:
+
+                    switch (buildingType)
+                    {
+                        // Get Happiness for Followers
+                        case BuildingType.Entertainment:
+                            foreach (var citizen in tempListForDoAction)
+                            {
+                                citizen.Happiness += 1;
+                            }
+                            break;
+                        // Get a bit of Resources
+                        case BuildingType.Business:
+                            GameManager.Instance.Player.Resources.AddResources(5);
+                            break;
+                        default:
+                            throw new ArgumentOutOfRangeException();
+                    }
+                    
+                    break;
+                case ActionOptions.AskFavorFromFaction:
+                    break;
+                case ActionOptions.ReplaceWithTemple:
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
         }
     }
 
@@ -101,5 +148,19 @@ public class GenerationTest : MonoBehaviour
         TwoByOne,
         TwoByTwo,
         LTwoByTwo
+    }
+    
+    public enum BuildingType
+    {
+        Default,
+        Entertainment,
+        Business
+    }
+    
+    public enum ActionOptions
+    {
+        DoAction,
+        AskFavorFromFaction,
+        ReplaceWithTemple
     }
 }

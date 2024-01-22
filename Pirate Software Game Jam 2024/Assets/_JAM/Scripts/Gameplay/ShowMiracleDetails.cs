@@ -6,6 +6,7 @@ using TMPro;
 
 namespace Base.Core.Managers
 {
+    // Testing Purposes Only
     public class ShowMiracleDetails : MyMonoBehaviour
     {
         public TextMeshProUGUI text;
@@ -24,7 +25,7 @@ namespace Base.Core.Managers
         {
             StringBuilder stringBuilder = new StringBuilder();
             
-            foreach (var kvp in dictionary)
+            foreach (KeyValuePair<T, U> kvp in dictionary)
             {
                 stringBuilder.AppendLine($"{kvp.Key}: {kvp.Value}");
             }

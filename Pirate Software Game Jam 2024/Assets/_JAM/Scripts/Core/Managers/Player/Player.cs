@@ -24,7 +24,7 @@ namespace Base.Core.Managers
             for (int i = 0; i < _startingFollowerAmount; i++)
             {
                 Citizen follower = new Citizen();
-                follower.ChangeFaithAttractionAmount(3);
+                follower.ChangeAttractionAmount(3);
                 FollowerCount.Add(follower);
             }
             

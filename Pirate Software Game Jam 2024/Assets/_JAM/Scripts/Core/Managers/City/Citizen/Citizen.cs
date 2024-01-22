@@ -1,17 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
-using UnityEngine.Serialization;
 
 namespace Base.Core.Managers
 {
     [Serializable]
     public class Citizen
     {
+        // Citizen properties
         public string CitizenName;
         public TraitType FaithAttractionTrait; // What kind of faith actions they like
-        public int PlayerFaithAttraction; // Current amount of attraction to the players faith
+        public int PlayerGodAttraction; // Current amount of attraction to the players faith
         
-        // Sub system stats?
+        // Subsystem stats
         public int Happiness;
         public int Sanity;
         public int Health;
@@ -20,11 +20,13 @@ namespace Base.Core.Managers
 
         public Citizen()
         {
+            // Initialize subsystems
             CitizenFaith = new CitizenFaith(this);
             CitizenNeeds = new CitizenNeeds();
-            CitizenNeeds.CalculateNeeds(Sanity,Health);
-            
-            PlayerFaithAttraction = 0;
+            CitizenNeeds.CalculateNeeds(Sanity,Health); // Calculate needs based on initial sanity and health
+
+            // Initialize properties
+            PlayerGodAttraction = 0;
             Sanity = 10;
             Health = 10;
             Happiness = CalculateHappinessAmount();
@@ -32,9 +34,10 @@ namespace Base.Core.Managers
             FaithAttractionTrait = GenerateRandomTrait();
         }
         
+        // Calculate happiness based on health, sanity, and personality
         public int CalculateHappinessAmount()
         {
-            var personality = CitizenFaith.LookUpFaithTypeDictionaryWithTraitType(FaithAttractionTrait);
+            int personality = CitizenFaith.LookUpFaithTypeDictionaryWithTraitType(FaithAttractionTrait);
             return (Health + Sanity) * personality;
         }
 
@@ -48,9 +51,9 @@ namespace Base.Core.Managers
             Health += amount;
         }
 
-        public void ChangeFaithAttractionAmount(int amount)
+        public void ChangeAttractionAmount(int amount)
         {
-            PlayerFaithAttraction += amount;
+            PlayerGodAttraction += amount;
         }
 
         private string GenerateName()
@@ -75,6 +78,7 @@ namespace Base.Core.Managers
         
         public CitizenFaith(Citizen thisCitizen)
         {
+            // Initialize faith types with default values
             _thisCitizen = thisCitizen;
             FaithTypeDictionary = new Dictionary<FaithType, int> {
                 {FaithType.PlayerGod, 0},
@@ -94,6 +98,8 @@ namespace Base.Core.Managers
                 { FaithType.WealthGod, 0 },
                 { FaithType.HouseholdGod, 0 }
             };
+            
+            // Assign faith type values based on the citizen's trait
             switch (_thisCitizen.FaithAttractionTrait)
             {
                 case TraitType.Academic:
@@ -145,7 +151,8 @@ namespace Base.Core.Managers
                     throw new ArgumentOutOfRangeException();
             }
         }
-
+        
+        // Lookup faith type dictionary with a given trait type
         public int LookUpFaithTypeDictionaryWithTraitType(TraitType trait)
         {
             switch (trait)
@@ -186,6 +193,7 @@ namespace Base.Core.Managers
             }
         }
         
+        // Match trait type with corresponding faith type
         public FaithType MatchTraitTypeWithFaithType(TraitType trait)
         {
             switch (trait)
