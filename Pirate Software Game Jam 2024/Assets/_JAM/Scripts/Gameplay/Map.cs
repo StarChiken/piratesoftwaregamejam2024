@@ -52,6 +52,14 @@ public class Map : MonoBehaviour
         buildingName = building.name;
     }
 
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Backspace))
+        {
+            DoGame();
+        }
+    }
+
     // Method to initiate the city generation
     public void DoGame()
     {
@@ -88,8 +96,8 @@ public class Map : MonoBehaviour
                 
                 // Assign color only works on 1-material objects with a Renderer
                 
-                // Color districtColor = GetDistrictColor(i); // Get color based on district index
-               // gameObject.GetComponent<Renderer>().material.color = districtColor; 
+                Color districtColor = GetDistrictColor(i); // Get color based on district index
+                obj.gameObject.GetComponent<Renderer>().material.color = districtColor; 
             }
         }
     }
