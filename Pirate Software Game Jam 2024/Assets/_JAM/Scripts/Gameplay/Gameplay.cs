@@ -54,6 +54,83 @@ namespace Base.Gameplay.UI
             devotionPointsText.text = GameManager.Player.Devotion.DevotionPoints.ToString();
         }
         
+        
+        
+        // Test, called by a button in test environment
+        public void ReportAboutGame()
+        {
+            var player = GameManager.Player;
+            
+            Debug.Log($"<color=red>{player.CharacterName}</color> has <color=red>{player.FollowerCount.Count}</color> followers, " +
+                      $"and <color=red>{player.Devotion.DevotionPoints}</color> Devotion Points.");
+            
+            Citizen follower = player.FollowerCount[Random.Range(0, player.FollowerCount.Count)];
+            
+            Debug.Log($"A random follower named, <color=red>{follower.CitizenName}</color> with Faith Attraction:" +
+                      $" <color=red>{follower.PlayerGodAttraction}</color>");
+        }
+        
+        public void ChooseCommandment(CommandmentType commandment)
+        {
+            player.Devotion.AddCommandment(commandment);
+            ChangeState(GameState.PlayerTurnPhase);
+        }
+        
+        public void DoMiracleOnCitizens(MiracleType miracleType)
+        {
+            int devotionPoints = GameManager.Player.Devotion.DevotionPoints;
+            
+            if (devotionPoints > 0)
+            {
+                GameManager.Player.Devotion.ChangeDevotionAmount(-1);
+                
+                Debug.Log($"A <color=red>{miracleType}</color> is being cast...");
+
+                float tempOverlapRadius = 10; // Testing Purposes Only, to be replaced bu SerializedField variable
+                Vector3 sphereCenter = transform.position; // Testing Purposes Only, to be replaced bu SerializedField variable or in the Cast Miracle prefab
+                LayerMask citizens_LayerMask = new LayerMask(); // Testing Purposes Only, to be replaced in each citizen prefab
+                
+                Collider[] targetedCitizens = Physics.OverlapSphere(sphereCenter, tempOverlapRadius,citizens_LayerMask);
+                
+                foreach (Collider citizenCollider in targetedCitizens)
+                {
+                    // Check if the collider has a Citizen component
+                    Citizen citizen = citizenCollider.GetComponent<Citizen>();
+                    if (citizen == null) continue;
+                    
+                    // Invoke the miracle on the Citizen
+                    GameManager.Player.Devotion.DoMiracle(miracleType, citizen);
+                    
+                    // Match Miracle Type to Trait Type and Change Attraction
+                    if (IsTraitMatchingMiracle(citizen.FaithAttractionTrait, miracleType))
+                    {
+                        int attractionAmount = GameManager.Player.Devotion.MiracleFaithAttractionByType(miracleType);
+                        citizen.ChangeAttractionAmount(attractionAmount);
+
+                        Debug.Log($"<color=red>{citizen.CitizenName}</color> is happy about <color=red>{miracleType.ToString()}</color>, " +
+                                  $"because he is a {citizen.FaithAttractionTrait}. His faith attraction is now {citizen.PlayerGodAttraction}");
+                    }
+                }
+                
+                // LayerMask buildings_LayerMask = new LayerMask(); // Testing Purposes Only, to be replaced in each building prefab
+                // Collider[] targetedBuildings = Physics.OverlapBox(transform.position, transform.localScale / 2, Quaternion.identity, buildings_LayerMask);
+                //
+                // foreach (Collider buildingCollider in targetedBuildings)
+                // {
+                // // Check if the collider has a Citizen component
+                //     Building building = buildingCollider.GetComponent<Building>();
+                // }
+
+                
+                ChangeState(GameState.CalculateCityPhase);
+            }
+            else
+            {
+                Debug.Log($"Not enough Devotion Points, currently <color=red>{devotionPoints}</color. Skipping turn.");
+                ChangeState(GameState.CalculateCityPhase);
+            }
+        }
+        
         private void CalculateBonusDevotionPoints()
         {
             List<Citizen> followerCount = GameManager.Player.FollowerCount;
@@ -87,26 +164,6 @@ namespace Base.Gameplay.UI
                 }
             }
             
-            ChangeState(GameState.PlayerTurnPhase);
-        }
-        
-        // Test, called by a button in test environment
-        public void ReportAboutGame()
-        {
-            var player = GameManager.Player;
-            
-            Debug.Log($"<color=red>{player.CharacterName}</color> has <color=red>{player.FollowerCount.Count}</color> followers, " +
-                      $"and <color=red>{player.Devotion.DevotionPoints}</color> Devotion Points.");
-            
-            Citizen follower = player.FollowerCount[Random.Range(0, player.FollowerCount.Count)];
-            
-            Debug.Log($"A random follower named, <color=red>{follower.CitizenName}</color> with Faith Attraction:" +
-                      $" <color=red>{follower.PlayerGodAttraction}</color>");
-        }
-        
-        public void ChooseCommandment(CommandmentType commandment)
-        {
-            player.Devotion.AddCommandment(commandment);
             ChangeState(GameState.PlayerTurnPhase);
         }
 
@@ -148,39 +205,6 @@ namespace Base.Gameplay.UI
                     return miracleType is MiracleType.GreenBasic or MiracleType.GreenIntermediate or MiracleType.GreenSuperior;
                 default:
                     throw new ArgumentOutOfRangeException();
-            }
-        }
-        
-        private void DoMiracleOnCitizens(MiracleType miracleType, List<Citizen> targetCitizens)
-        {
-            int devotionPoints = GameManager.Player.Devotion.DevotionPoints;
-            
-            if (devotionPoints > 0)
-            {
-                GameManager.Player.Devotion.ChangeDevotionAmount(-1);
-                Debug.Log($"A <color=red>{miracleType}</color> is being cast...");
-
-                foreach (Citizen citizen in targetCitizens)
-                {
-                    GameManager.Player.Devotion.DoMiracle(miracleType, citizen);
-                    
-                    // Check if the citizen's trait matches the miracle type
-                    if (IsTraitMatchingMiracle(citizen.FaithAttractionTrait, miracleType))
-                    {
-                        int attractionAmount = GameManager.Player.Devotion.MiracleFaithAttractionByType(miracleType);
-                        citizen.ChangeAttractionAmount(attractionAmount);
-
-                        Debug.Log($"<color=red>{citizen.CitizenName}</color> is happy about <color=red>{miracleType.ToString()}</color>, " +
-                                  $"because he is a {citizen.FaithAttractionTrait}. His faith attraction is now {citizen.PlayerGodAttraction}");
-                    }
-                }
-                
-                ChangeState(GameState.CalculateCityPhase);
-            }
-            else
-            {
-                Debug.Log($"Not enough Devotion Points, currently <color=red>{devotionPoints}</color. Skipping turn.");
-                ChangeState(GameState.CalculateCityPhase);
             }
         }
         

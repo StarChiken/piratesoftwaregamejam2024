@@ -64,22 +64,6 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: -4683669308469848369, guid: 99344b9c259460c4abe5019f228b73a4, type: 3}
-      propertyPath: 'm_Materials.Array.data[0]'
-      value: 
-      objectReference: {fileID: 2100000, guid: 52b6b65caf50cbc4e93434b7e086ef7f, type: 2}
-    - target: {fileID: -1461304994638716399, guid: 99344b9c259460c4abe5019f228b73a4, type: 3}
-      propertyPath: 'm_Materials.Array.data[0]'
-      value: 
-      objectReference: {fileID: 2100000, guid: ade05a576f53eb84c843cd7c9392f878, type: 2}
-    - target: {fileID: -1184760080717413097, guid: 99344b9c259460c4abe5019f228b73a4, type: 3}
-      propertyPath: 'm_Materials.Array.data[0]'
-      value: 
-      objectReference: {fileID: 2100000, guid: 3447dbaff92cfb94d88a312f05039c57, type: 2}
-    - target: {fileID: -804731622281664130, guid: 99344b9c259460c4abe5019f228b73a4, type: 3}
-      propertyPath: 'm_Materials.Array.data[0]'
-      value: 
-      objectReference: {fileID: 2100000, guid: 245f8de6b3d47b441bab2c7c4c057df2, type: 2}
     - target: {fileID: -704957644223435817, guid: 99344b9c259460c4abe5019f228b73a4, type: 3}
       propertyPath: m_DirtyAABB
       value: 0
@@ -101,25 +85,13 @@ PrefabInstance:
       value: 0.01
       objectReference: {fileID: 0}
     - target: {fileID: -704957644223435817, guid: 99344b9c259460c4abe5019f228b73a4, type: 3}
-      propertyPath: 'm_Materials.Array.data[0]'
-      value: 
-      objectReference: {fileID: 2100000, guid: 245f8de6b3d47b441bab2c7c4c057df2, type: 2}
-    - target: {fileID: -704957644223435817, guid: 99344b9c259460c4abe5019f228b73a4, type: 3}
       propertyPath: 'm_BlendShapeWeights.Array.data[0]'
-      value: 70.8
+      value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: -678588488315902003, guid: 99344b9c259460c4abe5019f228b73a4, type: 3}
-      propertyPath: 'm_Materials.Array.data[0]'
-      value: 
-      objectReference: {fileID: 2100000, guid: 52b6b65caf50cbc4e93434b7e086ef7f, type: 2}
     - target: {fileID: 919132149155446097, guid: 99344b9c259460c4abe5019f228b73a4, type: 3}
       propertyPath: m_Name
       value: EdoHouseSmall
       objectReference: {fileID: 0}
-    - target: {fileID: 6990831462176099502, guid: 99344b9c259460c4abe5019f228b73a4, type: 3}
-      propertyPath: 'm_Materials.Array.data[0]'
-      value: 
-      objectReference: {fileID: 2100000, guid: 3447dbaff92cfb94d88a312f05039c57, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects:
     - {fileID: 65702495048144492, guid: 99344b9c259460c4abe5019f228b73a4, type: 3}

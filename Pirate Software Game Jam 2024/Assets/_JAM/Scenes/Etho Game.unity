@@ -237,7 +237,7 @@ MonoBehaviour:
   gridPadding: 30
   objectsControlList: []
   buildingName: New
-  building: {fileID: 919132149155446097, guid: d7b7ab9710551864884f18dd0c8df8fe, type: 3}
+  building: {fileID: 5083637411064126527, guid: 33487a3f9b16d9f499f94d920aafa6b8, type: 3}
   paddingState: 0
   sinusoidalAmplitude: 40
   randomMin: -1
@@ -272,6 +272,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1097853547}
   - component: {fileID: 1097853546}
+  - component: {fileID: 1097853548}
   m_Layer: 0
   m_Name: Directional Light
   m_TagString: Untagged
@@ -355,6 +356,29 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+--- !u!114 &1097853548
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1097853545}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 474bcb49853aa07438625e644c072ee6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Version: 3
+  m_UsePipelineSettings: 1
+  m_AdditionalLightsShadowResolutionTier: 2
+  m_LightLayerMask: 1
+  m_RenderingLayers: 1
+  m_CustomShadowLayers: 0
+  m_ShadowLayerMask: 1
+  m_ShadowRenderingLayers: 1
+  m_LightCookieSize: {x: 1, y: 1}
+  m_LightCookieOffset: {x: 0, y: 0}
+  m_SoftShadowQuality: 0
 --- !u!1 &1148138305
 GameObject:
   m_ObjectHideFlags: 0
@@ -393,15 +417,6 @@ MonoBehaviour:
   RedMiraclebutton: {fileID: 0}
   BlueMiraclebutton: {fileID: 0}
   GreenMiraclebutton: {fileID: 0}
-  _followerCount: 0
-  _characterName: 
-  _devotionPoints: 0
-  _followers: []
-  _playerDevotion:
-    DevotionPoints: 0
-  _cityName: 
-  _sectorsCount: 0
-  _citySectors: []
   EventText: {fileID: 0}
   devotionMilestones: 
 --- !u!4 &1148138307
@@ -667,7 +682,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1896161828}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.35322875, y: -0.35543948, z: 0.14722784, w: 0.85276973}
+  m_LocalRotation: {x: 0.35322982, y: -0.35543352, z: 0.1472254, w: 0.85277224}
   m_LocalPosition: {x: 185.45282, y: 120, z: 15.747185}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -687,6 +702,7 @@ GameObject:
   - component: {fileID: 2094679735}
   - component: {fileID: 2094679734}
   - component: {fileID: 2094679737}
+  - component: {fileID: 2094679738}
   m_Layer: 0
   m_Name: Camera
   m_TagString: Untagged
@@ -761,7 +777,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2094679733}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.35322875, y: -0.35543948, z: 0.14722784, w: 0.85276973}
+  m_LocalRotation: {x: 0.35322982, y: -0.35543352, z: 0.1472254, w: 0.85277224}
   m_LocalPosition: {x: 185.45282, y: 120, z: 15.747185}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -802,6 +818,50 @@ MonoBehaviour:
   m_CameraActivatedEvent:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &2094679738
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2094679733}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a79441f348de89743a2939f4d699eac1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_RenderShadows: 1
+  m_RequiresDepthTextureOption: 2
+  m_RequiresOpaqueTextureOption: 2
+  m_CameraType: 0
+  m_Cameras: []
+  m_RendererIndex: -1
+  m_VolumeLayerMask:
+    serializedVersion: 2
+    m_Bits: 1
+  m_VolumeTrigger: {fileID: 0}
+  m_VolumeFrameworkUpdateModeOption: 2
+  m_RenderPostProcessing: 0
+  m_Antialiasing: 0
+  m_AntialiasingQuality: 2
+  m_StopNaN: 0
+  m_Dithering: 0
+  m_ClearDepth: 1
+  m_AllowXRRendering: 1
+  m_AllowHDROutput: 1
+  m_UseScreenCoordOverride: 0
+  m_ScreenSizeOverride: {x: 0, y: 0, z: 0, w: 0}
+  m_ScreenCoordScaleBias: {x: 0, y: 0, z: 0, w: 0}
+  m_RequiresDepthTexture: 0
+  m_RequiresColorTexture: 0
+  m_Version: 2
+  m_TaaSettings:
+    quality: 3
+    frameInfluence: 0.1
+    jitterScale: 1
+    mipBias: 0
+    varianceClampScale: 0.9
+    contrastAdaptiveSharpening: 0
 --- !u!4 &1140502098356840638
 Transform:
   m_ObjectHideFlags: 0
@@ -968,7 +1028,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10302, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 05aca51bb251318478e4965db2dd2ca0, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Base.Core.Managers;
 
 namespace Base.Core.Managers
 {
@@ -8,6 +9,7 @@ namespace Base.Core.Managers
     {
         public int DevotionPoints;
         public Dictionary<MiracleType, int> DevotionActionsList; // Dictionary to store counts of devotion actions for each miracle type
+        
         public Dictionary<CommandmentType, bool> CommandmentsList; // Dictionary to store counts of commandments for each commandment type
         
         public Devotion(int startingPoints)
@@ -262,6 +264,59 @@ namespace Base.Core.Managers
                 default:
                     throw new ArgumentOutOfRangeException();
             }
+        }
+    }
+
+    public class Miracle
+    {
+        private MiracleType _miracleType;
+
+        public void MiracleEffect(Citizen targetCitizen)
+        {
+            switch (_miracleType)
+            {
+                // Temporary calculations, attribute starts at 0, miracles do basic amount, commandments add variation.
+                case MiracleType.RedBasic:
+                    targetCitizen.Health += 1;
+                    break;
+                case MiracleType.RedIntermediate:
+                    targetCitizen.Health += 2;
+                    break;
+                case MiracleType.RedSuperior:
+                    targetCitizen.Health += 5;
+                    break;
+                case MiracleType.BlueBasic:
+                    targetCitizen.Sanity += 1;
+                    break;
+                case MiracleType.BlueIntermediate:
+                    targetCitizen.Sanity += 2;
+                    break;
+                case MiracleType.BlueSuperior:
+                    targetCitizen.Sanity += 5;
+                    break;
+                case MiracleType.GreenBasic:
+                    targetCitizen.Happiness += 1;
+                    break;
+                case MiracleType.GreenIntermediate:
+                    targetCitizen.Happiness += 2;
+                    break;
+                case MiracleType.GreenSuperior:
+                    targetCitizen.Happiness += 5;
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(_miracleType), _miracleType, null);
+            }
+        }
+
+    }
+
+    public class Commandment
+    {
+        private CommandmentType _commandmentType;
+        
+        public void CommandmentEffect()
+        {
+            
         }
     }
 }
