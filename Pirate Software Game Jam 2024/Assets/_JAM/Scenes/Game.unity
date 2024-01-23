@@ -165,6 +165,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 50
   rotationSpeed: 100
+  mouseEdgeMoveRangeRatio: 0
+  maxXPos: 0
+  minXPos: 0
+  maxZPos: 0
+  minZPos: 0
 --- !u!1 &33895818
 GameObject:
   m_ObjectHideFlags: 0
@@ -764,7 +769,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1363260167}
   m_Direction: 2
   m_Value: 1
-  m_Size: 0.0660326
+  m_Size: 0.047489077
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -2062,7 +2067,7 @@ MonoBehaviour:
   gridPadding: 5
   objectsControlList: []
   buildingName: 
-  building: {fileID: 919132149155446097, guid: d7b7ab9710551864884f18dd0c8df8fe, type: 3}
+  building: {fileID: 916903136298634033, guid: 27fb46d7b4e50ca4294821ffbb698835, type: 3}
   paddingState: 1
   sinusoidalAmplitude: 2
   randomMin: -1
@@ -2097,6 +2102,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1097853547}
   - component: {fileID: 1097853546}
+  - component: {fileID: 1097853548}
   m_Layer: 0
   m_Name: Directional Light
   m_TagString: Untagged
@@ -2180,6 +2186,29 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+--- !u!114 &1097853548
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1097853545}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 474bcb49853aa07438625e644c072ee6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Version: 3
+  m_UsePipelineSettings: 1
+  m_AdditionalLightsShadowResolutionTier: 2
+  m_LightLayerMask: 1
+  m_RenderingLayers: 1
+  m_CustomShadowLayers: 0
+  m_ShadowLayerMask: 1
+  m_ShadowRenderingLayers: 1
+  m_LightCookieSize: {x: 1, y: 1}
+  m_LightCookieOffset: {x: 0, y: 0}
+  m_SoftShadowQuality: 0
 --- !u!1 &1148138305
 GameObject:
   m_ObjectHideFlags: 0
@@ -2218,15 +2247,6 @@ MonoBehaviour:
   RedMiraclebutton: {fileID: 2232642016021623464}
   BlueMiraclebutton: {fileID: 2232642016375184687}
   GreenMiraclebutton: {fileID: 6355252101751908835}
-  _followerCount: 0
-  _characterName: 
-  _devotionPoints: 0
-  _followers: []
-  _playerDevotion:
-    DevotionPoints: 0
-  _cityName: 
-  _sectorsCount: 0
-  _citySectors: []
   EventText: {fileID: 1389316705}
   devotionMilestones: 
 --- !u!4 &1148138307
@@ -3965,8 +3985,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f6ef746a22a4a9cb932b3995325c8b8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  miracleType: 2
-  gameplayManager: {fileID: 1148138306}
 --- !u!222 &479649137972139961
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -5180,8 +5198,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f6ef746a22a4a9cb932b3995325c8b8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  miracleType: 0
-  gameplayManager: {fileID: 1148138306}
 --- !u!114 &4875296514478732409
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5194,8 +5210,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f6ef746a22a4a9cb932b3995325c8b8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  miracleType: 1
-  gameplayManager: {fileID: 1148138306}
 --- !u!222 &5230900183068722524
 CanvasRenderer:
   m_ObjectHideFlags: 0

@@ -41,7 +41,7 @@ public class GenerationTest : MonoBehaviour
             if (building.buildingSize == BuildingSize.TwoByOne)
             {
                 print($"Edo House at {building.gridPositions[0]}");
-                Instantiate(Resources.Load("EdoHouse"), building.gridPositions[0], Quaternion.identity);
+                //Instantiate(Resources.Load("EdoHouse"), building.gridPositions[0], Quaternion.identity);
             }
         }
     }
