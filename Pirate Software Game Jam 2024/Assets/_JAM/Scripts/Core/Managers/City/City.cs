@@ -5,7 +5,7 @@ namespace Base.Core.Managers
 {
     [Serializable]
     public class City : BaseManager
-    {   public List<Citizen> CityPopulace;
+    {   public List<Citizen> CityPopulace = new();
         public int StartingPopulaceAmount = 15;
         public string CityName;
         

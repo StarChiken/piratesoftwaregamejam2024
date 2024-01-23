@@ -70,5 +70,82 @@ namespace Base.Gameplay.UI
         {
             rotateDirection = inputValue.Get<float>();
         }
+        
+        // Please butcher this old script, I just copied it over from a project
+        
+        //     private void HandleCameraZoomFieldOfView() 
+        //     {
+        //         if (Input.mouseScrollDelta.y > 0) 
+        //         {
+        //             targetFieldOfView -= 5;
+        //         }
+        //         
+        //         if (Input.mouseScrollDelta.y < 0) 
+        //         {
+        //             targetFieldOfView += 5;
+        //         }
+        //
+        //         targetFieldOfView = Mathf.Clamp(targetFieldOfView, fieldOfViewMin, fieldOfViewMax);
+        //
+        //         float zoomSpeed = 10f;
+        //         
+        //         cinemachineVirtualCamera.m_Lens.FieldOfView =
+        //             Mathf.Lerp(cinemachineVirtualCamera.m_Lens.FieldOfView, targetFieldOfView, Time.deltaTime * zoomSpeed);
+        //     }
+        //
+        //     private void HandleCameraZoomMoveForward() 
+        //     {
+        //         Vector3 zoomDir = followOffset.normalized;
+        //
+        //         float zoomAmount = 3f;
+        //         
+        //         if (Input.mouseScrollDelta.y > 0) 
+        //         {
+        //             followOffset -= zoomDir * zoomAmount;
+        //         }
+        //         
+        //         if (Input.mouseScrollDelta.y < 0) 
+        //         {
+        //             followOffset += zoomDir * zoomAmount;
+        //         }
+        //
+        //         if (followOffset.magnitude < followOffsetMin) 
+        //         {
+        //             followOffset = zoomDir * followOffsetMin;
+        //         }
+        //
+        //         if (followOffset.magnitude > followOffsetMax) 
+        //         {
+        //             followOffset = zoomDir * followOffsetMax;
+        //         }
+        //
+        //         float zoomSpeed = 10f;
+        //         
+        //         cinemachineVirtualCamera.GetCinemachineComponent<CinemachineTransposer>().m_FollowOffset =
+        //             Vector3.Lerp(cinemachineVirtualCamera.GetCinemachineComponent<CinemachineTransposer>().m_FollowOffset, followOffset, Time.deltaTime * zoomSpeed);
+        //     }
+        //
+        //     private void HandleCameraZoomLowerYAxis() 
+        //     {
+        //         float zoomAmount = 3f;
+        //         
+        //         if (Input.mouseScrollDelta.y > 0) 
+        //         {
+        //             followOffset.y -= zoomAmount;
+        //         }
+        //         
+        //         if (Input.mouseScrollDelta.y < 0) 
+        //         {
+        //             followOffset.y += zoomAmount;
+        //         }
+        //
+        //         followOffset.y = Mathf.Clamp(followOffset.y, followOffsetMinY, followOffsetMaxY);
+        //
+        //         float zoomSpeed = 10f;
+        //         
+        //         cinemachineVirtualCamera.GetCinemachineComponent<CinemachineTransposer>().m_FollowOffset =
+        //             Vector3.Lerp(cinemachineVirtualCamera.GetCinemachineComponent<CinemachineTransposer>().m_FollowOffset, followOffset, Time.deltaTime * zoomSpeed);
+        //
+        //     }
+        }
     }
-}

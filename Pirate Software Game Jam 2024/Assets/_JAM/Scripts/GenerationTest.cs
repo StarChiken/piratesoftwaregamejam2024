@@ -35,15 +35,16 @@ public class GenerationTest : MonoBehaviour
         buildings[3] = buildingL;
 
         GenerateGrid();
-
-        foreach (Building building in buildingGrid.Values)
-        {
-            if (building.buildingSize == BuildingSize.TwoByOne)
-            {
-                print($"Edo House at {building.gridPositions[0]}");
-                Instantiate(Resources.Load("EdoHouse"), building.gridPositions[0], Quaternion.identity);
-            }
-        }
+        
+        // bug/error - don't need this, each building prefab has an appropriate house in it
+        // foreach (Building building in buildingGrid.Values)
+        // {
+        //     if (building.buildingSize == BuildingSize.TwoByOne)
+        //     {
+        //         print($"Edo House at {building.gridPositions[0]}");
+        //         Instantiate(Resources.Load("EdoHouse"), building.gridPositions[0], Quaternion.identity);
+        //     }
+        // }
     }
 
     private void GenerateGrid()
@@ -107,6 +108,7 @@ public class GenerationTest : MonoBehaviour
             // Shy
             this.buildingType = buildingType;
         }
+        
         // Shy
         public void DoBuildingAction()
         {

@@ -20,8 +20,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Toon_Wood
-  m_Shader: {fileID: -6465566751694194690, guid: 59e3d17ecec47234db5e775bc0de451f, type: 3}
+  m_Name: Toon_LightWood
+  m_Shader: {fileID: -6465566751694194690, guid: 339529695fea26c4098a1e19a659f16f, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -51,8 +51,11 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
+    - _Contrast: 0.281
     - _QueueControl: 0
     - _QueueOffset: 0
-    m_Colors: []
+    - _ShadingLayers: 10
+    m_Colors:
+    - _Color: {r: 0.1981132, g: 0.12750682, b: 0.08690815, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
