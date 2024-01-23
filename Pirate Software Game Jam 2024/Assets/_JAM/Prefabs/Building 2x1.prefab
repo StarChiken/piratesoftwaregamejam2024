@@ -112,6 +112,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: EdoHouse1_2
       objectReference: {fileID: 0}
+    - target: {fileID: 5083637411064126527, guid: 7caeebdad7ac50c4c8d874465a91fa9f, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5604560300338398853, guid: 7caeebdad7ac50c4c8d874465a91fa9f, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.15

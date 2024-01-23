@@ -12,8 +12,12 @@ public class GenerationTest : MonoBehaviour
     public int gridZ;
     public int gridSpacing;
 
-    [Header("Building Objects")]
-    public GameObject edoHouse;
+    [Header("Building Color By Type")]
+    public Color houseColor;
+    public Color templeColor;
+    public Color factionDutyColor;
+    public Color sanityColor;
+    public Color healthColor;
 
     public GameObject building1x1;
     public GameObject building2x2;
@@ -21,6 +25,8 @@ public class GenerationTest : MonoBehaviour
     public GameObject buildingL;
 
     private GameObject[] buildings = new GameObject[4];
+
+    private Color[] buildingColors = new Color[5];
 
     private Dictionary<Vector2, Building> buildingGrid = new();
 
@@ -34,16 +40,21 @@ public class GenerationTest : MonoBehaviour
         buildings[2] = building2x2;
         buildings[3] = buildingL;
 
+        buildingColors[0] = houseColor;
+        buildingColors[1] = templeColor;
+        buildingColors[2] = factionDutyColor;
+        buildingColors[3] = sanityColor;
+        buildingColors[4] = healthColor;
+
         GenerateGrid();
 
-        foreach (Building building in buildingGrid.Values)
+        /*foreach (Building building in buildingGrid.Values)
         {
             if (building.buildingSize == BuildingSize.TwoByOne)
             {
-                print($"Edo House at {building.gridPositions[0]}");
-                //Instantiate(Resources.Load("EdoHouse"), building.gridPositions[0], Quaternion.identity);
+
             }
-        }
+        }*/
     }
 
     private void GenerateGrid()
@@ -67,13 +78,18 @@ public class GenerationTest : MonoBehaviour
                     buildingChildrenPositions[i] = buildingObject.transform.GetChild(i).position;
                 }
 
+                int randomBuildingColorIndex = Random.Range(0, 5);
+
                 // Shy
-                Building building = new Building($"Grid {x} {y}", buildingChildrenPositions, (BuildingSize)randomBuildingIndex, buildingObject, BuildingType.Default);
+                Building building = new Building($"Grid {x} {y}", buildingChildrenPositions, (BuildingSize)randomBuildingIndex, buildingObject, (BuildingType)randomBuildingColorIndex);
                 // Building building = new Building($"Grid {x} {y}", buildingChildrenPositions, (BuildingSize)randomBuildingIndex, buildingObject);
+
+                SpriteRenderer[] spriteRenderers = building.buildingObject.GetComponentsInChildren<SpriteRenderer>();
 
                 for (int i = 0; i < buildingObject.transform.childCount; i++)
                 {
                     buildingGrid.Add(buildingChildrenPositions[i], building);
+                    spriteRenderers[i].color = buildingColors[randomBuildingColorIndex];
                 }
 
                 y += gridSpacing;
@@ -117,14 +133,14 @@ public class GenerationTest : MonoBehaviour
                     switch (buildingType)
                     {
                         // Get Happiness for Followers
-                        case BuildingType.Entertainment:
+                        case BuildingType.Sanity:
                             foreach (var citizen in tempListForDoAction)
                             {
-                                citizen.Happiness += 1;
+                                citizen.Sanity += 1;
                             }
                             break;
                         // Get a bit of Resources
-                        case BuildingType.Business:
+                        case BuildingType.Temple:
                             GameManager.Instance.Player.Resources.AddResources(5);
                             break;
                         default:
@@ -152,9 +168,11 @@ public class GenerationTest : MonoBehaviour
     
     public enum BuildingType
     {
-        Default,
-        Entertainment,
-        Business
+        House,
+        Temple,
+        Faction,
+        Sanity,
+        Health
     }
     
     public enum ActionOptions

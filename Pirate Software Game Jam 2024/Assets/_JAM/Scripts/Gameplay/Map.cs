@@ -97,7 +97,7 @@ public class Map : MonoBehaviour
                 // Assign color only works on 1-material objects with a Renderer
                 
                 Color districtColor = GetDistrictColor(i); // Get color based on district index
-                obj.gameObject.GetComponent<Renderer>().material.color = districtColor; 
+                //obj.gameObject.GetComponent<Renderer>().material.color = districtColor; 
             }
         }
     }
