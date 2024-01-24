@@ -166,6 +166,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveTime: 0.05
+  minZoomMoveTime: 0.025
+  maxZoomMoveTime: 0.09
   rotationSpeed: 60
   mouseEdgeMoveRangeRatio: 4
   maxXPos: 300
