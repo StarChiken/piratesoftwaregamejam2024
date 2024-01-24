@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using Cinemachine;
 
-namespace Base.Gameplay.UI
+namespace Base.Gameplay
 {
     public class CameraController : MyMonoBehaviour
     {

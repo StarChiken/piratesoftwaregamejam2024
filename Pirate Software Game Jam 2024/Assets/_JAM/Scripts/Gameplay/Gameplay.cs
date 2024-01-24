@@ -7,7 +7,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
-namespace Base.Gameplay.UI
+namespace Base.Gameplay
 {
     public class Gameplay : MyMonoBehaviour
     {

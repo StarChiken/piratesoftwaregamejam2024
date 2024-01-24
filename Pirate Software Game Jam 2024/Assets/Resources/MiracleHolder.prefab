@@ -45,9 +45,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0232842588a543568df5ad52add3ae7d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  miracleType: 0
   MiracleScript:
     _miracleType: 0
-  miracleType: 0
+  vfxPrefab: {fileID: 0}
+  idleSound: {fileID: 0}
+  castSound: {fileID: 0}
+  audioClips: []
 --- !u!1001 &7769212566518549336
 PrefabInstance:
   m_ObjectHideFlags: 0
