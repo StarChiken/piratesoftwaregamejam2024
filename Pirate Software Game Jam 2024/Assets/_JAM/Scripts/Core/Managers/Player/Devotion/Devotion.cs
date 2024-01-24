@@ -266,12 +266,12 @@ namespace Base.Core.Managers
             }
         }
     }
-
+    [Serializable]
     public class Miracle
     {
-        private MiracleType _miracleType;
+        public MiracleType _miracleType;
 
-        public void MiracleEffect(Citizen targetCitizen)
+        public void MiracleEffect(Citizen targetCitizen) // Maybe should be moved to the mono behaviour object??? too complex logic??
         {
             switch (_miracleType)
             {
