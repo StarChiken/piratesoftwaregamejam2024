@@ -16,6 +16,7 @@ namespace Base.Gameplay
         public int gridSpacing = 5;
         public int gridPadding = 5;
         public List<GameObject> objectsControlList;
+        
         public string buildingName;
         public GameObject building;
 
