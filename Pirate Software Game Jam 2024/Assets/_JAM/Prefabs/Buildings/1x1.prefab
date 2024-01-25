@@ -10,15 +10,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 99344b9c259460c4abe5019f228b73a4, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 99344b9c259460c4abe5019f228b73a4, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 99344b9c259460c4abe5019f228b73a4, type: 3}
       propertyPath: m_LocalScale.z
-      value: 0.2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 99344b9c259460c4abe5019f228b73a4, type: 3}
       propertyPath: m_LocalPosition.x
@@ -114,7 +114,7 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: 52b6b65caf50cbc4e93434b7e086ef7f, type: 2}
     - target: {fileID: 919132149155446097, guid: 99344b9c259460c4abe5019f228b73a4, type: 3}
       propertyPath: m_Name
-      value: EdoHouseSmall
+      value: 1x1
       objectReference: {fileID: 0}
     - target: {fileID: 6990831462176099502, guid: 99344b9c259460c4abe5019f228b73a4, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'

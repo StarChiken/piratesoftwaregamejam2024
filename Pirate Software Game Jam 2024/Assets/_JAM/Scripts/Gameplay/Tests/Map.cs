@@ -17,9 +17,13 @@ namespace Base.Gameplay
         public int gridPadding = 5;
         public List<GameObject> objectsControlList;
         
-        public string buildingName;
-        public GameObject building;
-
+        [Header("Assignemnt")]
+        public GameObject building1x1;
+        public GameObject building2x2;
+        public GameObject building2x1;
+        public GameObject buildingL;
+        public GameObject[] buildings;
+        
         [Header("Variation State")] public PaddingVariationState paddingState;
 
         [Header("Sinusoidal Variation")] public float sinusoidalAmplitude = 2f;
@@ -45,22 +49,22 @@ namespace Base.Gameplay
             StepFunction,
             TriangleWave
         }
-
+        
         private void Start()
         {
-            buildingName = building.name;
+            buildings = new [] { building1x1, building2x1, buildingL };
         }
 
         private void Update()
         {
-            if (Input.GetKeyDown(KeyCode.Backspace))
+            if (Input.GetKeyDown(KeyCode.Space))
             {
-                DoGame();
+                DoMapTest();
             }
         }
 
         // Method to initiate the city generation
-        public void DoGame()
+        public void DoMapTest()
         {
             ChangePaddingVariation(paddingState);
 
@@ -92,7 +96,7 @@ namespace Base.Gameplay
                     int randomYIndex = Random.Range(0, randomList.Count);
                     int randomY = randomList[randomYIndex];
 
-                    obj.gameObject.GetComponent<Transform>().eulerAngles = new Vector3(0, randomY, 0);
+                    obj.gameObject.GetComponent<Transform>().eulerAngles = new Vector3(0, randomY, 0); // adjust angle
 
                     // Assign color only works on 1-material objects with a Renderer
 
@@ -118,17 +122,24 @@ namespace Base.Gameplay
             {
                 for (int z = 0; z < gridZ; z++)
                 {
-                    float padding =
-                        CalculatePadding(gridPadding); // Call the method to get padding based on the chosen variation
+                    // float padding =
+                    //     CalculatePadding(gridPadding); // Call the method to get padding based on the chosen variation
+                    //
+                    // float xPos = (x + col * gridX) * (gridSpacing + padding);
+                    // float yPos = 0.5f;
+                    // float zPos = (z + row * gridZ) * (gridSpacing + padding);
 
-                    float xPos = (x + col * gridX) * (gridSpacing + padding);
-                    float yPos = 0.5f;
-                    float zPos = (z + row * gridZ) * (gridSpacing + padding);
+                    // var padding = CalculatePadding(gridSpacing);
 
+                    float xPos = (x + col * gridX) * gridSpacing;
+                    float yPos = 0;
+                    float zPos = (z + row * gridZ) * gridSpacing;
+                    
                     Vector3 position = new Vector3(xPos, yPos, zPos);
-
+                    var randomIndex = Random.Range(0, buildings.Length);
+                    
                     var building =
-                        Instantiate(Resources.Load(buildingName), position, Quaternion.identity) as GameObject;
+                        Instantiate(Resources.Load(buildings[randomIndex].name), position, Quaternion.identity) as GameObject;
 
                     building.name = $"Grid {xPos} {zPos}";
 
