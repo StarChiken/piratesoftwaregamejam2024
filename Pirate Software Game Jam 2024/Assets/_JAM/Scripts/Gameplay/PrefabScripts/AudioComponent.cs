@@ -16,13 +16,19 @@ namespace Base.Gameplay
         private void Awake()
         {
             DontDestroyOnLoad(this);
-            PlayBackgroundMusic(BackgroundMusic, MusicAudioSource);
+            PlayBackgroundSound(BackgroundMusic);
         }
 
-        private void PlayBackgroundMusic(AudioClip clip, AudioSource musicSource)
+        public void PlayBackgroundSound(AudioClip clip)
         {
-            musicSource.clip = clip;
-            musicSource.Play();
+            MusicAudioSource.clip = clip;
+            MusicAudioSource.Play();
+        }
+        
+        public void PlayFXSound(AudioClip clip)
+        {
+            MusicAudioSource.clip = clip;
+            SFXAudioSource.Play();
         }
     }
 }
