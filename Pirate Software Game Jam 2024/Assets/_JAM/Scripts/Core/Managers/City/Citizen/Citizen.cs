@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace Base.Core.Managers
 {
@@ -31,9 +32,9 @@ namespace Base.Core.Managers
 
             // Initialize properties
             PlayerGodAttraction = 0;
-            Sanity = 100;
-            Health = 100;
-            FactionDuty = 100;
+            Sanity = Random.Range(45, 65);
+            Health = Random.Range(45, 65);
+            FactionDuty = Random.Range(50, 90);
             Happiness = CalculateHappinessAmount();
             CitizenName = GenerateName();
             FaithAttractionTrait = GenerateRandomTrait();
@@ -79,7 +80,7 @@ namespace Base.Core.Managers
         private Faciton GenerateRandomFaction()
         {
             Array values = Enum.GetValues(typeof(Faciton));
-            int index = UnityEngine.Random.Range(0, values.Length);
+            int index = Random.Range(0, values.Length);
             return (Faciton)values.GetValue(index);
         }
     }
