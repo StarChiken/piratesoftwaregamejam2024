@@ -9,6 +9,9 @@ namespace Base.Gameplay
 {
     public class CitizenAgent : MyMonoBehaviour
     {
+        public int buildingChecksPerMove;
+        public float checkBuildingTime;
+
         public int dutySanityDrainPerSecond;
 
         public int naturalHealthDrainPerSecond;
@@ -18,13 +21,18 @@ namespace Base.Gameplay
         public GenerationTest generationTestScript;
         public PathfindingTest pathfindingTestScript;
 
+        public GameObject modelObject;
+
         [SerializeField] int duty, sanity, health;
 
-        private Citizen citizen;
+        public Citizen citizen;
 
+        private int buildingChecks = 0;
+
+        private float gridXOffset = 0;
+        private float gridZOffset = 0;
         private float drainTimer = 0;
         private float checkTimer = 0;
-        private int buildingChecks = 0;
 
         private bool isGainingHealth = false;
         private bool isGainingSanity = false;
@@ -32,13 +40,18 @@ namespace Base.Gameplay
         private bool isMoving = false;
 
         private Building destination = null;
+        private Building occupyingBuilding = null;
 
         private Vector2[] currentPath;
 
         void Start()
         {
-            citizen = new Citizen();
             citizen.CitizenNeeds.CalculateNeeds(citizen.Sanity, citizen.Health, citizen.FactionDuty);
+            checkTimer = Random.Range(0, 1f);
+            buildingChecks = Random.Range(0, buildingChecksPerMove + 1);
+            checkBuildingTime += Random.Range(0, 0.15f);
+            gridXOffset = Random.Range(0, 0.25f);
+            gridZOffset = Random.Range(0, 0.25f);
         }
 
         private void FixedUpdate()
@@ -46,7 +59,8 @@ namespace Base.Gameplay
             if (destination == null)
             {
                 destination = GetNextDestination();
-                print(destination.buildingType);
+                occupyingBuilding = generationTestScript.buildingGrid[citizen.housePosition];
+                modelObject.SetActive(false);
             }
 
             citizen.CitizenNeeds.CalculateNeeds(citizen.Sanity, citizen.Health, citizen.FactionDuty);
@@ -56,7 +70,7 @@ namespace Base.Gameplay
             DrainStats();
 
             checkTimer += Time.fixedDeltaTime;
-            if (checkTimer >= 1f)
+            if (checkTimer >= checkBuildingTime)
             {
                 checkTimer = 0;
 
@@ -72,21 +86,23 @@ namespace Base.Gameplay
                         citizen.Sanity += 5;
                         break;
                     default:
-                        citizen.Health += 1;
-                        citizen.Sanity += 1;
+                        //Do Nothing
                         break;
                 }
 
                 if (!isMoving)
                 {
                     buildingChecks++;
-                    if (buildingChecks > 3)
+                    if (buildingChecks > buildingChecksPerMove)
                     {
                         buildingChecks = 0;
                         destination = GetNextDestination();
-                        currentPath = pathfindingTestScript.FindPath(new Vector2(transform.position.x, transform.position.z), destination.gridPositions[0]);
-                        StartCoroutine(MoveCitizen());
-                        print(destination.name);
+                        if (destination != occupyingBuilding)
+                        {
+                            currentPath = pathfindingTestScript.FindPath(new Vector2(transform.position.x, transform.position.z), destination.gridPositions[0]);
+                            StartCoroutine(MoveCitizen());
+                            print(destination.name);
+                        }
                     }
                 }
             }
@@ -95,13 +111,20 @@ namespace Base.Gameplay
         private IEnumerator MoveCitizen()
         {
             isMoving = true;
+            modelObject.SetActive(true);
+
             float moveTime = 0.1f;
+
             for (int i = currentPath.Length - 1; i >= 0; i--)
             {
                 transform.DOMove(new Vector3(currentPath[i].x, 0, currentPath[i].y), moveTime);
                 yield return new WaitForSeconds(moveTime);
             }
-            transform.position = new Vector3(destination.gridPositions[0].x, 0, destination.gridPositions[0].y);
+
+            transform.position = new Vector3(destination.gridPositions[0].x + gridXOffset, 0, destination.gridPositions[0].y + gridZOffset);
+            occupyingBuilding = destination;
+
+            modelObject.SetActive(false);
             isMoving = false;
         }
 
@@ -145,19 +168,29 @@ namespace Base.Gameplay
             if (citizen.CitizenNeeds.healthRatio < 0.5f)
             {
                 buildingType = BuildingType.Health;
-                print(citizen.CitizenNeeds.healthRatio);
             }
             else if (citizen.CitizenNeeds.dutyRatio < 0.5f)
             {
                 buildingType = BuildingType.Faction;
-                print(citizen.CitizenNeeds.dutyRatio);
             }
             else if (citizen.CitizenNeeds.sanityRatio < 0.5f)
             {
                 buildingType = BuildingType.Sanity;
-                print(citizen.CitizenNeeds.sanityRatio);
             }
-            return generationTestScript.GetRandomBuildingByType(buildingType);
+
+            if (buildingType == BuildingType.House)
+            {
+                return generationTestScript.buildingGrid[citizen.housePosition];
+            }
+            else
+            {
+                return generationTestScript.GetRandomBuildingByType(buildingType);
+            }
+        }
+
+        public void SetHousePosition(Vector2 _housePos)
+        {
+            citizen.housePosition = _housePos;
         }
     }
 }
