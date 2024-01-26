@@ -2,22 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using TMPro;
 
 namespace Base.Gameplay
 {
-
-
     public class PathfindingTest : MonoBehaviour
     {
         public GenerationTest generationTestScript;
-        public GameObject circleIndicator;
-
-        public GameObject nodePrefab;
 
         private Vector2[] adjacentPositions = new Vector2[8];
-
-        public Vector2 startPostion;
-        public Vector2 endPostion;
 
         private void Start()
         {
@@ -26,35 +19,25 @@ namespace Base.Gameplay
             adjacentPositions[2] = new Vector2(0, 1);
             adjacentPositions[3] = new Vector2(1, 1);
             adjacentPositions[4] = new Vector2(0, 1);
-            adjacentPositions[5] = new Vector2(-1, 1);
+            adjacentPositions[5] = new Vector2(1, 0);
             adjacentPositions[6] = new Vector2(-1, 0);
             adjacentPositions[7] = new Vector2(-1, -1);
+
+            //GenerateNodeGrid();
         }
 
-        private void Update()
+        public Vector2[] FindPath(Vector2 startPos, Vector2 endPos)
         {
-            if (Input.GetKeyDown(KeyCode.G))
+            foreach (TextMeshProUGUI textMesh in pathfindingGridNumbers.Values)
             {
-                StartCoroutine(FindPath(startPostion, endPostion));
-                circleIndicator.transform.position = endPostion;
-                print(generationTestScript.buildingGrid.ContainsKey(endPostion));
+                textMesh.text = "0";
             }
 
-            if (Input.GetKeyDown(KeyCode.F))
+            if (generationTestScript.buildingGrid.ContainsKey(endPos))
             {
-                if (circleIndicator.transform.position == (Vector3)endPostion)
-                {
-                    circleIndicator.transform.position = startPostion;
-                }
-                else
-                {
-                    circleIndicator.transform.position = endPostion;
-                }
+                print("End is wall");
             }
-        }
 
-        public IEnumerator FindPath(Vector2 startPos, Vector2 endPos)
-        {
             List<Node> openList = new();
             List<Node> closedList = new();
 
@@ -62,8 +45,11 @@ namespace Base.Gameplay
 
             List<Vector2> path = new();
 
+            int iteration = 0;
             while (openList.Count > 0)
             {
+                iteration++;
+
                 Node currentNode = openList[0];
 
                 for (int i = 0; i < openList.Count; i++)
@@ -77,16 +63,14 @@ namespace Base.Gameplay
                 openList.Remove(currentNode);
                 closedList.Add(currentNode);
 
-                if (currentNode.GetPosition() == endPos)
+                if (currentNode.GetPosition() == endPos || iteration == 128)
                 {
-                    print("found end");
                     while (currentNode.GetParent() != null)
                     {
                         path.Add(currentNode.GetPosition());
                         currentNode = currentNode.GetParent();
                     }
-
-                    circleIndicator.transform.position = endPos;
+                    path.Add(startPos);
                     break;
                 }
 
@@ -96,15 +80,13 @@ namespace Base.Gameplay
                 {
                     Vector2 nodePos = currentNode.GetPosition() + adjacentPositions[i];
 
-                    if (nodePos.x < 0 || nodePos.x > generationTestScript.gridX || nodePos.y < 0 ||
-                        nodePos.y > generationTestScript.gridZ)
+                    if (nodePos.x < 0 || nodePos.x > generationTestScript.gridX || nodePos.y < 0 || nodePos.y > generationTestScript.gridZ)
                     {
                         continue;
                     }
 
-                    if (generationTestScript.buildingGrid.ContainsKey(nodePos))
+                    if (nodePos != endPos && generationTestScript.buildingGrid.ContainsKey(nodePos))
                     {
-                        print("found wall");
                         continue;
                     }
 
@@ -119,9 +101,14 @@ namespace Base.Gameplay
                     }
 
                     child.g = currentNode.g + 1;
-                    child.h = (int)Mathf.Pow(child.GetPosition().x - endPos.x, 2) +
-                              (int)Mathf.Pow(child.GetPosition().y - endPos.y, 2);
+                    child.h = Mathf.Pow(child.GetPosition().x - endPos.x, 2) + Mathf.Pow(child.GetPosition().y - endPos.y, 2);
                     child.f = child.g + child.h;
+
+                    /*
+                    if (pathfindingGridNumbers.ContainsKey(child.GetPosition()))
+                    {
+                        pathfindingGridNumbers[child.GetPosition()].text = $"{child.f}";
+                    }*/
 
                     if (openList.Contains(child))
                     {
@@ -129,12 +116,30 @@ namespace Base.Gameplay
                     }
 
                     openList.Add(child);
-                    print("added child to open list");
                 }
+            }
 
-                print("Current Node: " + currentNode.GetPosition());
-                circleIndicator.transform.position = currentNode.GetPosition();
-                yield return new WaitForSeconds(0.05f);
+            return path.ToArray();
+        }
+
+        //THIS IS ALL FOR DEBUGGING THE GRID
+        public Transform canvas;
+        public GameObject gridNumberPrefab;
+        
+        private Dictionary<Vector2, TextMeshProUGUI> pathfindingGridNumbers = new();
+
+
+        private void GenerateNodeGrid()
+        {
+            for (int x = 0; x < generationTestScript.gridX; x++)
+            {
+                for (int y = 0; y < generationTestScript.gridZ; y++)
+                {
+                    Vector2 position = new Vector2(x, y);
+                    GameObject gridNumber = Instantiate(gridNumberPrefab, position, Quaternion.identity, canvas);
+
+                    pathfindingGridNumbers.Add(position, gridNumber.GetComponent<TextMeshProUGUI>());
+                }
             }
         }
     }
@@ -144,9 +149,9 @@ namespace Base.Gameplay
         private Vector2 position;
         private Node parent;
 
-        public int g = 0;
-        public int h = 0;
-        public int f = 0;
+        public float g = 0;
+        public float h = 0;
+        public float f = 0;
 
         public Node(Node _parent, Vector2 _position)
         {

@@ -58,6 +58,8 @@ Material:
     - _Modes: 0.82
     - _QueueControl: 0
     - _QueueOffset: 0
+    - _SpecBrigtness: 0.7
+    - _SpecFocus: 16
     m_Colors:
     - _Color: {r: 0.9529411, g: 0.16470587, b: 0.8431373, a: 1}
   m_BuildTextureStacks: []

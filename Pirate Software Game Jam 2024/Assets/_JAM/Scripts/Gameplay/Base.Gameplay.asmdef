@@ -1,0 +1,21 @@
+{
+    "name": "Base.Gameplay",
+    "rootNamespace": "",
+    "references": [
+        "GUID:6055be8ebefd69e48b49212b09b47b2f",
+        "GUID:75469ad4d38634e559750d17036d5f7c",
+        "GUID:4307f53044263cf4b835bd812fc161a4",
+        "GUID:9550f6b9c1ac87345a996c43f204fb30",
+        "GUID:29fd751815f60414cb0ebdd1d6fa5e33",
+        "GUID:ccfefb4d9849992469e34987356da32d"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
