@@ -12,6 +12,8 @@ namespace Base.Gameplay
         public int buildingChecksPerMove;
         public float checkBuildingTime;
 
+        public float moveTime;
+
         public int dutySanityDrainPerSecond;
 
         public int naturalHealthDrainPerSecond;
@@ -60,7 +62,7 @@ namespace Base.Gameplay
             {
                 destination = GetNextDestination();
                 occupyingBuilding = generationTestScript.buildingGrid[citizen.housePosition];
-                //modelObject.SetActive(false);
+                modelObject.SetActive(false);
             }
 
             citizen.CitizenNeeds.CalculateNeeds(citizen.Sanity, citizen.Health, citizen.FactionDuty);
@@ -111,9 +113,7 @@ namespace Base.Gameplay
         private IEnumerator MoveCitizen()
         {
             isMoving = true;
-            //modelObject.SetActive(true);
-
-            float moveTime = 0.1f;
+            modelObject.SetActive(true);
 
             for (int i = currentPath.Length - 1; i >= 0; i--)
             {
@@ -124,7 +124,7 @@ namespace Base.Gameplay
             transform.position = new Vector3(destination.gridPositions[0].x + gridXOffset, 0, destination.gridPositions[0].y + gridZOffset);
             occupyingBuilding = destination;
 
-            //modelObject.SetActive(false);
+            modelObject.SetActive(false);
             isMoving = false;
         }
 

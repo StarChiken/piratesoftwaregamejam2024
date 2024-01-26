@@ -140,6 +140,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   buildingChecksPerMove: 3
   checkBuildingTime: 1
+  moveTime: 0.25
   dutySanityDrainPerSecond: 3
   naturalHealthDrainPerSecond: 2
   naturalSanityDrainPerSecond: 2

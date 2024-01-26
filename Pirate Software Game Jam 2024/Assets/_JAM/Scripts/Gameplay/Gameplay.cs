@@ -17,6 +17,7 @@ namespace Base.Gameplay
         [SerializeField] private TextMeshProUGUI myGameStateText;
         [SerializeField] private TextMeshProUGUI devotionPointsText;
         [SerializeField] private TextMeshProUGUI devotionTierText;
+        public MiracleCursorObject miracleCursorObjectScript;
 
         public GameState myGameState;
         public Button RedMiraclebutton;
@@ -40,7 +41,7 @@ namespace Base.Gameplay
                 city = GameManager.City;
             });
         }
-        
+
         // Starting a state machine, called by a button in test environment
         public void StartGame()
         {
@@ -59,6 +60,8 @@ namespace Base.Gameplay
         public void MiralceButton()
         {
             MiracleObject.SetActive(true);
+            miracleCursorObjectScript.SetFollowCursor(true);
+            print("MIRACLE BUTTON PRESSED");
         }
         
         // Test, called by a button in test environment
