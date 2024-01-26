@@ -22,22 +22,10 @@ namespace Base.Gameplay
             adjacentPositions[5] = new Vector2(1, 0);
             adjacentPositions[6] = new Vector2(-1, 0);
             adjacentPositions[7] = new Vector2(-1, -1);
-
-            //GenerateNodeGrid();
         }
 
         public Vector2[] FindPath(Vector2 startPos, Vector2 endPos)
         {
-            foreach (TextMeshProUGUI textMesh in pathfindingGridNumbers.Values)
-            {
-                textMesh.text = "0";
-            }
-
-            if (generationTestScript.buildingGrid.ContainsKey(endPos))
-            {
-                print("End is wall");
-            }
-
             List<Node> openList = new();
             List<Node> closedList = new();
 
@@ -93,54 +81,27 @@ namespace Base.Gameplay
                     children.Add(new Node(currentNode, nodePos));
                 }
 
-                foreach (Node child in children)
+                for (int i = 0; i < children.Count; i++)
                 {
-                    if (closedList.Contains(child))
+                    if (closedList.Contains(children[i]))
                     {
                         continue;
                     }
 
-                    child.g = currentNode.g + 1;
-                    child.h = Mathf.Pow(child.GetPosition().x - endPos.x, 2) + Mathf.Pow(child.GetPosition().y - endPos.y, 2);
-                    child.f = child.g + child.h;
+                    children[i].g = currentNode.g + 1;
+                    children[i].h = Mathf.Pow(children[i].GetPosition().x - endPos.x, 2) + Mathf.Pow(children[i].GetPosition().y - endPos.y, 2);
+                    children[i].f = children[i].g + children[i].h;
 
-                    /*
-                    if (pathfindingGridNumbers.ContainsKey(child.GetPosition()))
-                    {
-                        pathfindingGridNumbers[child.GetPosition()].text = $"{child.f}";
-                    }*/
-
-                    if (openList.Contains(child))
+                    if (openList.Contains(children[i]))
                     {
                         continue;
                     }
 
-                    openList.Add(child);
+                    openList.Add(children[i]);
                 }
             }
 
             return path.ToArray();
-        }
-
-        //THIS IS ALL FOR DEBUGGING THE GRID
-        public Transform canvas;
-        public GameObject gridNumberPrefab;
-        
-        private Dictionary<Vector2, TextMeshProUGUI> pathfindingGridNumbers = new();
-
-
-        private void GenerateNodeGrid()
-        {
-            for (int x = 0; x < generationTestScript.gridX; x++)
-            {
-                for (int y = 0; y < generationTestScript.gridZ; y++)
-                {
-                    Vector2 position = new Vector2(x, y);
-                    GameObject gridNumber = Instantiate(gridNumberPrefab, position, Quaternion.identity, canvas);
-
-                    pathfindingGridNumbers.Add(position, gridNumber.GetComponent<TextMeshProUGUI>());
-                }
-            }
         }
     }
 

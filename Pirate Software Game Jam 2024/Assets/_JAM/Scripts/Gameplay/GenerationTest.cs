@@ -105,20 +105,13 @@ namespace Base.Gameplay
             int buildingsSpawned = 0;
             for (int x = 0; x < gridX; x++)
             {
-                for (int y = 0; y < gridZ; y++)
+                for (int z = 0; z < gridZ; z++)
                 {
-                    Vector2 position = new Vector2(x + 0.5f, y + 0.5f);
+                    Vector3 position = new Vector3(x + 0.5f, 0, z + 0.5f);
 
                     //Randomly picks a building prefab to spawn from the buildings array
                     int randomBuildingIndex = Random.Range(0, 3);
-                    GameObject buildingObject = Instantiate(buildings[randomBuildingIndex], position, Quaternion.Euler(0, 0, Random.Range(1, 4) * 90));
-
-                    Vector2[] buildingChildrenPositions = new Vector2[buildingObject.transform.childCount];
-
-                    for (int i = 0; i < buildingObject.transform.childCount; i++)
-                    {
-                        buildingChildrenPositions[i] = buildingObject.transform.GetChild(i).position;
-                    }
+                    GameObject buildingObject = Instantiate(buildings[randomBuildingIndex], position, Quaternion.Euler(90, Random.Range(1, 4) * 90, 0));
 
                     int buildingColorIndex;
 
@@ -131,19 +124,30 @@ namespace Base.Gameplay
                         buildingColorIndex = Random.Range(1, 4);
                     }
 
-                    Building building = new Building($"Grid {x} {y} {(BuildingType)buildingColorIndex}", buildingChildrenPositions, (BuildingSize)randomBuildingIndex, buildingObject, (BuildingType)buildingColorIndex);
+                    SpriteRenderer[] spriteRenderers = buildingObject.GetComponentsInChildren<SpriteRenderer>();
+                    print(spriteRenderers.Length);
 
-                    buildingObject.name = $"Grid {x} {y} {(BuildingType)buildingColorIndex}";
+                    Vector2[] buildingChildrenPositions = new Vector2[spriteRenderers.Length];
 
-                    SpriteRenderer[] spriteRenderers = building.buildingObject.GetComponentsInChildren<SpriteRenderer>();
-
-                    for (int i = 0; i < buildingObject.transform.childCount; i++)
+                    for (int i = 0; i < spriteRenderers.Length; i++)
                     {
-                        buildingGrid.Add(buildingChildrenPositions[i], building);
+                        Vector3 buildingPosition = spriteRenderers[i].transform.position;
+                        buildingChildrenPositions[i] = new Vector2(buildingPosition.x, buildingPosition.z);
                         spriteRenderers[i].color = buildingColors[buildingColorIndex];
                     }
 
-                    y += gridSpacing;
+                    Building building = new Building($"Grid {x} {z} {(BuildingType)buildingColorIndex}", buildingChildrenPositions, (BuildingSize)randomBuildingIndex, buildingObject, (BuildingType)buildingColorIndex);
+
+                    for (int i = 0; i < spriteRenderers.Length; i++)
+                    {
+                        print(spriteRenderers[i].transform.name);
+                        Vector3 buildingPosition = spriteRenderers[i].transform.position;
+                        buildingGrid.Add(new Vector2(buildingPosition.x, buildingPosition.z), building);
+                    }
+
+                    buildingObject.name = $"Grid {x} {z} {(BuildingType)buildingColorIndex}";
+
+                    z += gridSpacing;
                     buildingsSpawned++;
                 }
 
@@ -151,7 +155,7 @@ namespace Base.Gameplay
             }
         }
 
-        public Building GetRandomBuildingByType(Vector2 currentPos, BuildingType buildingType)
+        public Building GetRandomBuildingByType(BuildingType buildingType)
         {
             print("Got called");
             List<Vector2> buildingPositions = new();

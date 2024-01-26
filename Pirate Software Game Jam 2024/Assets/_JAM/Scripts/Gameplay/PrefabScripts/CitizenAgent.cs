@@ -84,7 +84,7 @@ namespace Base.Gameplay
                     {
                         buildingChecks = 0;
                         destination = GetNextDestination();
-                        currentPath = pathfindingTestScript.FindPath(transform.position, destination.gridPositions[0]);
+                        currentPath = pathfindingTestScript.FindPath(new Vector2(transform.position.x, transform.position.z), destination.gridPositions[0]);
                         StartCoroutine(MoveCitizen());
                         print(destination.name);
                     }
@@ -98,10 +98,10 @@ namespace Base.Gameplay
             float moveTime = 0.1f;
             for (int i = currentPath.Length - 1; i >= 0; i--)
             {
-                transform.DOMove(currentPath[i], moveTime);
+                transform.DOMove(new Vector3(currentPath[i].x, 0, currentPath[i].y), moveTime);
                 yield return new WaitForSeconds(moveTime);
             }
-            transform.position = destination.gridPositions[0];
+            transform.position = new Vector3(destination.gridPositions[0].x, 0, destination.gridPositions[0].y);
             isMoving = false;
         }
 
@@ -157,7 +157,7 @@ namespace Base.Gameplay
                 buildingType = BuildingType.Sanity;
                 print(citizen.CitizenNeeds.sanityRatio);
             }
-            return generationTestScript.GetRandomBuildingByType((Vector2)transform.position, buildingType);
+            return generationTestScript.GetRandomBuildingByType(buildingType);
         }
     }
 }
