@@ -35,10 +35,13 @@ namespace Base.Gameplay
 
         private Vector2[] currentPath;
 
+        [SerializeField] private float moveTime = 0.1f;
         void Start()
         {
             citizen = new Citizen();
             citizen.CitizenNeeds.CalculateNeeds(citizen.Sanity, citizen.Health, citizen.FactionDuty);
+
+            //GetComponent<Animator>().SetTrigger("Walk");
         }
 
         private void FixedUpdate()
@@ -95,7 +98,7 @@ namespace Base.Gameplay
         private IEnumerator MoveCitizen()
         {
             isMoving = true;
-            float moveTime = 0.1f;
+            
             for (int i = currentPath.Length - 1; i >= 0; i--)
             {
                 transform.DOMove(new Vector3(currentPath[i].x, 0, currentPath[i].y), moveTime);

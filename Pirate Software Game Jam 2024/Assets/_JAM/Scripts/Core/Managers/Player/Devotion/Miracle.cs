@@ -2,7 +2,7 @@
 
 namespace Base.Core.Managers
 {
-    [Serializable]
+    // [Serializable]
     public class Miracle
     {
 

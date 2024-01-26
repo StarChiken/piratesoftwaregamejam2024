@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Base.Core.Managers
 {
-    [Serializable]
+    // [Serializable]
     public class City : BaseManager
     {   public List<Citizen> CityPopulace = new();
         public int StartingPopulaceAmount = 15;

@@ -1,5 +1,8 @@
-﻿using Base.Core.Components;
+﻿using System;
+using Base.Core.Components;
 using UnityEngine;
+using UnityEngine.PlayerLoop;
+using UnityEngine.SceneManagement;
 
 namespace Base.Gameplay
 {
@@ -12,16 +15,16 @@ namespace Base.Gameplay
         public AudioClip UIClick;
         public AudioClip LoseSound;
         public AudioClip WinSound;
-        
+
+        public string sceneName;
         private void Awake()
         {
             DontDestroyOnLoad(this);
-            
-            //PlayBackgroundSound(BackgroundMusic);
         }
 
         public void PlayBackgroundSound(AudioClip clip)
         {
+            MusicAudioSource.Stop();
             MusicAudioSource.clip = clip;
             MusicAudioSource.Play();
         }
@@ -30,6 +33,11 @@ namespace Base.Gameplay
         {
             MusicAudioSource.clip = clip;
             SFXAudioSource.Play();
+        }
+        
+        private void StopMusic()
+        {
+            MusicAudioSource.Stop();
         }
     }
 }

@@ -4,7 +4,7 @@ using UnityEngine.Serialization;
 
 namespace Base.Core.Managers
 {
-    [Serializable]
+    // [Serializable]
     public class Player : BaseManager
     {
         // Player Data

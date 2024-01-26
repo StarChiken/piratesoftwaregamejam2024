@@ -4,7 +4,7 @@ using Base.Core.Managers;
 
 namespace Base.Core.Managers
 {
-    [Serializable]
+    // [Serializable]
     public class Devotion
     {
         public int DevotionPoints;

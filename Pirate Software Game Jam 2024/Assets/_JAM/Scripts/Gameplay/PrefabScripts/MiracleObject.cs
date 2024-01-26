@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Base.Core.Components;
 using Base.Core.Managers;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using Resources = UnityEngine.Resources;
 
 namespace Base.Gameplay
@@ -17,11 +18,24 @@ namespace Base.Gameplay
         [SerializeField] private GameObject vfxPrefab;
         private string vfxName;
 
+        private Camera main => Camera.main;
+        
         // Sound
         private AudioComponent audioSource;
         [SerializeField] private AudioClip idleSound;
         [SerializeField] private AudioClip castSound;
         [SerializeField] private List<AudioClip> audioClips; // 0 is idle, 1 is cast
+
+        private void OnEnable()
+        {
+            transform.position = main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
+        }
+
+        private void Update()
+        {
+            transform.position = main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
+        }
+
         public void Init() // needs to be called after the game starts only (after the GameManger was called new)
         {
             MiracleScript = new Miracle();

@@ -53,8 +53,13 @@ namespace Base.Gameplay
             EventText.text = GameManager.GameEvents.DoEventGiveDevotionPoints();
             devotionPointsText.text = GameManager.Player.Devotion.DevotionPoints.ToString();
         }
-        
-        
+
+        public GameObject MiracleObject;
+
+        public void MiralceButton()
+        {
+            MiracleObject.SetActive(true);
+        }
         
         // Test, called by a button in test environment
         public void ReportAboutGame()

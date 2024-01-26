@@ -48,10 +48,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MusicAudioSource: {fileID: 2582867428242615333}
   SFXAudioSource: {fileID: 5730413246063803363}
-  BackgroundMusic: {fileID: 0}
+  BackgroundMusic: {fileID: 8300000, guid: cde30a2dcf3f9134d96a43759e409976, type: 3}
   UIClick: {fileID: 0}
   LoseSound: {fileID: 0}
   WinSound: {fileID: 0}
+  sceneName: 
 --- !u!1001 &4814273260566509205
 PrefabInstance:
   m_ObjectHideFlags: 0
