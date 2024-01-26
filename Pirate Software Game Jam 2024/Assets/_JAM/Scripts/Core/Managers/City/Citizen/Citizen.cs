@@ -1,20 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace Base.Core.Managers
 {
-    [Serializable]
+    //[Serializable]
     public class Citizen
     {
         // Citizen properties
         public string CitizenName;
         public TraitType FaithAttractionTrait; // What kind of faith actions they like
         public int PlayerGodAttraction; // Current amount of attraction to the players faith
+        public Faciton CitizenFaction;
+        public Vector2 housePosition; //1 Grid Sqaure that Contains their house
         
         // Subsystem stats
         public int Happiness;
         public int Sanity;
         public int Health;
+        public int FactionDuty;
         public CitizenFaith CitizenFaith;
         public CitizenNeeds CitizenNeeds;
 
@@ -23,15 +27,17 @@ namespace Base.Core.Managers
             // Initialize subsystems
             CitizenFaith = new CitizenFaith(this);
             CitizenNeeds = new CitizenNeeds();
-            CitizenNeeds.CalculateNeeds(Sanity,Health); // Calculate needs based on initial sanity and health
+            CitizenNeeds.CalculateNeeds(Sanity,Health, FactionDuty); // Calculate needs based on initial sanity and health
 
             // Initialize properties
             PlayerGodAttraction = 0;
-            Sanity = 10;
-            Health = 10;
+            Sanity = 100;
+            Health = 100;
+            FactionDuty = 100;
             Happiness = CalculateHappinessAmount();
             CitizenName = GenerateName();
             FaithAttractionTrait = GenerateRandomTrait();
+            CitizenFaction = GenerateRandomFaction();
         }
         
         // Calculate happiness based on health, sanity, and personality
@@ -68,6 +74,13 @@ namespace Base.Core.Managers
             Array values = Enum.GetValues(typeof(TraitType));
             int index = UnityEngine.Random.Range(0, values.Length);
             return (TraitType)values.GetValue(index);
+        }
+
+        private Faciton GenerateRandomFaction()
+        {
+            Array values = Enum.GetValues(typeof(Faciton));
+            int index = UnityEngine.Random.Range(0, values.Length);
+            return (Faciton)values.GetValue(index);
         }
     }
 
@@ -255,31 +268,24 @@ namespace Base.Core.Managers
         HouseholdGod
     }
 
-    public class CitizenNeeds
+    public enum Faciton
     {
-        public bool needSanity;
-        public bool needHealth;
-        
-        public void CalculateNeeds(int sanity, int health)
-        {
-            if (sanity < 5)
-            {
-                needSanity = true;
-            }
-            
-            if (health < 5)
-            {
-                needHealth = true;
-            }
-  
-        }
-
-        public void ZeroOutNeeds()
-        {
-            needSanity = false;
-            needHealth = false;
-        }
-        
+        Farmer,
+        Smith,
+        Noble
     }
 
+    public class CitizenNeeds
+    {
+        public float sanityRatio;
+        public float healthRatio;
+        public float dutyRatio;
+        
+        public void CalculateNeeds(int sanity, int health, int factionDuty)
+        {
+            sanityRatio = sanity / 100f;
+            healthRatio = health / 100f;
+            dutyRatio = factionDuty / 100f;
+        }
+    }
 }
