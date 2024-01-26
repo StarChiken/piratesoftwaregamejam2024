@@ -16,7 +16,8 @@ namespace Base.Gameplay
         private void Awake()
         {
             DontDestroyOnLoad(this);
-            PlayBackgroundSound(BackgroundMusic);
+            
+            //PlayBackgroundSound(BackgroundMusic);
         }
 
         public void PlayBackgroundSound(AudioClip clip)

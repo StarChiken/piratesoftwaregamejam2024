@@ -46,8 +46,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 925736e77c5b4d3a8fa0fadbab097d42, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MusicAudioSource: {fileID: 0}
-  SFXAudioSource: {fileID: 0}
+  MusicAudioSource: {fileID: 2582867428242615333}
+  SFXAudioSource: {fileID: 5730413246063803363}
   BackgroundMusic: {fileID: 0}
   UIClick: {fileID: 0}
   LoseSound: {fileID: 0}
@@ -114,6 +114,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 5500307442487463294, guid: 713e351681a47ce449b779f4e6ff8528, type: 3}
   m_PrefabInstance: {fileID: 4814273260566509205}
   m_PrefabAsset: {fileID: 0}
+--- !u!82 &2582867428242615333 stripped
+AudioSource:
+  m_CorrespondingSourceObject: {fileID: 6996214719126805168, guid: 713e351681a47ce449b779f4e6ff8528, type: 3}
+  m_PrefabInstance: {fileID: 4814273260566509205}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &8457341323901202186
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -174,5 +179,10 @@ PrefabInstance:
 --- !u!4 &2022770685289144932 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7587668276225199470, guid: 8423d6c93f114ac42b5f8972515f2bf2, type: 3}
+  m_PrefabInstance: {fileID: 8457341323901202186}
+  m_PrefabAsset: {fileID: 0}
+--- !u!82 &5730413246063803363 stripped
+AudioSource:
+  m_CorrespondingSourceObject: {fileID: 4240147142776165609, guid: 8423d6c93f114ac42b5f8972515f2bf2, type: 3}
   m_PrefabInstance: {fileID: 8457341323901202186}
   m_PrefabAsset: {fileID: 0}
