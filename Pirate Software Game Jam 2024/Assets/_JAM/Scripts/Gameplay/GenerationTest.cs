@@ -38,9 +38,6 @@ namespace Base.Gameplay
 
         public Dictionary<Vector2, Building> buildingGrid = new();
 
-        public List<Vector2> buildingPositions;
-        public List<Building> buildingThings;
-
         private PathfindingTest pathfindingScript;
 
         void Start()

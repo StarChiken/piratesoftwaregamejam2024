@@ -3216,16 +3216,15 @@ MonoBehaviour:
   minStartingHouses: 16
   maxStartingHouses: 24
   houseColor: {r: 0.8301887, g: 0.21537916, b: 0.21537916, a: 1}
-  templeColor: {r: 0.6981132, g: 0.2733179, b: 0.67025924, a: 1}
-  factionDutyColor: {r: 0.8584906, g: 0.62138987, b: 0.28751338, a: 1}
-  sanityColor: {r: 0.23335709, g: 0.67438984, b: 0.7169812, a: 1}
-  healthColor: {r: 0.24012129, g: 0.6226415, b: 0.16740832, a: 1}
+  houseMaterial: {fileID: 2100000, guid: 7e1052d8b8034624f8565dd01b22485d, type: 2}
+  factionDutyMaterial: {fileID: 2100000, guid: dcd3354b260fa7745bdc1a87a41f68ef, type: 2}
+  sanityMaterial: {fileID: 2100000, guid: 99bff066a661a3f4a8fe2ad4045585cb, type: 2}
+  healthMaterial: {fileID: 2100000, guid: c5bb282c949aa414d969631b86579123, type: 2}
   building1x1: {fileID: 4344780666046847190, guid: 381a0ef6954794e4882fead26f9f2b2b, type: 3}
   building2x2: {fileID: 1123322882498903187, guid: e7f7e72fc31a0b94a811e63021364ce6, type: 3}
   building2x1: {fileID: 6805104270892855208, guid: b8ca8c2e97b33e049b42ae86d0a0572a, type: 3}
   buildingL: {fileID: 6081043064902662369, guid: 31cbe297445d856439ff3a57537796e6, type: 3}
-  buildingPositions: []
-  buildingThings: []
+  citizenPrefab: {fileID: 4809231708981863480, guid: 1e964d13a0c39044d85c40fa7722a5c0, type: 3}
 --- !u!4 &1542922736
 Transform:
   m_ObjectHideFlags: 0
@@ -4955,8 +4954,8 @@ MonoBehaviour:
   targetFieldOfView: 5
   fieldOfViewMax: 8
   fieldOfViewMin: 3
-  startingZoomYOffset: 120
-  endingZoomXOffset: 60
+  startingZoomYOffset: 135
+  endingZoomXOffset: 45
   cinemachineVirtualCamera: {fileID: 7739871047970771257}
 --- !u!54 &2122083599970481827
 Rigidbody:
