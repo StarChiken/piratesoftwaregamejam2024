@@ -39,7 +39,6 @@ public class MiracleCursorObject : MonoBehaviour
                 if (Physics.Raycast(ray, out hit, 300))
                 {
                     transform.position = hit.point + offset;
-
                 }
             }
         }

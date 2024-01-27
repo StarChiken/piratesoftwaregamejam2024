@@ -26,16 +26,6 @@ namespace Base.Gameplay
         [SerializeField] private AudioClip castSound;
         [SerializeField] private List<AudioClip> audioClips; // 0 is idle, 1 is cast
 
-        private void OnEnable()
-        {
-            transform.position = main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
-        }
-
-        private void Update()
-        {
-            transform.position = main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
-        }
-
         public void Init() // needs to be called after the game starts only (after the GameManger was called new)
         {
             MiracleScript = new Miracle();

@@ -59,6 +59,7 @@ namespace Base.Gameplay
         private void Update()
         {
             //Testing Temple Choosing
+            /*
             if (canSpawnTemple && Mouse.current.leftButton.wasPressedThisFrame)
             {
                 Ray ray = Camera.main.ScreenPointToRay(Mouse.current.position.value);
@@ -110,7 +111,7 @@ namespace Base.Gameplay
                         }
                     }
                 }
-            }
+            }*/
         }
 
         private void GenerateGrid(int houses)
