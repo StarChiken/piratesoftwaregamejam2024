@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 499265016745145844}
   - component: {fileID: 7035078093242773179}
+  - component: {fileID: 2579076284093172079}
   m_Layer: 0
   m_Name: MiracleHolder
   m_TagString: Untagged
@@ -46,12 +47,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   miracleType: 0
-  MiracleScript:
-    _miracleType: 0
   vfxPrefab: {fileID: 0}
   idleSound: {fileID: 0}
   castSound: {fileID: 0}
   audioClips: []
+--- !u!114 &2579076284093172079
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4204853966150509909}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ac8bf08423ef125479fc55a378f0e29a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  offset: {x: 0.4, y: 0, z: -0.15}
 --- !u!1001 &7769212566518549336
 PrefabInstance:
   m_ObjectHideFlags: 0
