@@ -1,34 +1,30 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
+using Base.Core.Components;
 using Base.Core.Managers;
-using UnityEngine.Serialization;
+using UnityEngine;
+
 
 namespace Base.Gameplay
 {
-    public class MiracleButton : ButtonBase
+    public class MiracleButton : MyMonoBehaviour
     {
         public MiracleType MiracleType;
         public SectorScript sector;
         
+        // data
+        public List<Citizen> sectorPop = new ();
+        public Gameplay gameplayManager;
+
+        private void Awake()
+        {
+            gameplayManager = GameObject.Find("Gameplay").GetComponent<Gameplay>();
+        }
+        
+
         public void DoMiracle()
         {
             sectorPop = sector.sector.SectorPopulace;
             gameplayManager.DoMiracleOnCitizens(MiracleType, sectorPop);
-        }
-    }
-    
-    public class ActionButton : ButtonBase
-    {
-        public SectorType SectorType;
-        [FormerlySerializedAs("ActionType")] public FactionAction factionAction;
-        public SectorScript sector;
-        [FormerlySerializedAs("actions")] public FactionAction factionActions;
-        
-        public void DoAction()
-        {
-            // sectorPop = sector.sector.SectorPopulace;
-            // gameplayManager.DoFactionAction(ActionType, );
         }
     }
 }

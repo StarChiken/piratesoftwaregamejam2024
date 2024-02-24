@@ -88,6 +88,7 @@ GameObject:
   - component: {fileID: 23961655535585068}
   - component: {fileID: 7270059495636640926}
   - component: {fileID: 4920977293452396376}
+  - component: {fileID: 5292884610435920987}
   m_Layer: 5
   m_Name: BlueMiracleButton
   m_TagString: Untagged
@@ -197,13 +198,13 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: 
+      - m_Target: {fileID: 5292884610435920987}
+        m_TargetAssemblyTypeName: Base.Gameplay.MiracleButton, Base.Gameplay
+        m_MethodName: DoMiracle
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -223,6 +224,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   text: {fileID: 1309695117167851813}
   actionName: 'Cast Blue Miracle '
+--- !u!114 &5292884610435920987
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 34093890830566937}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f23021827e1b40c9be4325e6337d2532, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MiracleType: 3
+  sector: {fileID: 8634760760248019392}
+  gameplayManager: {fileID: 0}
 --- !u!1 &177138904997081898
 GameObject:
   m_ObjectHideFlags: 0
@@ -438,7 +454,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Silk Trade District
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: e5364bc2cf521814d99a57d00c18bc8e, type: 2}
   m_sharedMaterial: {fileID: -6691305754071987788, guid: e5364bc2cf521814d99a57d00c18bc8e, type: 2}
@@ -465,12 +481,12 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 20
+  m_fontSize: 36
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
   m_fontSizeMin: 18
-  m_fontSizeMax: 50
+  m_fontSizeMax: 50.97
   m_fontStyle: 0
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 4096
@@ -522,8 +538,9 @@ GameObject:
   - component: {fileID: 762826586511136457}
   - component: {fileID: 6126039608071316259}
   - component: {fileID: 4212230655529455876}
+  - component: {fileID: 4452258051027284236}
   m_Layer: 5
-  m_Name: GetInfluenceButton
+  m_Name: GetInfluanceButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -631,13 +648,13 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: 
+      - m_Target: {fileID: 4452258051027284236}
+        m_TargetAssemblyTypeName: Base.Gameplay.ActionButton, Base.Gameplay
+        m_MethodName: DoAction
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -657,6 +674,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   text: {fileID: 1309695117167851813}
   actionName: Get Influance
+--- !u!114 &4452258051027284236
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1296278526789104318}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cef1bc4362374fef84a90a517c57710d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  factionActions: 2
+  sector: {fileID: 8634760760248019392}
+  gameplayManager: {fileID: 0}
 --- !u!1 &1310164840956945002
 GameObject:
   m_ObjectHideFlags: 0
@@ -745,6 +777,7 @@ GameObject:
   - component: {fileID: 7168280515779878725}
   - component: {fileID: 2488440364076132308}
   - component: {fileID: 6688368211103199051}
+  - component: {fileID: 6633072805384886804}
   m_Layer: 5
   m_Name: GetResourceButton
   m_TagString: Untagged
@@ -854,13 +887,13 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: 
+      - m_Target: {fileID: 6633072805384886804}
+        m_TargetAssemblyTypeName: Base.Gameplay.ActionButton, Base.Gameplay
+        m_MethodName: DoAction
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -880,6 +913,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   text: {fileID: 1309695117167851813}
   actionName: Get Resource
+--- !u!114 &6633072805384886804
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1416914333034907035}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cef1bc4362374fef84a90a517c57710d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  factionActions: 0
+  sector: {fileID: 8634760760248019392}
+  gameplayManager: {fileID: 0}
 --- !u!1 &2190479996628060759
 GameObject:
   m_ObjectHideFlags: 0
@@ -893,6 +941,7 @@ GameObject:
   - component: {fileID: 4602377273421841071}
   - component: {fileID: 1563501386860031045}
   - component: {fileID: 8394477180456874842}
+  - component: {fileID: 9192054641462822292}
   m_Layer: 5
   m_Name: GreenMiracleButton
   m_TagString: Untagged
@@ -1002,13 +1051,13 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: 
+      - m_Target: {fileID: 9192054641462822292}
+        m_TargetAssemblyTypeName: Base.Gameplay.MiracleButton, Base.Gameplay
+        m_MethodName: DoMiracle
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -1028,6 +1077,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   text: {fileID: 1309695117167851813}
   actionName: 'Cast Green Miracle '
+--- !u!114 &9192054641462822292
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2190479996628060759}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f23021827e1b40c9be4325e6337d2532, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MiracleType: 6
+  sector: {fileID: 8634760760248019392}
+  gameplayManager: {fileID: 0}
 --- !u!1 &2349188779456975268
 GameObject:
   m_ObjectHideFlags: 0
@@ -1092,7 +1156,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: da70e221cd53fff4ba8946fc5a38c3b6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  name: {fileID: 1309695117167851813}
+  name: {fileID: 7662269465317336401}
   sector:
     sectorType: 0
     SectorName: 
@@ -1406,6 +1470,7 @@ GameObject:
   - component: {fileID: 982204532706217421}
   - component: {fileID: 3683970445958130882}
   - component: {fileID: 8863665298363010656}
+  - component: {fileID: 1803911826595462615}
   - component: {fileID: 1517963197058922369}
   m_Layer: 5
   m_Name: ProphetButton
@@ -1472,6 +1537,22 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 2
+--- !u!114 &1803911826595462615
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3574238161656533060}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f52338892e798974a8d083713f5832fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  panel: {fileID: 5003859979361685376}
+  otherPanels:
+  - {fileID: 5483460717643869581}
+  - {fileID: 6505357624412565103}
 --- !u!114 &1517963197058922369
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1516,7 +1597,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 1803911826595462615}
         m_TargetAssemblyTypeName: ButtonTest, Assembly-CSharp
         m_MethodName: OpenClosePanel
         m_Mode: 6
@@ -1616,6 +1697,7 @@ GameObject:
   - component: {fileID: 304409036145153133}
   - component: {fileID: 3161997107189062582}
   - component: {fileID: 8499737065748729155}
+  - component: {fileID: 3609117098396559655}
   m_Layer: 5
   m_Name: GetFavorButton
   m_TagString: Untagged
@@ -1725,13 +1807,13 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: 
+      - m_Target: {fileID: 3609117098396559655}
+        m_TargetAssemblyTypeName: Base.Gameplay.ActionButton, Base.Gameplay
+        m_MethodName: DoAction
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -1751,6 +1833,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   text: {fileID: 1309695117167851813}
   actionName: Get Favor
+--- !u!114 &3609117098396559655
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4475024962336939972}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cef1bc4362374fef84a90a517c57710d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  factionActions: 1
+  sector: {fileID: 8634760760248019392}
+  gameplayManager: {fileID: 0}
 --- !u!1 &5000854608917680128
 GameObject:
   m_ObjectHideFlags: 0
@@ -2165,6 +2262,7 @@ GameObject:
   - component: {fileID: 4009794925329882433}
   - component: {fileID: 9076432992085802335}
   - component: {fileID: 7312359520283969998}
+  - component: {fileID: 5317221272229936892}
   - component: {fileID: 2754789783106869123}
   m_Layer: 5
   m_Name: ResourceButton
@@ -2231,6 +2329,22 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 2
+--- !u!114 &5317221272229936892
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6134656972071613992}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f52338892e798974a8d083713f5832fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  panel: {fileID: 6505357624412565103}
+  otherPanels:
+  - {fileID: 5483460717643869581}
+  - {fileID: 5003859979361685376}
 --- !u!114 &2754789783106869123
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2275,7 +2389,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 5317221272229936892}
         m_TargetAssemblyTypeName: ButtonTest, Assembly-CSharp
         m_MethodName: OpenClosePanel
         m_Mode: 6
@@ -2599,6 +2713,7 @@ GameObject:
   - component: {fileID: 5135952894763564461}
   - component: {fileID: 3419818452130419931}
   - component: {fileID: 350317021754734168}
+  - component: {fileID: 1706384982809164389}
   m_Layer: 5
   m_Name: RedMiracleButton
   m_TagString: Untagged
@@ -2708,13 +2823,13 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: 
+      - m_Target: {fileID: 1706384982809164389}
+        m_TargetAssemblyTypeName: Base.Gameplay.MiracleButton, Base.Gameplay
+        m_MethodName: DoMiracle
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -2734,6 +2849,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   text: {fileID: 1309695117167851813}
   actionName: 'Cast Red Miracle '
+--- !u!114 &1706384982809164389
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7561244235920046717}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f23021827e1b40c9be4325e6337d2532, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MiracleType: 0
+  sector: {fileID: 8634760760248019392}
+  gameplayManager: {fileID: 0}
 --- !u!1 &7699018421031892881
 GameObject:
   m_ObjectHideFlags: 0
@@ -2768,8 +2898,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -0.000030517578, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchoredPosition: {x: -0.37860107, y: 0.090400696}
+  m_SizeDelta: {x: -117.3764, y: -42.4747}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1971560357859006782
 CanvasRenderer:
@@ -2881,6 +3011,7 @@ GameObject:
   - component: {fileID: 5427234536565463231}
   - component: {fileID: 5530077110068826390}
   - component: {fileID: 7018381497969402738}
+  - component: {fileID: 2493439679932245702}
   - component: {fileID: 721346355360253884}
   m_Layer: 5
   m_Name: MiracleButton
@@ -2947,6 +3078,22 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 2
+--- !u!114 &2493439679932245702
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7913605775291562966}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f52338892e798974a8d083713f5832fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  panel: {fileID: 5483460717643869581}
+  otherPanels:
+  - {fileID: 6505357624412565103}
+  - {fileID: 5003859979361685376}
 --- !u!114 &721346355360253884
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2991,7 +3138,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 2493439679932245702}
         m_TargetAssemblyTypeName: ButtonTest, Assembly-CSharp
         m_MethodName: OpenClosePanel
         m_Mode: 6

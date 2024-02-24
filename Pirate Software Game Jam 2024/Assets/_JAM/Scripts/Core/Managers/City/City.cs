@@ -18,7 +18,16 @@ namespace Base.Core.Managers
         public string CityName;
         public List<Sector> Sectors = new();
         
-        private List<String> districtNames = new() { "Tea Garden Society",
+        private List<String> districtNames = new() { 
+            "Tea Garden District", "Geisha Flower-Town", "Bonsai Terrace" ,
+            "Lotus Market", "Silk Trade District", "Harmony Haven" ,
+            "Zen Retreat Area", "Eternal Sakura Gardens", "Golden Pavilion Quarter" ,
+            "Rice Fields District", "Bamboo Grove District" , "Sake Streets" ,
+            "Samurai Quarter", "Shogun Plaza" , "Pagoda Heights" ,
+            "Koi Pond District", "Maple Grove District" , "Cherry Blossom Alley" ,
+        };
+        
+        private List<String> factionNames = new() {             
             "Blossom Syndicate",
             "Zen Brotherhood",
             "Traders Guild",
@@ -27,10 +36,7 @@ namespace Base.Core.Managers
             "Lotus Cartel",
             "Sake Association",
             "Golden Coalition",
-            "Tea Garden Society"
-             };
-        
-        private List<String> factionNames = new() { "" };
+            "Tea Garden Society" };
         
         public City(Action<BaseManager> onComplete) : base(onComplete)
         {
@@ -87,7 +93,7 @@ namespace Base.Core.Managers
         {
             return name switch
             {
-                "Tea Garden District" or "Geisha Entertainment Zone" or "Bonsai Terrace" => SectorType.Entertainment,
+                "Tea Garden District" or "Geisha Flower-Town" or "Bonsai Terrace" => SectorType.Entertainment,
                 "Lotus Market" or "Silk Trade District" or "Harmony Haven" => SectorType.Market,
                 "Zen Retreat Area" or "Eternal Sakura Gardens" or "Golden Pavilion Quarter" => SectorType.Park,
                 "Rice Fields District" or "Bamboo Grove District" or "Sake Streets" => SectorType.Labor,

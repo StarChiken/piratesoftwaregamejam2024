@@ -8,17 +8,13 @@ namespace Base.Gameplay
 {
     public class ButtonBase : MyMonoBehaviour
     {
-        // data
-        public List<Citizen> sectorPop = new ();
-        
         public GameObject panel;
         public GameObject[] otherPanels;
         private bool panelState;
         private float startTime;
-        public Gameplay gameplayManager;
+        
         private void Awake()
         {
-            gameplayManager = GameObject.Find("Gameplay").GetComponent<Gameplay>();
             OpenClosePanel(false);
         }
 
