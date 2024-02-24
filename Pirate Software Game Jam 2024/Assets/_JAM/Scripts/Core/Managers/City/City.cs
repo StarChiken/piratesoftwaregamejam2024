@@ -3,30 +3,110 @@ using System.Collections.Generic;
 
 namespace Base.Core.Managers
 {
-    // [Serializable]
+    [Serializable]
     public class City : BaseManager
-    {   public List<Citizen> CityPopulace = new();
-        public int StartingPopulaceAmount = 15;
+    {   
+        // public List<Citizen> CityPopulace = new();
+        // public int StartingPopulaceAmount = 15;
+        // public string CityName;
+        
+        
+        public int StartingSectorsAmount = 9;
+        public int StartingCitizenAmountPerDistrict = 10;
+        public int StartingFactionGiveAmount = 2;
+        
         public string CityName;
+        public List<Sector> Sectors = new();
+        
+        private List<String> districtNames = new() { "Tea Garden Society",
+            "Blossom Syndicate",
+            "Zen Brotherhood",
+            "Traders Guild",
+            "Rice Consortium",
+            "Shogun Authority",
+            "Lotus Cartel",
+            "Sake Association",
+            "Golden Coalition",
+            "Tea Garden Society"
+             };
+        
+        private List<String> factionNames = new() { "" };
         
         public City(Action<BaseManager> onComplete) : base(onComplete)
         {
-            CityName = GenerateRandomCity();
-            PopulateCity();
+            InitializeCity();
             
             OnInitComplete();
         }
-        
-        private void PopulateCity()
+
+        private string RandomFactionName()
         {
-            for (int i = 0; i <= StartingPopulaceAmount; i++)
+            int index = UnityEngine.Random.Range(0, factionNames.Count);
+            string selectedFactionName = factionNames[index];
+            factionNames.RemoveAt(index);
+            
+            return selectedFactionName;
+        }
+
+        private void InitializeCity()
+        {
+            for (int i = 0; i < StartingSectorsAmount; i++)
             {
-                Citizen citizen = new Citizen();
-                CityPopulace.Add(citizen);
+                Sector sector = new();
+                
+                sector.SectorName = RandomDistrictName();
+                sector.sectorType = SetSectorType(sector.SectorName);
+                PopulateDistrict(sector);
+                Sectors.Add(sector);
+            }
+
+            InitFactions();
+            
+            CityName = RandomCityName();
+        }
+
+        private void InitFactions()
+        {
+            foreach (var sector in Sectors)
+            {
+                sector.SectorFaction = new Faction(StartingFactionGiveAmount);
+                sector.SectorFaction.FactionName = RandomFactionName();
             }
         }
+
+        private void PopulateDistrict(Sector sector)
+        {
+            for (int i = 0; i < StartingCitizenAmountPerDistrict; i++)
+            {
+                Citizen citizen = new Citizen();
+                sector.SectorPopulace.Add(citizen);
+            }
+        }
+
+        private SectorType SetSectorType(String name)
+        {
+            return name switch
+            {
+                "Tea Garden District" or "Geisha Entertainment Zone" or "Bonsai Terrace" => SectorType.Entertainment,
+                "Lotus Market" or "Silk Trade District" or "Harmony Haven" => SectorType.Market,
+                "Zen Retreat Area" or "Eternal Sakura Gardens" or "Golden Pavilion Quarter" => SectorType.Park,
+                "Rice Fields District" or "Bamboo Grove District" or "Sake Streets" => SectorType.Labor,
+                "Samurai Quarter" or "Shogun Plaza" or "Pagoda Heights" => SectorType.Samurai,
+                "Koi Pond District" or "Maple Grove District" or "Cherry Blossom Alley" => SectorType.Default,
+                _ => SectorType.Default
+            };
+        }
+
+        private string RandomDistrictName()
+        {
+            int index = UnityEngine.Random.Range(0, districtNames.Count);
+            string selectedDistrict = districtNames[index];
+            districtNames.RemoveAt(index);
+            
+            return selectedDistrict;
+        }
         
-        private string GenerateRandomCity()
+        private string RandomCityName()
         {
             string[] cityNames = {
                 "Edojima of Cherry Blossom", "Sakuragawa the Zen Retreat", "Hinodecho Heights","Yamatomachi Bonsai Terrace",

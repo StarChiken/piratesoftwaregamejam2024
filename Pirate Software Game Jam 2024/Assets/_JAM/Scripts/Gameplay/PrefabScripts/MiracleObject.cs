@@ -17,7 +17,7 @@ namespace Base.Gameplay
         // VFX
         [SerializeField] private GameObject vfxPrefab;
         private string vfxName;
-
+        [SerializeField] private float tempOverlapRadius = 10;
         private Camera main => Camera.main;
         
         // Sound
@@ -65,26 +65,30 @@ namespace Base.Gameplay
 
         public void DoMiracleOnCitizens(MiracleType miracleType)
         {
-            int devotionPoints = GameManager.Player.Devotion.DevotionPoints;
+            int devotionPoints = 10;//GameManager.Player.Devotion.DevotionPoints;
             
             if (devotionPoints > 0)
             {
-                GameManager.Player.Devotion.ChangeDevotionAmount(-1);
+                //GameManager.Player.Devotion.ChangeDevotionAmount(-1);
                 
                 Debug.Log($"A <color=red>{miracleType}</color> is being cast...");
-
-                float tempOverlapRadius = 10; // Testing Purposes Only, to be replaced bu SerializedField variable
-                Vector3 sphereCenter = transform.position; // Testing Purposes Only, to be replaced bu SerializedField variable or in the Cast Miracle prefab
-                LayerMask citizens_LayerMask = new LayerMask(); // Testing Purposes Only, to be replaced in each citizen prefab
                 
-                Collider[] targetedCitizens = Physics.OverlapSphere(sphereCenter, tempOverlapRadius,citizens_LayerMask);
+                Vector3 sphereCenter = transform.position; // Testing Purposes Only, to be replaced bu SerializedField variable or in the Cast Miracle prefab
+                //LayerMask citizens_LayerMask = new LayerMask(); // Testing Purposes Only, to be replaced in each citizen prefab
+                
+                Collider[] targetedCitizens = Physics.OverlapSphere(sphereCenter, tempOverlapRadius);//,citizens_LayerMask);
                 
                 foreach (Collider citizenCollider in targetedCitizens)
                 {
-                    // Check if the collider has a Citizen component
-                    Citizen citizen = citizenCollider.GetComponent<Citizen>();
-                    if (citizen == null) continue;
+                    // Get the GameObject associated with the collider
+                    GameObject citizenGameObject = citizenCollider.gameObject;
+
+                    // Check if the GameObject has a Citizen component
+                    //Citizen citizen = citizenGameObject.GetComponent<CitizenAgent>().citizen;
+                    var citizenScript = citizenGameObject.GetComponent<CitizenAgent>();//.citizen;
+                    if (citizenScript == null) continue;
                     
+                    Citizen citizen = citizenGameObject.GetComponent<CitizenAgent>().citizen;
                     // Invoke the miracle on the Citizen
                     GameManager.Player.Devotion.DoMiracle(miracleType, citizen);
                     
@@ -146,5 +150,44 @@ namespace Base.Gameplay
             }
         }
 
+        public Vector3 offset;
+
+        private bool followCursor = false;
+
+        private void Start()
+        {
+            transform.position = new Vector3(-300, -300, -300);
+        }
+
+        public void SetFollowCursor(bool _followCursor)
+        {
+            followCursor = _followCursor;
+            if (!_followCursor)
+            {
+                transform.position = new Vector3(-300, -300, -300);
+            }
+        }
+
+        private void Update()
+        {
+            if (followCursor)
+            {
+                if (Mouse.current.leftButton.wasPressedThisFrame)
+                {
+                    DoMiracleOnCitizens(miracleType);
+                    SetFollowCursor(false);
+                }
+                else
+                {
+                    Ray ray = Camera.main.ScreenPointToRay(Mouse.current.position.value);
+                    RaycastHit hit;
+
+                    if (Physics.Raycast(ray, out hit, 300))
+                    {
+                        transform.position = hit.point + offset;
+                    }
+                }
+            }
+        }
     }
 }

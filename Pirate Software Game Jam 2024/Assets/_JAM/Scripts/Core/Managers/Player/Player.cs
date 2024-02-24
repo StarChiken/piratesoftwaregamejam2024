@@ -4,7 +4,7 @@ using UnityEngine.Serialization;
 
 namespace Base.Core.Managers
 {
-    // [Serializable]
+    [Serializable]
     public class Player : BaseManager
     {
         // Player Data
@@ -17,6 +17,9 @@ namespace Base.Core.Managers
         // Player Curses & Miracles system
         public Devotion Devotion;
         private int _startingDevotionAmount = 2;
+        
+        // Player Factions System
+        public int Resources;
         
         public Player(Action<BaseManager> onComplete) : base(onComplete)
         {

@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using Base.Core.Components;
 using UnityEngine;
 
-public class BuildingObject : MonoBehaviour
+public class BuildingObject : MyMonoBehaviour
 {
     public Renderer[] roofObjects;
 

@@ -1,9 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
+using Base.Core.Components;
 using UnityEngine;
 using TMPro;
 
-public class FrameRateManager : MonoBehaviour
+public class FrameRateManager : MyMonoBehaviour
 {
     private TextMeshProUGUI textMesh;
 

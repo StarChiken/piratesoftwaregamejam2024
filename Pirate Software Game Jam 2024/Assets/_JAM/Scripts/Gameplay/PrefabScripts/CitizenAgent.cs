@@ -1,9 +1,11 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Base.Core.Components;
 using Base.Core.Managers;
 using DG.Tweening;
+using Random = UnityEngine.Random;
 
 namespace Base.Gameplay
 {

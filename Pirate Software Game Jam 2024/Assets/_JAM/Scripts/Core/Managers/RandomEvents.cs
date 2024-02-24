@@ -23,7 +23,7 @@ namespace Base.Core.Managers
         {
             switch (Events)
             {
-                case GameEventType.GiveHappiness: // check with aan Event MonoBhaviour component, if to initiate the happiness event
+                case GameEventType.GiveHappiness: // check with an Event MonoBhaviour component, if to initiate the happiness event
                     
                     Debug.Log($"<color=red>A Random Event Happened!</color>");
                     
@@ -59,10 +59,18 @@ namespace Base.Core.Managers
         {
             int totalHappiness = 0;
 
-            foreach (Citizen citizen in GameManager.City.CityPopulace)
+            var sectors = GameManager.City.Sectors;
+
+            foreach (var sector in sectors)
             {
-                totalHappiness += citizen.Happiness;
+                var sectorPop = sector.SectorPopulace;
+                
+                foreach (Citizen citizen in sectorPop)
+                {
+                    totalHappiness += citizen.Happiness;
+                }
             }
+
 
             return totalHappiness;
         }
