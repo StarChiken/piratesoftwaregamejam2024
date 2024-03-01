@@ -236,9 +236,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f23021827e1b40c9be4325e6337d2532, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  button: {fileID: 7270059495636640926}
   MiracleType: 3
   sector: {fileID: 8634760760248019392}
-  gameplayManager: {fileID: 0}
+  sectorPop: []
+  idleSound: {fileID: 0}
+  castSound: {fileID: 8300000, guid: 359a721a706783c4689c9b93476fa95c, type: 3}
+  audioClips: []
 --- !u!1 &177138904997081898
 GameObject:
   m_ObjectHideFlags: 0
@@ -686,9 +690,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cef1bc4362374fef84a90a517c57710d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  button: {fileID: 6126039608071316259}
   factionActions: 2
   sector: {fileID: 8634760760248019392}
-  gameplayManager: {fileID: 0}
+  idleSound: {fileID: 0}
+  castSound: {fileID: 8300000, guid: c86a188aa716f484eaaf540d8e15dcd9, type: 3}
+  audioClips: []
 --- !u!1 &1310164840956945002
 GameObject:
   m_ObjectHideFlags: 0
@@ -925,9 +932,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cef1bc4362374fef84a90a517c57710d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  button: {fileID: 2488440364076132308}
   factionActions: 0
   sector: {fileID: 8634760760248019392}
-  gameplayManager: {fileID: 0}
+  idleSound: {fileID: 0}
+  castSound: {fileID: 8300000, guid: 427453ccfffa3b349871088922da731e, type: 3}
+  audioClips: []
 --- !u!1 &2190479996628060759
 GameObject:
   m_ObjectHideFlags: 0
@@ -1089,9 +1099,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f23021827e1b40c9be4325e6337d2532, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  button: {fileID: 1563501386860031045}
   MiracleType: 6
   sector: {fileID: 8634760760248019392}
-  gameplayManager: {fileID: 0}
+  sectorPop: []
+  idleSound: {fileID: 0}
+  castSound: {fileID: 8300000, guid: de9a58552df98d24ab1fcdad281eba04, type: 3}
+  audioClips: []
 --- !u!1 &2349188779456975268
 GameObject:
   m_ObjectHideFlags: 0
@@ -1102,6 +1116,7 @@ GameObject:
   m_Component:
   - component: {fileID: 857418854678296936}
   - component: {fileID: 6973133281588631299}
+  - component: {fileID: 279869250825177079}
   - component: {fileID: 8634760760248019392}
   m_Layer: 5
   m_Name: District
@@ -1144,6 +1159,62 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2349188779456975268}
   m_CullTransparentMesh: 1
+--- !u!114 &279869250825177079
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2349188779456975268}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Navigation:
+    m_Mode: 3
+    m_WrapAround: 0
+    m_SelectOnUp: {fileID: 0}
+    m_SelectOnDown: {fileID: 0}
+    m_SelectOnLeft: {fileID: 0}
+    m_SelectOnRight: {fileID: 0}
+  m_Transition: 1
+  m_Colors:
+    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
+    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_ColorMultiplier: 1
+    m_FadeDuration: 0.1
+  m_SpriteState:
+    m_HighlightedSprite: {fileID: 0}
+    m_PressedSprite: {fileID: 0}
+    m_SelectedSprite: {fileID: 0}
+    m_DisabledSprite: {fileID: 0}
+  m_AnimationTriggers:
+    m_NormalTrigger: Normal
+    m_HighlightedTrigger: Highlighted
+    m_PressedTrigger: Pressed
+    m_SelectedTrigger: Selected
+    m_DisabledTrigger: Disabled
+  m_Interactable: 1
+  m_TargetGraphic: {fileID: 0}
+  m_OnClick:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 8634760760248019392}
+        m_TargetAssemblyTypeName: Base.Gameplay.SectorScript, Base.Gameplay
+        m_MethodName: OpenStatsPanel
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &8634760760248019392
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1161,6 +1232,13 @@ MonoBehaviour:
     sectorType: 0
     SectorName: 
     SectorStat: 0
+    SectorPopulace: []
+    SectorFaction:
+      FactionName: 
+      FactionGiveAmount: 0
+      FactionAlignment: 0
+      InFavor: 0
+  panel: {fileID: 0}
 --- !u!1 &2615979461958257746
 GameObject:
   m_ObjectHideFlags: 0
@@ -1249,6 +1327,7 @@ GameObject:
   - component: {fileID: 4378568863215096584}
   - component: {fileID: 6416365165439954467}
   - component: {fileID: 7097467083796351788}
+  - component: {fileID: 5587264808948288479}
   m_Layer: 5
   m_Name: PrayButton
   m_TagString: Untagged
@@ -1358,13 +1437,13 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: 
+      - m_Target: {fileID: 5587264808948288479}
+        m_TargetAssemblyTypeName: Base.Gameplay.ProphetButton, Base.Gameplay
+        m_MethodName: DoPray
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -1384,6 +1463,24 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   text: {fileID: 1309695117167851813}
   actionName: Pray
+--- !u!114 &5587264808948288479
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3527747022555449505}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bf009c761a614b8482fc06afad297810, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  button: {fileID: 6416365165439954467}
+  prophetActions: 0
+  sector: {fileID: 8634760760248019392}
+  idleSound: {fileID: 0}
+  castSound: {fileID: 8300000, guid: 804b47e4d907ffa4286d8cd0c15dc839, type: 3}
+  audioClips: []
 --- !u!1 &3564136987822009160
 GameObject:
   m_ObjectHideFlags: 0
@@ -1549,10 +1646,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f52338892e798974a8d083713f5832fb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  panel: {fileID: 5003859979361685376}
+  buttonObject:
+  - {fileID: 3527747022555449505}
+  - {fileID: 7999782390763122190}
+  - {fileID: 8352225499678715842}
   otherPanels:
   - {fileID: 5483460717643869581}
   - {fileID: 6505357624412565103}
+  panel: {fileID: 5003859979361685376}
 --- !u!114 &1517963197058922369
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1845,9 +1946,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cef1bc4362374fef84a90a517c57710d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  button: {fileID: 3161997107189062582}
   factionActions: 1
   sector: {fileID: 8634760760248019392}
-  gameplayManager: {fileID: 0}
+  idleSound: {fileID: 0}
+  castSound: {fileID: 8300000, guid: 2475a53da306d5640966017ff674fd19, type: 3}
+  audioClips: []
 --- !u!1 &5000854608917680128
 GameObject:
   m_ObjectHideFlags: 0
@@ -2341,10 +2445,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f52338892e798974a8d083713f5832fb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  panel: {fileID: 6505357624412565103}
+  buttonObject:
+  - {fileID: 1416914333034907035}
+  - {fileID: 4475024962336939972}
+  - {fileID: 1296278526789104318}
   otherPanels:
   - {fileID: 5483460717643869581}
   - {fileID: 5003859979361685376}
+  panel: {fileID: 6505357624412565103}
 --- !u!114 &2754789783106869123
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2861,9 +2969,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f23021827e1b40c9be4325e6337d2532, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  button: {fileID: 3419818452130419931}
   MiracleType: 0
   sector: {fileID: 8634760760248019392}
-  gameplayManager: {fileID: 0}
+  sectorPop: []
+  idleSound: {fileID: 0}
+  castSound: {fileID: 8300000, guid: 4fa257e8bcf559c42a76edb969ec8225, type: 3}
+  audioClips: []
 --- !u!1 &7699018421031892881
 GameObject:
   m_ObjectHideFlags: 0
@@ -3090,10 +3202,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f52338892e798974a8d083713f5832fb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  panel: {fileID: 5483460717643869581}
+  buttonObject:
+  - {fileID: 7561244235920046717}
+  - {fileID: 2190479996628060759}
+  - {fileID: 34093890830566937}
   otherPanels:
   - {fileID: 6505357624412565103}
   - {fileID: 5003859979361685376}
+  panel: {fileID: 5483460717643869581}
 --- !u!114 &721346355360253884
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3163,6 +3279,7 @@ GameObject:
   - component: {fileID: 4866689668971042888}
   - component: {fileID: 1641617333606499013}
   - component: {fileID: 8220847114494164882}
+  - component: {fileID: 2954304712957847326}
   m_Layer: 5
   m_Name: PreachButton
   m_TagString: Untagged
@@ -3272,13 +3389,13 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: 
+      - m_Target: {fileID: 2954304712957847326}
+        m_TargetAssemblyTypeName: Base.Gameplay.ProphetButton, Base.Gameplay
+        m_MethodName: DoPreach
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -3298,6 +3415,24 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   text: {fileID: 1309695117167851813}
   actionName: Preach
+--- !u!114 &2954304712957847326
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7999782390763122190}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bf009c761a614b8482fc06afad297810, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  button: {fileID: 1641617333606499013}
+  prophetActions: 1
+  sector: {fileID: 8634760760248019392}
+  idleSound: {fileID: 0}
+  castSound: {fileID: 8300000, guid: 46b297c045d5e7a47b47bed8b279fc6c, type: 3}
+  audioClips: []
 --- !u!1 &8146330410795346310
 GameObject:
   m_ObjectHideFlags: 0
@@ -3386,6 +3521,7 @@ GameObject:
   - component: {fileID: 6353474048793153339}
   - component: {fileID: 8044325001654262038}
   - component: {fileID: 1475641691512016132}
+  - component: {fileID: 6668550649081492102}
   m_Layer: 5
   m_Name: InfeltrateButton
   m_TagString: Untagged
@@ -3495,13 +3631,13 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: 
+      - m_Target: {fileID: 6668550649081492102}
+        m_TargetAssemblyTypeName: Base.Gameplay.ProphetButton, Base.Gameplay
+        m_MethodName: DoInfiltrate
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -3521,3 +3657,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   text: {fileID: 1309695117167851813}
   actionName: Infiltrate
+--- !u!114 &6668550649081492102
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8352225499678715842}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bf009c761a614b8482fc06afad297810, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  button: {fileID: 8044325001654262038}
+  prophetActions: 2
+  sector: {fileID: 8634760760248019392}
+  idleSound: {fileID: 0}
+  castSound: {fileID: 8300000, guid: 37d4e001ac706364e905f50de86cb11b, type: 3}
+  audioClips: []

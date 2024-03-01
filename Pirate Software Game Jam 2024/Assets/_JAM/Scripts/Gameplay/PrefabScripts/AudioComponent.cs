@@ -12,6 +12,8 @@ namespace Base.Gameplay
         [SerializeField] public AudioSource SFXAudioSource;
         
         public AudioClip BackgroundMusic;
+        public AudioClip Intro;
+
         public AudioClip UIClick;
         public AudioClip LoseSound;
         public AudioClip WinSound;
@@ -20,6 +22,11 @@ namespace Base.Gameplay
         private void Awake()
         {
             DontDestroyOnLoad(this);
+        }
+
+        private void Start()
+        {
+            PlayBackgroundSound(Intro);
         }
 
         public void PlayBackgroundSound(AudioClip clip)
@@ -31,13 +38,20 @@ namespace Base.Gameplay
         
         public void PlayFXSound(AudioClip clip)
         {
-            MusicAudioSource.clip = clip;
+            SFXAudioSource.clip = clip;
             SFXAudioSource.Play();
         }
         
         private void StopMusic()
         {
             MusicAudioSource.Stop();
+            SFXAudioSource.Stop();
+        }
+
+        private void OnDestroy()
+        {
+            StopMusic();
+            
         }
     }
 }

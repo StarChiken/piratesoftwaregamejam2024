@@ -49,9 +49,10 @@ MonoBehaviour:
   MusicAudioSource: {fileID: 2582867428242615333}
   SFXAudioSource: {fileID: 5730413246063803363}
   BackgroundMusic: {fileID: 8300000, guid: cde30a2dcf3f9134d96a43759e409976, type: 3}
+  Intro: {fileID: 8300000, guid: 0b4a7f7717f72714daa2b59af925a242, type: 3}
   UIClick: {fileID: 0}
   LoseSound: {fileID: 0}
-  WinSound: {fileID: 0}
+  WinSound: {fileID: 8300000, guid: 46b297c045d5e7a47b47bed8b279fc6c, type: 3}
   sceneName: 
 --- !u!1001 &4814273260566509205
 PrefabInstance:

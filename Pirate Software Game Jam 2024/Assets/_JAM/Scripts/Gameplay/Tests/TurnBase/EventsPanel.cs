@@ -9,16 +9,19 @@ namespace Base.Gameplay
     {
         public GameObject panelCommandment;
         public GameObject panelEvent;
-        
-        public void OpenPanel(panelType type)
+        public GameObject scrim;
+
+        public void OpenPanel(PanelType type)
         {
+            scrim.SetActive(true);
+
             switch (type)
             {
-                case panelType.RandomEvent:
+                case PanelType.RandomEvent:
                     panelEvent.SetActive(true);
                     panelCommandment.SetActive(false);
                     break;
-                case panelType.ChooseCommandment:
+                case PanelType.ChooseCommandment:
                     panelEvent.SetActive(false);
                     panelCommandment.SetActive(true);
                     break;
@@ -28,7 +31,7 @@ namespace Base.Gameplay
         }
     }
 
-    public enum panelType
+    public enum PanelType
     {
         RandomEvent,
         ChooseCommandment

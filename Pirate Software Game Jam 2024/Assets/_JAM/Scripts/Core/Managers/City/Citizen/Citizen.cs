@@ -5,7 +5,7 @@ using Random = UnityEngine.Random;
 
 namespace Base.Core.Managers
 {
-    //[Serializable]
+    [Serializable]
     public class Citizen
     {
         // Citizen properties
@@ -23,9 +23,9 @@ namespace Base.Core.Managers
         public CitizenFaith CitizenFaith;
         public CitizenNeeds CitizenNeeds;
 
-        public Citizen()
+        public void InitSanityHealthDuty()
         {
-            // Initialize subsystems
+// Initialize subsystems
             CitizenFaith = new CitizenFaith(this);
             CitizenNeeds = new CitizenNeeds();
             CitizenNeeds.CalculateNeeds(Sanity,Health, FactionDuty); // Calculate needs based on initial sanity and health
@@ -40,7 +40,7 @@ namespace Base.Core.Managers
             FaithAttractionTrait = GenerateRandomTrait();
             CitizenFaction = GenerateRandomFaction();
         }
-        
+
         // Calculate happiness based on health, sanity, and personality
         public int CalculateHappinessAmount()
         {
@@ -95,7 +95,7 @@ namespace Base.Core.Managers
             // Initialize faith types with default values
             _thisCitizen = thisCitizen;
             FaithTypeDictionary = new Dictionary<FaithType, int> {
-                {FaithType.PlayerGod, 0},
+                { FaithType.PlayerGod, 0},
                 { FaithType.GodOfLore, 0 },
                 { FaithType.GoddessOfPoetry, 0 },
                 { FaithType.SeekerGod, 0 },

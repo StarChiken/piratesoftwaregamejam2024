@@ -19,9 +19,14 @@ namespace Base.Gameplay
             Time.timeScale = 1f;
         }
 
-            void Update()
+        void Update()
         {
             Time.timeScale = modifiedScale;
+        }
+
+        public void QuitButton()
+        {
+            Application.Quit();
         }
     }
 }

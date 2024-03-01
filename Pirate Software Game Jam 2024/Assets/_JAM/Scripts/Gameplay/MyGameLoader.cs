@@ -70,13 +70,16 @@ namespace Base.Gameplay
             {
                 DoLoadBar();
             }
-            
-            GamePlaySound();
+
+            if (doOnce)
+            {
+                GamePlaySound();
+            }
         }
 
         private void GamePlaySound()
         {
-            if (SceneManager.GetActiveScene().name == sceneName && doOnce)
+            if (SceneManager.GetActiveScene().name == sceneName)
             {
                 audio.MusicAudioSource.loop = true;
                 audio.MusicAudioSource.volume = 0;
@@ -95,7 +98,6 @@ namespace Base.Gameplay
             });
             
         }
-
         
         void Start () 
         {
@@ -121,8 +123,6 @@ namespace Base.Gameplay
             menuAnim.SetTrigger("Menu");
             gameLogoAnim.SetTrigger("Logo");
         }
-
-        
         
         // private IEnumerator LoadScene(string scene)
         // {

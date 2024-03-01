@@ -199,7 +199,7 @@ Canvas:
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_TargetDisplay: 0
 --- !u!224 &190382832
 RectTransform:
@@ -213,12 +213,12 @@ RectTransform:
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 2885592042044461067}
+  - {fileID: 7051308284557040908}
   - {fileID: 256999740}
   - {fileID: 1919671521}
   - {fileID: 729711065}
   - {fileID: 1709393658}
-  - {fileID: 7051308284557040908}
-  - {fileID: 2885592042044461067}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -648,7 +648,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   TMPText: {fileID: 4074296188537746273}
-  sceneName: Scene 3 - Gameplay
+  sceneName: Shy Tea Game
   sliderFillImage: {fileID: 5295164102756308635}
   fillAmountDuration: 0.1
   isLoading: 0
@@ -725,7 +725,7 @@ Canvas:
   m_AdditionalShaderChannelsFlag: 0
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 100
+  m_SortingOrder: 1
   m_TargetDisplay: 0
 --- !u!224 &1869626569
 RectTransform:
@@ -1211,6 +1211,14 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3805171041270915763, guid: 620f035453312a443b14fd4bde565f5f, type: 3}
+      propertyPath: m_Transition
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3805171041270915763, guid: 620f035453312a443b14fd4bde565f5f, type: 3}
+      propertyPath: m_SpriteState.m_PressedSprite
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 3805171041270915763, guid: 620f035453312a443b14fd4bde565f5f, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
       value: 1
       objectReference: {fileID: 0}
@@ -1300,7 +1308,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4222425159662819159, guid: 620f035453312a443b14fd4bde565f5f, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 555
+      value: 554.99994
       objectReference: {fileID: 0}
     - target: {fileID: 4222425159662819159, guid: 620f035453312a443b14fd4bde565f5f, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -1330,6 +1338,30 @@ PrefabInstance:
       propertyPath: m_Name
       value: Menu Panel
       objectReference: {fileID: 0}
+    - target: {fileID: 7552030306149196241, guid: 620f035453312a443b14fd4bde565f5f, type: 3}
+      propertyPath: m_Transition
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7552030306149196241, guid: 620f035453312a443b14fd4bde565f5f, type: 3}
+      propertyPath: m_SpriteState.m_PressedSprite
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 7552030306149196241, guid: 620f035453312a443b14fd4bde565f5f, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7552030306149196241, guid: 620f035453312a443b14fd4bde565f5f, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7552030306149196241, guid: 620f035453312a443b14fd4bde565f5f, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1869626563}
+    - target: {fileID: 7552030306149196241, guid: 620f035453312a443b14fd4bde565f5f, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 7695194379733714911, guid: 620f035453312a443b14fd4bde565f5f, type: 3}
       propertyPath: m_text
       value: Settings
@@ -1337,6 +1369,42 @@ PrefabInstance:
     - target: {fileID: 7695194379733714911, guid: 620f035453312a443b14fd4bde565f5f, type: 3}
       propertyPath: m_margin.w
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8050431533075560576, guid: 620f035453312a443b14fd4bde565f5f, type: 3}
+      propertyPath: m_Transition
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8050431533075560576, guid: 620f035453312a443b14fd4bde565f5f, type: 3}
+      propertyPath: m_SpriteState.m_PressedSprite
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 8050431533075560576, guid: 620f035453312a443b14fd4bde565f5f, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8050431533075560576, guid: 620f035453312a443b14fd4bde565f5f, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8050431533075560576, guid: 620f035453312a443b14fd4bde565f5f, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1869626563}
+    - target: {fileID: 8050431533075560576, guid: 620f035453312a443b14fd4bde565f5f, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8050431533075560576, guid: 620f035453312a443b14fd4bde565f5f, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 8050431533075560576, guid: 620f035453312a443b14fd4bde565f5f, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 8050431533075560576, guid: 620f035453312a443b14fd4bde565f5f, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: 
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

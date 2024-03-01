@@ -85,6 +85,7 @@ namespace Base.Core.Managers
             for (int i = 0; i < StartingCitizenAmountPerDistrict; i++)
             {
                 Citizen citizen = new Citizen();
+                citizen.InitSanityHealthDuty();
                 sector.SectorPopulace.Add(citizen);
             }
         }

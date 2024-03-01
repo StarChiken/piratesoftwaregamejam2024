@@ -1,16 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.UIElements;
 
 namespace Base.Core.Managers
 {
+    [Serializable]
     public class Faction
     {
-        private FactionAction actions;
         public string FactionName;
         public int FactionGiveAmount;
         public int FactionAlignment;
         public bool InFavor;
+        
+        private FactionAction actions;
+        
         public Faction(int factionGiveAmount)
         {
             FactionGiveAmount = factionGiveAmount;
@@ -23,10 +27,13 @@ namespace Base.Core.Managers
             {
                 case FactionAction.GetResource:
                     GameManager.Instance.Player.Resources += InFavor ? FactionGiveAmount * 2 : FactionGiveAmount;
+                    Debug.Log($"A <color=red>{factionAction}</color> is being performed, Currency is now {GameManager.Instance.Player.Currency}, Resources are now {GameManager.Instance.Player.Resources}!");
+                    InFavor = false;
                     break;
                 
                 case FactionAction.GetFavor:
-                    GameManager.Instance.Player.Resources += FactionGiveAmount;
+                    InFavor = true;
+                    Debug.Log($"A <color=red>{factionAction}</color> is being performed, you are now In Favor wit the {FactionName}!");
                     break;
                 
                 case FactionAction.GetInfluence:
@@ -44,21 +51,13 @@ namespace Base.Core.Managers
                     var selectedFaction = tempList[index];
                     selectedFaction.InFavor = true;
                     
+                    Debug.Log($"A <color=red>{factionAction}</color> is being performed, you are now In Favor wit the {selectedFaction.FactionName}!");
+
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }
             
-        }
-    }
-    
-    public class Prophet
-    {
-        public string ProphetName;
-
-        public void DoAction(int amount)
-        {
-            GameManager.Instance.Player.Resources += amount;
         }
     }
     

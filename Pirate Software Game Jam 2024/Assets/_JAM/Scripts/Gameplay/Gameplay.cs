@@ -1,34 +1,49 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using Base.Core.Components;
 using Base.Core.Managers;
+using DG.Tweening;
 using TMPro;
 using UnityEngine;
-
+using UnityEngine.SceneManagement;
+using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
 namespace Base.Gameplay
 {
     public class Gameplay : MyMonoBehaviour
     {
-        // Game Order Stuff
-        public GameObject commandmentPanel;
-        public GameObject eventsPanel;
-        [SerializeField] private TextMeshProUGUI myGameStateText;
-        [SerializeField] private TextMeshProUGUI devotionPointsText;
-        [SerializeField] private TextMeshProUGUI devotionTierText;
-
-        public GameState myGameState;
-        public CanvasGroup UI;
-        
-        // Events Thing
-        public TextMeshProUGUI EventText;
-        public List<int> devotionMilestones = new() { 12,48,192,768 };
-
         // Player Data
         public Player player;
         public City city;
         
+        public bool didMiracleBool;
+        public bool didFactionBool;
+        public bool didProphetBool;
+        
+        // Game Order Stuff
+        [SerializeField] private GameObject commandmentPanel;
+        [SerializeField] private GameObject eventsPanel;
+        [SerializeField] private TextMeshProUGUI myGameStateText;
+        [SerializeField] private TextMeshProUGUI devotionPointsText;
+        [SerializeField] private TextMeshProUGUI devotionTierText;
+        [FormerlySerializedAs("ResourcesText")] [SerializeField] private TextMeshProUGUI resourcesText;
+        [FormerlySerializedAs("CurrencyText")] [SerializeField] private TextMeshProUGUI currencyText;
+        [SerializeField] private TextMeshProUGUI didMiracleText;
+        [SerializeField] private TextMeshProUGUI didFactionText;
+        [SerializeField] private TextMeshProUGUI didProphetText;
+
+        public bool gameReadyBool;
+        public bool doOnce;
+        // Events Thing
+        public TextMeshProUGUI EventText;
+        public List<int> devotionMilestones = new() { 12,48,192,768 };
+        public GameState myGameState;
+        public CanvasGroup UI;
+        private AudioComponent audio;
+
         // Get All Player & City Variables
         private void Awake()
         {
@@ -38,7 +53,16 @@ namespace Base.Gameplay
                 city = GameManager.City;
 
                 InitializeSectorObjects();
+                gameReadyBool = true;
             });
+            
+            audio = GameObject.Find("AudioManager").GetComponent<AudioComponent>();
+
+        }
+
+        private void Start()
+        {
+            UI.interactable = false;
         }
 
         private void InitializeSectorObjects()
@@ -57,9 +81,30 @@ namespace Base.Gameplay
             }
         }
 
+        public void DoProphetAction(ProphetAction actionType, List<Citizen> targetCitizens)
+        {
+            if (didProphetBool) return;
+            
+            if (GameManager.Player.prophet.active)
+            {
+                GameManager.Player.prophet.DoAction(actionType, targetCitizens);
+                didProphetBool = true;
+            }
+        }
+        
+        public void DoProphetAction(ProphetAction prophetActions, Faction sectorFaction)
+        {
+            if (didProphetBool) return;
 
+            sectorFaction.FactionAlignment += 1;
+            Debug.Log($"A <color=red>{prophetActions}</color> is being preformed...");
+            didProphetBool = true;
+        }
+            
         public void DoMiracleOnCitizens(MiracleType miracleType, List<Citizen> targetCitizens)
         {
+            if (didMiracleBool) return;
+            
             int devotionPoints = GameManager.Player.Devotion.DevotionPoints;
             
             if (devotionPoints > 0)
@@ -81,60 +126,26 @@ namespace Base.Gameplay
                         Debug.Log($"<color=red>{citizen.CitizenName}</color> is happy about <color=red>{miracleType.ToString()}</color>, " +
                                   $"because he is a {citizen.FaithAttractionTrait}. His faith attraction is now {citizen.PlayerGodAttraction}");
                     }
+
+                    didMiracleBool = true;
                 }
             }
             else
             {
                 Debug.Log($"A <color=red>{miracleType}</color> was NOT cast! 0 Devotion Points");
+                didMiracleBool = true;
             }
         }
 
         public void DoFactionAction(FactionAction factionAction, Faction faction)
         {
-            switch (factionAction)
-            {
-                case FactionAction.GetResource:
-                    if (faction.FactionAlignment >= 10)
-                    {
-                        faction.DoAction(factionAction);
-
-                    }
-                    else
-                    {
-                        Debug.Log($"A <color=red>{factionAction}</color> was NOT preformed! " +
-                                  $"FactionAlignment is bellow 10");
-                    }
-                    break;
-                
-                case FactionAction.GetFavor:
-                    if (faction.FactionAlignment >= 11)
-                    {
-                        faction.DoAction(factionAction);
-
-                    }
-                    else
-                    {
-                        Debug.Log($"A <color=red>{factionAction}</color> was NOT preformed! " +
-                                  $"FactionAlignment is bellow 10");
-                    }
-                    break;
-                
-                case FactionAction.GetInfluence:
-                    if (faction.FactionAlignment >= 50)
-                    {
-                        faction.DoAction(factionAction);
-
-                    }
-                    else
-                    {
-                        Debug.Log($"A <color=red>{factionAction}</color> was NOT preformed! " +
-                                  $"FactionAlignment is bellow 50");
-                    }
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
+            if (didFactionBool) return;
+            
+            faction.DoAction(factionAction);
+            Debug.Log($"A <color=red>{factionAction}</color> is being performed on {faction.FactionName} Faction...");
+            didFactionBool = true;
         }
+        
         private bool IsTraitMatchingMiracle(TraitType citizenTrait, MiracleType miracleType)
         {
             switch (citizenTrait)
@@ -194,6 +205,10 @@ namespace Base.Gameplay
                 if (tempFaith >= milestone)
                 {
                     ChangeState(GameState.GetCommandmentPhase);
+                    doOnce = false;
+                    didMiracleBool = false;
+                    didFactionBool = false;
+                    didProphetBool = false;
                     devotionTierText.text = milestone.ToString();
                     devotionMilestones.Remove(milestone);
                     return; 
@@ -216,9 +231,9 @@ namespace Base.Gameplay
                 {
                     CheckIfCitizensCanBecomeFollowers(citizen, GameManager.Player.FollowerCount);
                 }
-            
-                Debug.Log("<color=red>Calculated faith attraction to all citizens!</color>");
             }
+            
+            Debug.Log("<color=red>Calculated faith attraction to all citizens!</color>");
         }
         
         private void CheckIfCitizensCanBecomeFollowers(Citizen citizen, List<Citizen> followers)
@@ -230,12 +245,16 @@ namespace Base.Gameplay
             followers.Add(citizen);
         }
         
-        
-        
         // Starting a state machine, called by a button in test environment
         public void StartGame()
         {
             ChangeState(GameState.StartGamePhase);
+            audio.MusicAudioSource.DOFade(0, 0.5f).OnComplete(() =>
+            {
+                audio.PlayBackgroundSound(audio.BackgroundMusic);
+                audio.MusicAudioSource.DOFade(0.2f, 1f);
+            });
+           
         }
         
         // Random Event Test, called by a button in test environment
@@ -274,8 +293,48 @@ namespace Base.Gameplay
             GameManager.Player.Devotion.AddCommandment(CommandmentType.Feast);
             ChangeState(GameState.PlayerTurnPhase);
         }
+
+        private void Update()
+        {
+            if (!gameReadyBool) return;
+            
+            if (devotionTierText.text == "192")
+            {
+                audio.MusicAudioSource.DOFade(0, 0.5f).OnComplete(() =>
+                {
+                    audio.MusicAudioSource.DOFade(0.2f, 0.5f).OnComplete(
+                        () =>
+                        {
+                            audio.PlayBackgroundSound(audio.WinSound);
+                        });
+                });
+                
+                SceneManager.LoadScene("Scene 4 - Credits");
+
+            }
+            
+            UpdateUIText(devotionPointsText, player.Devotion.DevotionPoints.ToString());
+            UpdateUIText(resourcesText, player.Resources.ToString());
+            UpdateUIText(currencyText, player.Currency.ToString());
+            UpdateUIText(didMiracleText, didMiracleBool.ToString());
+            UpdateUIText(didFactionText, didFactionBool.ToString());
+            UpdateUIText(didProphetText, didProphetBool.ToString());
+
+            if (!doOnce)
+            {
+                if (didMiracleBool || didFactionBool || didProphetBool)
+                {
+                    doOnce = true;
+                    ChangeState(GameState.CalculateCityPhase);
+                }
+            }
+            
+        }
         
-        
+        private void UpdateUIText(TextMeshProUGUI textElement, string newText)
+        {
+            textElement.text = newText != textElement.text ? newText : textElement.text;
+        }
         
         // Testing Purposes Only
         public void ChangeState(GameState newState)
@@ -284,19 +343,18 @@ namespace Base.Gameplay
             switch (newState)
             {
                 case GameState.StartGamePhase:
-                    devotionPointsText.text = GameManager.Player.Devotion.DevotionPoints.ToString();
                     myGameStateText.text = "Start Game Phase, Choose First Commandment";
 
-                    commandmentPanel.GetComponent<EventsPanel>().OpenPanel(panelType.ChooseCommandment);
+                    commandmentPanel.GetComponent<EventsPanel>().OpenPanel(PanelType.ChooseCommandment);
                     
                     // wait for GameManager.Player input
                     // Choose First Commandment
                     break;
                 
                 case GameState.PlayerTurnPhase:
-                    devotionPointsText.text = GameManager.Player.Devotion.DevotionPoints.ToString();
-                    myGameStateText.text = "Player Phase, Choose A Miracle To Be Cast On Random City Sector";
-                    
+                    myGameStateText.text = "Player Phase, an action";
+                    UI.interactable = true;
+
                     commandmentPanel.SetActive(false);
                     
                     // wait for GameManager.Player input
@@ -304,16 +362,21 @@ namespace Base.Gameplay
                     break;
                 
                 case GameState.CalculateCityPhase:
-                    devotionPointsText.text = GameManager.Player.Devotion.DevotionPoints.ToString();
                     myGameStateText.text = "Calculate City Phase";
+
+                    UI.interactable = false;
                     
-                    CalculateFaithAttractionForCity();
-                    CalculateBonusDevotionPoints();
+                    doOnce = false;
+                    didMiracleBool = false;
+                    didFactionBool = false;
+                    didProphetBool = false;
+                    
+                    StartCoroutine(DoCalculateCity());
+                    
                     break;
                 
                 case GameState.GetCommandmentPhase:
-                    devotionPointsText.text = GameManager.Player.Devotion.DevotionPoints.ToString();
-                    myGameStateText.text = "Get Commandment Phase, Choose Next Commandment, Evolve Your Religion";
+                    myGameStateText.text = "Get Commandment Phase, Choose Next Commandment";
                     
                     commandmentPanel.SetActive(true);
                     // wait for GameManager.Player input
@@ -324,7 +387,17 @@ namespace Base.Gameplay
                     throw new ArgumentOutOfRangeException(nameof(newState), newState, null);
             }
         }
-        
+
+        private IEnumerator DoCalculateCity()
+        {
+            yield return new WaitForSeconds(1f);
+
+            CalculateFaithAttractionForCity();
+            yield return new WaitForSeconds(1f);
+
+            CalculateBonusDevotionPoints();
+            yield return new WaitForSeconds(1f);
+        }
         // public GameObject MiracleObject;
         //
         // public void MiralceButton()
@@ -333,6 +406,7 @@ namespace Base.Gameplay
         //     MiracleObject.GetComponent<MiracleObject>().SetFollowCursor(true);
         //     print("MIRACLE BUTTON PRESSED");
         // }
+
     }
     public enum GameState
     {
