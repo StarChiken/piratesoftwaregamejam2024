@@ -67,7 +67,7 @@ namespace Base.Core.Managers
                 
                 foreach (Citizen citizen in sectorPop)
                 {
-                    totalHappiness += citizen.Happiness;
+                    totalHappiness += citizen.Health;
                 }
             }
 

@@ -4,8 +4,10 @@ using System.Linq;
 using System.Text;
 using Base.Core.Components;
 using Base.Core.Managers;
+using DG.Tweening;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 namespace Base.Gameplay
@@ -14,15 +16,39 @@ namespace Base.Gameplay
     {
         public TextMeshProUGUI name;
         public Sector sector;
-        public GameObject panel;
         
+        // details panel
+        public GameObject panel;
         [SerializeField] public TextMeshProUGUI text;
         private StringBuilder _logStringBuilder = new();
-
-        private void OnDisable()
+        public bool isOpen;
+        
+        public void DoDistrictWindow(bool isOpen)
         {
-            text.text = String.Empty; 
+            Debug.Log("Inside DoDistrictWindow" + isOpen);
+            if (isOpen)
+            {
+                gameObject.SetActive(isOpen);
+                gameObject.transform.DOScale(1, 0.5f);
+            }
+            else
+            {
+                gameObject.transform.DOScale(0, 0.5f).OnComplete(() =>
+                {
+                    gameObject.SetActive(isOpen);
+                });
+            }
         }
+
+        private void Start()
+        {
+            //gameObject.SetActive(false);
+        }
+
+        // private void OnDisable()
+        // {
+        //     text.text = String.Empty; 
+        // }
 
         public void OpenStatsPanel()
         {

@@ -5,14 +5,17 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 0
+  - enabled: 1
     path: Assets/_JAM/Scenes/GameScenes/Scene 1 - Intro.unity
     guid: 51fe344df1d12e347aa8509ac279ecc1
   - enabled: 1
-    path: Assets/_JAM/Scenes/Shy Tea Game.unity
-    guid: 2140fd6d30d26d1408d229b6670d72a9
+    path: Assets/_JAM/Scenes/GameScenes/Scene 3 - Gameplay.unity
+    guid: f4a37690c341cc7488954a889d631bd2
   - enabled: 1
     path: Assets/_JAM/Scenes/GameScenes/Scene 4 - Credits.unity
     guid: 4b7b67285cab1b64d978ffd5c8d5bb55
+  - enabled: 0
+    path: Assets/_JAM/Scenes/Shy Tea Game.unity
+    guid: 2140fd6d30d26d1408d229b6670d72a9
   m_configObjects: {}
   m_UseUCBPForAssetBundles: 0

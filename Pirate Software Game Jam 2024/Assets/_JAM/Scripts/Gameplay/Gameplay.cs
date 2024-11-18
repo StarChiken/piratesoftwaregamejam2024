@@ -16,8 +16,8 @@ namespace Base.Gameplay
     public class Gameplay : MyMonoBehaviour
     {
         // Player Data
-        public Player player;
-        public City city;
+        [SerializeField] public Player player;
+        [SerializeField] public City city;
         
         public bool didMiracleBool;
         public bool didFactionBool;
@@ -29,8 +29,8 @@ namespace Base.Gameplay
         [SerializeField] private TextMeshProUGUI myGameStateText;
         [SerializeField] private TextMeshProUGUI devotionPointsText;
         [SerializeField] private TextMeshProUGUI devotionTierText;
-        [FormerlySerializedAs("ResourcesText")] [SerializeField] private TextMeshProUGUI resourcesText;
-        [FormerlySerializedAs("CurrencyText")] [SerializeField] private TextMeshProUGUI currencyText;
+        [SerializeField] private TextMeshProUGUI resourcesText;
+        [SerializeField] private TextMeshProUGUI currencyText;
         [SerializeField] private TextMeshProUGUI didMiracleText;
         [SerializeField] private TextMeshProUGUI didFactionText;
         [SerializeField] private TextMeshProUGUI didProphetText;
@@ -41,8 +41,12 @@ namespace Base.Gameplay
         public TextMeshProUGUI EventText;
         public List<int> devotionMilestones = new() { 12,48,192,768 };
         public GameState myGameState;
-        public CanvasGroup UI;
-        private AudioComponent audio;
+        public GameObject SectorsUI;
+
+        [SerializeField] private List<SectorScript> SectorItems;
+        [SerializeField] private List<SectorButton> SectorButtons;
+
+        //private AudioComponent audio;
 
         // Get All Player & City Variables
         private void Awake()
@@ -51,33 +55,61 @@ namespace Base.Gameplay
             {
                 player = GameManager.Player;
                 city = GameManager.City;
-
+                
                 InitializeSectorObjects();
+                InitSectorObjects();
+                
                 gameReadyBool = true;
             });
             
-            audio = GameObject.Find("AudioManager").GetComponent<AudioComponent>();
+            // audio = GameObject.Find("AudioManager").GetComponent<AudioComponent>();
 
         }
 
         private void Start()
         {
-            UI.interactable = false;
+            
+            //InitSectorObjects();
+            // UI.interactable = false;
         }
 
         private void InitializeSectorObjects()
         {
-            SectorScript[] sectorScriptList = FindObjectsByType<SectorScript>(FindObjectsSortMode.None);
+            var firstItem = SectorItems[0];
+            firstItem.gameObject.SetActive(false);
             
-            for (int i = 0; i < sectorScriptList.Length; i++)
+            for (int i = 1; i < GameManager.City.Sectors.Count; i++)
             {
-                // Access the corresponding sector using the loop index
-                Sector sector = city.Sectors[i];
-                SectorScript sectorScript = sectorScriptList[i];
+                var tempItem = Instantiate(firstItem, firstItem.transform.parent, false);
+                tempItem.gameObject.SetActive(false);
+                SectorItems.Add(tempItem);
+            }
 
-                // Assign the sector name to the SectorScript
-                sectorScript.sector = sector;
-                sectorScript.name.text = $"{sectorScript.sector.SectorName}";
+            
+            // SectorScript[] sectorScriptList = SectorsUI.GetComponentsInChildren<SectorScript>();
+            // SectorButton[] districtButtonList = FindObjectsByType<SectorButton>(FindObjectsSortMode.None);
+            //
+            // for (int i = 0; i < city.Sectors.Count; i++)
+            // {
+            //     // Access the corresponding sector using the loop index
+            //     Sector sector = city.Sectors[i];
+            //     SectorScript sectorScript = sectorScriptList[i];
+            //     sectorScriptList[i] = districtButtonList[i].Sector;
+            //
+            //
+            //     // Assign the sector name to the SectorScript
+            //     sectorScript.sector = sector;
+            //     sectorScript.name.text = $"{sectorScript.sector.SectorName}";
+            // }
+        }
+
+        private void InitSectorObjects()
+        {
+            for (int i = 0; i < SectorItems.Count; i++)
+            {
+                SectorItems[i].sector = GameManager.City.Sectors[i];
+                SectorItems[i].name.text = SectorItems[i].sector.SectorName;
+                SectorButtons[i].Sector = SectorItems[i].gameObject.GetComponent<SectorScript>();
             }
         }
 
@@ -249,11 +281,11 @@ namespace Base.Gameplay
         public void StartGame()
         {
             ChangeState(GameState.StartGamePhase);
-            audio.MusicAudioSource.DOFade(0, 0.5f).OnComplete(() =>
-            {
-                audio.PlayBackgroundSound(audio.BackgroundMusic);
-                audio.MusicAudioSource.DOFade(0.2f, 1f);
-            });
+            // audio.MusicAudioSource.DOFade(0, 0.5f).OnComplete(() =>
+            // {
+            //     audio.PlayBackgroundSound(audio.BackgroundMusic);
+            //     audio.MusicAudioSource.DOFade(0.2f, 1f);
+            // });
            
         }
         
@@ -300,14 +332,14 @@ namespace Base.Gameplay
             
             if (devotionTierText.text == "192")
             {
-                audio.MusicAudioSource.DOFade(0, 0.5f).OnComplete(() =>
-                {
-                    audio.MusicAudioSource.DOFade(0.2f, 0.5f).OnComplete(
-                        () =>
-                        {
-                            audio.PlayBackgroundSound(audio.WinSound);
-                        });
-                });
+                // audio.MusicAudioSource.DOFade(0, 0.5f).OnComplete(() =>
+                // {
+                //     audio.MusicAudioSource.DOFade(0.2f, 0.5f).OnComplete(
+                //         () =>
+                //         {
+                //             audio.PlayBackgroundSound(audio.WinSound);
+                //         });
+                // });
                 
                 SceneManager.LoadScene("Scene 4 - Credits");
 
@@ -353,7 +385,7 @@ namespace Base.Gameplay
                 
                 case GameState.PlayerTurnPhase:
                     myGameStateText.text = "Player Phase, an action";
-                    UI.interactable = true;
+                    //UI.interactable = true;
 
                     commandmentPanel.SetActive(false);
                     
@@ -364,7 +396,7 @@ namespace Base.Gameplay
                 case GameState.CalculateCityPhase:
                     myGameStateText.text = "Calculate City Phase";
 
-                    UI.interactable = false;
+                    // UI.interactable = false;
                     
                     doOnce = false;
                     didMiracleBool = false;
@@ -397,6 +429,8 @@ namespace Base.Gameplay
 
             CalculateBonusDevotionPoints();
             yield return new WaitForSeconds(1f);
+            
+            
         }
         // public GameObject MiracleObject;
         //

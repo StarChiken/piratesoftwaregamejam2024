@@ -13,7 +13,7 @@ namespace Base.Gameplay
 {
     public class MyGameLoader : MyMonoBehaviour
     {
-        [SerializeField] private TMP_Text TMPText;
+        [SerializeField] private TextMeshProUGUI TMPText;
         [SerializeField] private string sceneName;
         
         // loader bar stuff
@@ -33,7 +33,7 @@ namespace Base.Gameplay
         public float LongDuration = 1.5f;
         
         // Music stuff
-        private AudioComponent audio;
+        //private AudioComponent audio;
         public AudioClip Intro;
         public AudioClip OpeningLoop;
         public AudioClip GameplayLoop;
@@ -51,7 +51,7 @@ namespace Base.Gameplay
             DontDestroyOnLoad(this);
             SceneManager.sceneLoaded += FadeOut;
             
-            audio = GameObject.Find("AudioManager").GetComponent<AudioComponent>();
+            //audio = GameObject.Find("AudioManager").GetComponent<AudioComponent>();
             menuAnim = Menu.GetComponent<Animator>();
             gameLogoAnim = GameLogo.GetComponent<Animator>();
         }
@@ -66,36 +66,48 @@ namespace Base.Gameplay
         
         private void Update()
         {
-            if (isLoading)
-            {
-                DoLoadBar();
-            }
-
-            if (doOnce)
-            {
-                GamePlaySound();
-            }
+            // if (isLoading)
+            // {
+            //     DoLoadBar();
+            // }
+            //
+            // if (doOnce)
+            // {
+            //     GamePlaySound();
+            // }
         }
 
         private void GamePlaySound()
         {
             if (SceneManager.GetActiveScene().name == sceneName)
             {
-                audio.MusicAudioSource.loop = true;
-                audio.MusicAudioSource.volume = 0;
-                audio.PlayBackgroundSound(GameplayLoop);
-                audio.MusicAudioSource.DOFade(1, 5f);
+                // audio.MusicAudioSource.loop = true;
+                // audio.MusicAudioSource.volume = 0;
+                // audio.PlayBackgroundSound(GameplayLoop);
+                // audio.MusicAudioSource.DOFade(1, 5f);
                 doOnce = false;
             }
         }
 
         public void StartButton()
         {
-            audio.MusicAudioSource.DOFade(0, 0.5f).OnComplete(() =>
-            {
-                fade.DOFade(1, 1f);
-                SceneManager.LoadScene(sceneName);
-            });
+            SceneManager.LoadScene(sceneName);
+            // Scene targetScene = SceneManager.GetSceneByName(sceneName);
+            //
+            // if (targetScene.IsValid())
+            // {
+            //     SceneManager.LoadScene(sceneName);
+            // }
+            // else
+            // {
+            //     Debug.Log("Scene does not exist.");
+            // }
+            
+            // audio.MusicAudioSource.DOFade(0, 0.5f).OnComplete(() =>
+            // {
+            //     fade.DOFade(1, 1f);
+            //     SceneManager.LoadScene(sceneName);
+            // });
             
         }
         
@@ -107,7 +119,7 @@ namespace Base.Gameplay
         private IEnumerator TweenJamLogo()
         {
             yield return new WaitForSeconds(1f);
-            audio.PlayBackgroundSound(Intro);
+            //audio.PlayBackgroundSound(Intro);
             JamLogo.GetComponent<Image>().DOFade(1.0f, ShortDuration);
             yield return new WaitForSeconds(1f);
             JamLogo.GetComponent<Image>().DOFade(0.0f, ShortDuration).OnComplete(TweenGameLogo);
@@ -115,7 +127,7 @@ namespace Base.Gameplay
         
         private void TweenGameLogo()
         {
-            GameLogo.GetComponent<Image>().DOFade(1.0f, LongDuration).OnComplete(CallAnim);
+            GameLogo.GetComponent<Image>().DOFade(1.0f, LongDuration);//.OnComplete(CallAnim);
         }
 
         private void CallAnim()

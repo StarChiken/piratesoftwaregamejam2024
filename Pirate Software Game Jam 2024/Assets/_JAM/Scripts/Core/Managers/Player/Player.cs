@@ -29,13 +29,7 @@ namespace Base.Core.Managers
         
         public Player(Action<BaseManager> onComplete) : base(onComplete)
         {
-            for (int i = 0; i < _startingFollowerAmount; i++)
-            {
-                Citizen follower = new Citizen();
-                follower.ChangeAttractionAmount(3);
-                follower.InitSanityHealthDuty();
-                FollowerCount.Add(follower);
-            }
+            InitStartingFollowers();
             
             Devotion = new Devotion(_startingDevotionAmount);
             prophet = new Prophet(StartingProphetGiveAmount);
@@ -46,7 +40,18 @@ namespace Base.Core.Managers
             CharacterName = GenerateName();
             OnInitComplete();
         }
-        
+
+        private void InitStartingFollowers()
+        {
+            for (int i = 0; i < _startingFollowerAmount; i++)
+            {
+                Citizen follower = new Citizen();
+                follower.ChangeAttractionAmount(3);
+                follower.InitializeCitizen();
+                FollowerCount.Add(follower);
+            }
+        }
+
         private string GenerateName()
         {
             string[] names = { "John", "Jane", "Alex", "Emily", "Michael", "Olivia", "David", "Sophia" };

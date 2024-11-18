@@ -168,7 +168,7 @@ namespace Base.Gameplay
                                 citizenAgent.generationTestScript = this;
                                 citizenAgent.pathfindingTestScript = pathfindingScript;
                                 citizenAgent.citizen = new Citizen();
-                                citizenAgent.citizen.InitSanityHealthDuty();
+                                citizenAgent.citizen.InitializeCitizen();
                                 citizenAgent.citizen.housePosition = new Vector2(buildingPosition.x, buildingPosition.z);
                             }
                         }

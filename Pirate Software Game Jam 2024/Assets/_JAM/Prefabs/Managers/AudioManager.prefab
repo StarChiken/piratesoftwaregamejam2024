@@ -9,7 +9,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3030445532306233466}
-  - component: {fileID: 5869978645723361687}
   m_Layer: 0
   m_Name: AudioManager
   m_TagString: Untagged
@@ -34,26 +33,6 @@ Transform:
   - {fileID: 2022770685289144932}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &5869978645723361687
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2090398823614713772}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 925736e77c5b4d3a8fa0fadbab097d42, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  MusicAudioSource: {fileID: 2582867428242615333}
-  SFXAudioSource: {fileID: 5730413246063803363}
-  BackgroundMusic: {fileID: 8300000, guid: cde30a2dcf3f9134d96a43759e409976, type: 3}
-  Intro: {fileID: 8300000, guid: 0b4a7f7717f72714daa2b59af925a242, type: 3}
-  UIClick: {fileID: 0}
-  LoseSound: {fileID: 0}
-  WinSound: {fileID: 8300000, guid: 46b297c045d5e7a47b47bed8b279fc6c, type: 3}
-  sceneName: 
 --- !u!1001 &4814273260566509205
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -116,11 +95,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 5500307442487463294, guid: 713e351681a47ce449b779f4e6ff8528, type: 3}
   m_PrefabInstance: {fileID: 4814273260566509205}
   m_PrefabAsset: {fileID: 0}
---- !u!82 &2582867428242615333 stripped
-AudioSource:
-  m_CorrespondingSourceObject: {fileID: 6996214719126805168, guid: 713e351681a47ce449b779f4e6ff8528, type: 3}
-  m_PrefabInstance: {fileID: 4814273260566509205}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &8457341323901202186
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -181,10 +155,5 @@ PrefabInstance:
 --- !u!4 &2022770685289144932 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7587668276225199470, guid: 8423d6c93f114ac42b5f8972515f2bf2, type: 3}
-  m_PrefabInstance: {fileID: 8457341323901202186}
-  m_PrefabAsset: {fileID: 0}
---- !u!82 &5730413246063803363 stripped
-AudioSource:
-  m_CorrespondingSourceObject: {fileID: 4240147142776165609, guid: 8423d6c93f114ac42b5f8972515f2bf2, type: 3}
   m_PrefabInstance: {fileID: 8457341323901202186}
   m_PrefabAsset: {fileID: 0}

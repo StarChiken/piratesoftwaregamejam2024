@@ -50,7 +50,7 @@ namespace Base.Gameplay
 
         void Start()
         {
-            citizen.CitizenNeeds.CalculateNeeds(citizen.Sanity, citizen.Health, citizen.FactionDuty);
+            citizen.CitizenNeeds.CalculateNeeds(citizen.Sanity, citizen.Happiness, citizen.FactionDuty);
             checkTimer = Random.Range(0, 1f);
             buildingChecks = Random.Range(0, buildingChecksPerMove + 1);
             checkBuildingTime += Random.Range(0, 0.15f);
@@ -67,9 +67,9 @@ namespace Base.Gameplay
                 modelObject.SetActive(false);
             }
 
-            citizen.CitizenNeeds.CalculateNeeds(citizen.Sanity, citizen.Health, citizen.FactionDuty);
+            citizen.CitizenNeeds.CalculateNeeds(citizen.Sanity, citizen.Happiness, citizen.FactionDuty);
             sanity = citizen.Sanity;
-            health = citizen.Health;
+            health = citizen.Happiness;
             duty = citizen.FactionDuty;
             DrainStats();
 
@@ -84,7 +84,7 @@ namespace Base.Gameplay
                         citizen.FactionDuty += 5;
                         break;
                     case BuildingType.Health:
-                        citizen.Health += 5;
+                        citizen.Happiness += 5;
                         break;
                     case BuildingType.Sanity:
                         citizen.Sanity += 5;
@@ -105,7 +105,7 @@ namespace Base.Gameplay
                         {
                             currentPath = pathfindingTestScript.FindPath(new Vector2(transform.position.x, transform.position.z), destination.gridPositions[0]);
                             StartCoroutine(MoveCitizen());
-                            print(destination.name);
+//                            print(destination.name);
                         }
                     }
                 }
@@ -138,9 +138,9 @@ namespace Base.Gameplay
             {
                 drainTimer = 0f;
 
-                if (citizen.Health > 0 && !isGainingHealth)
+                if (citizen.Happiness > 0 && !isGainingHealth)
                 {
-                    citizen.Health -= naturalHealthDrainPerSecond;
+                    citizen.Happiness -= naturalHealthDrainPerSecond;
                 }
 
                 if (citizen.FactionDuty > 0 && !isGainingDuty)
@@ -158,7 +158,7 @@ namespace Base.Gameplay
                 }
 
                 sanity = citizen.Sanity;
-                health = citizen.Health;
+                health = citizen.Happiness;
                 duty = citizen.FactionDuty;
             }
         }

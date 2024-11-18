@@ -22,56 +22,36 @@ namespace Base.Core.Managers
         // Method to add a commandment and update devotion actions
         public void AddCommandment(CommandmentType commandment)
         {
-            switch (commandment)
+            Dictionary<CommandmentType, MiracleType> commandmentMappings = new Dictionary<CommandmentType, MiracleType>
             {
-                // Red Commandments
-                case CommandmentType.Prayer:
-                case CommandmentType.ReadingScripture:
-                    DevotionActionsList[MiracleType.RedBasic]++;
-                    break;
-                case CommandmentType.CopyingText:
-                case CommandmentType.Research:
-                    DevotionActionsList[MiracleType.RedIntermediate]++;
-                    break;
-                case CommandmentType.Confessions:
-                case CommandmentType.Exorcism:
-                case CommandmentType.Alchemy:
-                    DevotionActionsList[MiracleType.RedSuperior]++;
-                    break;
+                { CommandmentType.Prayer, MiracleType.RedBasic },
+                { CommandmentType.ReadingScripture, MiracleType.RedBasic },
+                { CommandmentType.CopyingText, MiracleType.RedIntermediate },
+                { CommandmentType.Research, MiracleType.RedIntermediate },
+                { CommandmentType.Confessions, MiracleType.RedSuperior },
+                { CommandmentType.Exorcism, MiracleType.RedSuperior },
+                { CommandmentType.Alchemy, MiracleType.RedSuperior },
+                { CommandmentType.Feast, MiracleType.BlueBasic },
+                { CommandmentType.Creation, MiracleType.BlueBasic },
+                { CommandmentType.Dance, MiracleType.BlueIntermediate },
+                { CommandmentType.Song, MiracleType.BlueIntermediate },
+                { CommandmentType.RitualisticAction, MiracleType.BlueSuperior },
+                { CommandmentType.RitualisticPunishment, MiracleType.BlueSuperior },
+                { CommandmentType.MaterialOfferings, MiracleType.GreenBasic },
+                { CommandmentType.ReligiousCultivation, MiracleType.GreenBasic },
+                { CommandmentType.Relics, MiracleType.GreenIntermediate },
+                { CommandmentType.Shrines, MiracleType.GreenIntermediate },
+                { CommandmentType.GatheringBlood, MiracleType.GreenSuperior },
+                { CommandmentType.Donations, MiracleType.GreenSuperior },
+                { CommandmentType.RitualSacrifice, MiracleType.GreenSuperior },
+            };
 
-                // Blue Commandments
-                case CommandmentType.Feast:
-                case CommandmentType.Creation:
-                    DevotionActionsList[MiracleType.BlueBasic]++;
-                    break;
-                case CommandmentType.Dance:
-                case CommandmentType.Song:
-                    DevotionActionsList[MiracleType.BlueIntermediate]++;
-                    break;
-                case CommandmentType.RitualisticAction:
-                case CommandmentType.RitualisticPunishment:
-                    DevotionActionsList[MiracleType.BlueSuperior]++;
-                    break;
-
-                // Green Commandments
-                case CommandmentType.MaterialOfferings:
-                case CommandmentType.ReligiousCultivation:
-                    DevotionActionsList[MiracleType.GreenBasic]++;
-                    break;
-                case CommandmentType.Relics:
-                case CommandmentType.Shrines:
-                    DevotionActionsList[MiracleType.GreenIntermediate]++;
-                    break;
-                case CommandmentType.GatheringBlood:
-                case CommandmentType.Donations:
-                case CommandmentType.RitualSacrifice:
-                    DevotionActionsList[MiracleType.GreenSuperior]++;
-                    break;
-                
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(commandment), commandment, null);
+            if (!commandmentMappings.TryGetValue(commandment, out MiracleType miracleType))
+            {
+                throw new ArgumentOutOfRangeException(nameof(commandment), commandment, null);
             }
 
+            DevotionActionsList[miracleType]++;
             CommandmentsList[commandment] = true;
         }
         
@@ -147,35 +127,24 @@ namespace Base.Core.Managers
         // Method to perform a miracle on a target citizen
         public void DoMiracle(MiracleType type, Citizen targetCitizen)
         {
+            if (!DevotionActionsList.TryGetValue(type, out int devotionAmount))
+            {
+                throw new ArgumentOutOfRangeException(nameof(type), type, null);
+            }
+            
             switch (type)
             {
-                // Temporary calculations, attribute starts at 0, miracles do basic amount, commandments add variation.
                 case MiracleType.RedBasic:
-                    targetCitizen.Health += 1;
-                    break;
                 case MiracleType.RedIntermediate:
-                    targetCitizen.Health += 2;
-                    break;
                 case MiracleType.RedSuperior:
-                    targetCitizen.Health += 5;
-                    break;
-                case MiracleType.BlueBasic:
-                    targetCitizen.Sanity += 1;
-                    break;
-                case MiracleType.BlueIntermediate:
-                    targetCitizen.Sanity += 2;
-                    break;
-                case MiracleType.BlueSuperior:
-                    targetCitizen.Sanity += 5;
+                    targetCitizen.Happiness -= devotionAmount;
+                    targetCitizen.Sanity += devotionAmount;
                     break;
                 case MiracleType.GreenBasic:
-                    targetCitizen.Happiness += 1;
-                    break;
                 case MiracleType.GreenIntermediate:
-                    targetCitizen.Happiness += 2;
-                    break;
                 case MiracleType.GreenSuperior:
-                    targetCitizen.Happiness += 5;
+                    targetCitizen.Sanity -= devotionAmount;
+                    targetCitizen.Happiness += devotionAmount;
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(type), type, null);

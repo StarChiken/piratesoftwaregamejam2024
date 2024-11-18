@@ -14,13 +14,13 @@ namespace Base.Core.Managers
             {
                 // Temporary calculations, attribute starts at 0, miracles do basic amount, commandments add variation.
                 case MiracleType.RedBasic:
-                    targetCitizen.Health += 1;
+                    targetCitizen.Happiness += 1;
                     break;
                 case MiracleType.RedIntermediate:
-                    targetCitizen.Health += 2;
+                    targetCitizen.Happiness += 2;
                     break;
                 case MiracleType.RedSuperior:
-                    targetCitizen.Health += 5;
+                    targetCitizen.Happiness += 5;
                     break;
                 case MiracleType.BlueBasic:
                     targetCitizen.Sanity += 1;
@@ -32,13 +32,13 @@ namespace Base.Core.Managers
                     targetCitizen.Sanity += 5;
                     break;
                 case MiracleType.GreenBasic:
-                    targetCitizen.Happiness += 1;
+                    targetCitizen.Health += 1;
                     break;
                 case MiracleType.GreenIntermediate:
-                    targetCitizen.Happiness += 2;
+                    targetCitizen.Health += 2;
                     break;
                 case MiracleType.GreenSuperior:
-                    targetCitizen.Happiness += 5;
+                    targetCitizen.Health += 5;
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(_miracleType), _miracleType, null);

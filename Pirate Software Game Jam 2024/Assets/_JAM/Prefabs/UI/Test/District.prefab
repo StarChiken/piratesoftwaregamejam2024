@@ -1239,6 +1239,7 @@ MonoBehaviour:
       FactionAlignment: 0
       InFavor: 0
   panel: {fileID: 0}
+  text: {fileID: 0}
 --- !u!1 &2615979461958257746
 GameObject:
   m_ObjectHideFlags: 0

@@ -20,7 +20,7 @@ namespace Base.Gameplay
         private Gameplay gameplayManager;
         
         // Sound
-        private AudioComponent audioSource;
+        //private AudioComponent audioSource;
         [SerializeField] private AudioClip idleSound;
         [SerializeField] private AudioClip castSound;
         [SerializeField] private List<AudioClip> audioClips; // 0 is idle, 1 is cast
@@ -28,14 +28,14 @@ namespace Base.Gameplay
         private void Awake()
         {
             gameplayManager = GameObject.Find("Gameplay").GetComponent<Gameplay>();
-            audioSource = GameObject.Find("AudioManager").GetComponent<AudioComponent>();
+//            audioSource = GameObject.Find("AudioManager").GetComponent<AudioComponent>();
         }
 
         public void DoMiracle()
         {
             sectorPop = sector.sector.SectorPopulace;
             gameplayManager.DoMiracleOnCitizens(MiracleType, sectorPop);
-            audioSource.PlayFXSound(castSound);
+            //audioSource.PlayFXSound(castSound);
         }
         
         public void OnPointerEnter(PointerEventData eventData)

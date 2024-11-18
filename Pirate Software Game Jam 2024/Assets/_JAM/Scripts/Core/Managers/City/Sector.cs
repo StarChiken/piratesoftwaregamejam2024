@@ -21,7 +21,7 @@ namespace Base.Core.Managers
                 case SectorType.Park:
                     foreach (var citizen in SectorPopulace)
                     {
-                        citizen.Happiness += 1;
+                        citizen.Health += 1;
                     }
                     break;
                 // Get a bit of Resources

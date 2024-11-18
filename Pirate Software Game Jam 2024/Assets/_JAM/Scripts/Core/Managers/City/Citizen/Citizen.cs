@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
 namespace Base.Core.Managers
@@ -16,26 +17,37 @@ namespace Base.Core.Managers
         public Vector2 housePosition; //1 Grid Sqaure that Contains their house
         
         // Subsystem stats
-        public int Happiness;
-        public int Sanity;
         public int Health;
+        public int Sanity;
+        public int HealthThreshold;
+        public int Sanityhreshold;
+        
+        
+        
+        // TODO REFACTOR
+        public int Happiness;
         public int FactionDuty;
         public CitizenFaith CitizenFaith;
         public CitizenNeeds CitizenNeeds;
 
-        public void InitSanityHealthDuty()
+        public void InitializeCitizen()
         {
-// Initialize subsystems
+            // Initialize subsystems
             CitizenFaith = new CitizenFaith(this);
             CitizenNeeds = new CitizenNeeds();
-            CitizenNeeds.CalculateNeeds(Sanity,Health, FactionDuty); // Calculate needs based on initial sanity and health
+            CitizenNeeds.CalculateNeeds(Sanity,Happiness, FactionDuty); // Calculate needs based on initial sanity and health
 
             // Initialize properties
             PlayerGodAttraction = 0;
-            Sanity = Random.Range(45, 65);
-            Health = Random.Range(45, 65);
+        Health = 5;
+        Sanity = 5;
+        HealthThreshold = 5;
+        Sanityhreshold = 5;
+            
+            //Sanity = Random.Range(45, 65); OLD VALUES
+            //Happiness = Random.Range(45, 65); OLD VALUES
             FactionDuty = Random.Range(50, 90);
-            Happiness = CalculateHappinessAmount();
+            Health = CalculateHappinessAmount();
             CitizenName = GenerateName();
             FaithAttractionTrait = GenerateRandomTrait();
             CitizenFaction = GenerateRandomFaction();
@@ -44,8 +56,8 @@ namespace Base.Core.Managers
         // Calculate happiness based on health, sanity, and personality
         public int CalculateHappinessAmount()
         {
-            int personality = CitizenFaith.LookUpFaithTypeDictionaryWithTraitType(FaithAttractionTrait);
-            return (Health + Sanity) * personality;
+           // int personality = CitizenFaith.LookUpFaithTypeDictionaryWithTraitType(FaithAttractionTrait);
+           return (Happiness + Sanity);// * personality;
         }
 
         public void ChangeSanityAmount(int amount)
@@ -55,7 +67,7 @@ namespace Base.Core.Managers
 
         public void ChangeHealthAmount(int amount)
         {
-            Health += amount;
+            Happiness += amount;
         }
 
         public void ChangeAttractionAmount(int amount)
