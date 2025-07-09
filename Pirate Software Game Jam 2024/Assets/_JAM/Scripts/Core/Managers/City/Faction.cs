@@ -37,6 +37,8 @@ namespace Base.Core.Managers
     {
         public static void Execute(Faction faction, FactionAction action, IGameManager gameManager)
         {
+            if (gameManager?.Player == null) return;
+            
             switch (action)
             {
                 case FactionAction.GetResource:
@@ -46,16 +48,19 @@ namespace Base.Core.Managers
                     gameManager.Player.Resources += faction.FactionGiveAmount;
                     break;
                 case FactionAction.GetInfluence:
+                    if (gameManager.City?.Districts == null) return;
                     var list = gameManager.City.Districts;
                     var tempList = new List<Faction>();
                     foreach (var district in list)
                     {
-                        if (district.DistrictFaction.FactionName == faction.FactionName) continue;
+                        if (district.DistrictFaction?.FactionName == faction.FactionName) continue;
                         tempList.Add(district.DistrictFaction);
                     }
-                    int index = UnityEngine.Random.Range(0, tempList.Count);
-                    var selectedFaction = tempList[index];
-                    selectedFaction.InFavor = true;
+                    if (tempList.Count > 0)
+                    {
+                        var selectedFaction = RandomUtil.GetRandom(tempList);
+                        selectedFaction.InFavor = true;
+                    }
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();

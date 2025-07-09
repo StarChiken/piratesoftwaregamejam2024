@@ -16,7 +16,10 @@ namespace Base.Core.Managers
         public string TakeRandom()
         {
             if (_names.Count == 0)
-                throw new InvalidOperationException("No player names left to provide.");
+            {
+                // Return a fallback name instead of throwing an exception
+                return "Player" + UnityEngine.Random.Range(1000, 9999);
+            }
             int index = UnityEngine.Random.Range(0, _names.Count);
             string value = _names[index];
             _names.RemoveAt(index);

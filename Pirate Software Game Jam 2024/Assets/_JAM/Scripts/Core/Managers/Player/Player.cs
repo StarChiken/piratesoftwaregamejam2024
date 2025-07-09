@@ -10,7 +10,8 @@ namespace Base.Core.Managers
     public class Player : BaseManager
     {
         private readonly PlayerConfig _config;
-        private readonly PlayerNameProvider _nameProvider;
+        private readonly NameProvider<string> _nameProvider;
+        private readonly ICitizenFactory _citizenFactory;
 
         /// <summary>
         /// The player's character name.
@@ -34,14 +35,16 @@ namespace Base.Core.Managers
         /// Initializes a new player with starting followers and devotion using the provided configuration.
         /// </summary>
         /// <param name="config">Configuration for the player.</param>
+        /// <param name="citizenFactory">Factory for creating citizens.</param>
         /// <param name="onComplete">Callback when initialization is complete.</param>
-        public Player(PlayerConfig config, Action<BaseManager> onComplete) : base(onComplete)
+        public Player(PlayerConfig config, ICitizenFactory citizenFactory, Action<BaseManager> onComplete) : base(onComplete)
         {
             _config = config ?? throw new ArgumentNullException(nameof(config));
-            _nameProvider = new PlayerNameProvider(_config.PlayerNames);
+            _citizenFactory = citizenFactory ?? throw new ArgumentNullException(nameof(citizenFactory));
+            _nameProvider = new NameProvider<string>(_config.PlayerNames, () => "Player" + UnityEngine.Random.Range(1000, 9999));
             for (int i = 0; i < _config.StartingFollowerAmount; i++)
             {
-                Citizen follower = new Citizen();
+                Citizen follower = _citizenFactory.CreateCitizen();
                 follower.ChangeAttractionAmount(3);
                 _followerCount.Add(follower);
             }

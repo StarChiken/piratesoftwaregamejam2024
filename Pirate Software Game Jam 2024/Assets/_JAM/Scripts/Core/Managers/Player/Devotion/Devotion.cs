@@ -4,6 +4,46 @@ using System.Collections.Generic;
 namespace Base.Core.Managers
 {
     /// <summary>
+    /// Maps CommandmentType to MiracleType for devotion actions.
+    /// </summary>
+    public static class CommandmentMiracleMapper
+    {
+        private static readonly Dictionary<CommandmentType, MiracleType> _mapping = new()
+        {
+            // Red Commandments
+            { CommandmentType.Prayer, MiracleType.RedBasic },
+            { CommandmentType.ReadingScripture, MiracleType.RedBasic },
+            { CommandmentType.CopyingText, MiracleType.RedIntermediate },
+            { CommandmentType.Research, MiracleType.RedIntermediate },
+            { CommandmentType.Confessions, MiracleType.RedSuperior },
+            { CommandmentType.Exorcism, MiracleType.RedSuperior },
+            { CommandmentType.Alchemy, MiracleType.RedSuperior },
+            // Blue Commandments
+            { CommandmentType.Feast, MiracleType.BlueBasic },
+            { CommandmentType.Creation, MiracleType.BlueBasic },
+            { CommandmentType.Dance, MiracleType.BlueIntermediate },
+            { CommandmentType.Song, MiracleType.BlueIntermediate },
+            { CommandmentType.RitualisticAction, MiracleType.BlueSuperior },
+            { CommandmentType.RitualisticPunishment, MiracleType.BlueSuperior },
+            // Green Commandments
+            { CommandmentType.MaterialOfferings, MiracleType.GreenBasic },
+            { CommandmentType.ReligiousCultivation, MiracleType.GreenBasic },
+            { CommandmentType.Relics, MiracleType.GreenIntermediate },
+            { CommandmentType.Shrines, MiracleType.GreenIntermediate },
+            { CommandmentType.GatheringBlood, MiracleType.GreenSuperior },
+            { CommandmentType.Donations, MiracleType.GreenSuperior },
+            { CommandmentType.RitualSacrifice, MiracleType.GreenSuperior }
+        };
+
+        public static MiracleType GetMiracleType(CommandmentType commandment)
+        {
+            return _mapping.TryGetValue(commandment, out var miracleType) 
+                ? miracleType 
+                : throw new ArgumentException($"No miracle type mapped for commandment: {commandment}");
+        }
+    }
+
+    /// <summary>
     /// Manages devotion points, miracles, and commandments for a player.
     /// </summary>
     [Serializable]
@@ -46,53 +86,8 @@ namespace Base.Core.Managers
         /// </summary>
         public void AddCommandment(CommandmentType commandment)
         {
-            // (Switch logic unchanged, but could be moved to a CommandmentMapper if desired)
-            switch (commandment)
-            {
-                // Red Commandments
-                case CommandmentType.Prayer:
-                case CommandmentType.ReadingScripture:
-                    _devotionActionsList[MiracleType.RedBasic]++;
-                    break;
-                case CommandmentType.CopyingText:
-                case CommandmentType.Research:
-                    _devotionActionsList[MiracleType.RedIntermediate]++;
-                    break;
-                case CommandmentType.Confessions:
-                case CommandmentType.Exorcism:
-                case CommandmentType.Alchemy:
-                    _devotionActionsList[MiracleType.RedSuperior]++;
-                    break;
-                // Blue Commandments
-                case CommandmentType.Feast:
-                case CommandmentType.Creation:
-                    _devotionActionsList[MiracleType.BlueBasic]++;
-                    break;
-                case CommandmentType.Dance:
-                case CommandmentType.Song:
-                    _devotionActionsList[MiracleType.BlueIntermediate]++;
-                    break;
-                case CommandmentType.RitualisticAction:
-                case CommandmentType.RitualisticPunishment:
-                    _devotionActionsList[MiracleType.BlueSuperior]++;
-                    break;
-                // Green Commandments
-                case CommandmentType.MaterialOfferings:
-                case CommandmentType.ReligiousCultivation:
-                    _devotionActionsList[MiracleType.GreenBasic]++;
-                    break;
-                case CommandmentType.Relics:
-                case CommandmentType.Shrines:
-                    _devotionActionsList[MiracleType.GreenIntermediate]++;
-                    break;
-                case CommandmentType.GatheringBlood:
-                case CommandmentType.Donations:
-                case CommandmentType.RitualSacrifice:
-                    _devotionActionsList[MiracleType.GreenSuperior]++;
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(commandment), commandment, null);
-            }
+            var miracleType = CommandmentMiracleMapper.GetMiracleType(commandment);
+            _devotionActionsList[miracleType]++;
             _commandmentsList[commandment] = true;
         }
 
@@ -109,6 +104,8 @@ namespace Base.Core.Managers
         /// </summary>
         public void DoMiracle(MiracleType type, Citizen targetCitizen)
         {
+            if (targetCitizen == null) return;
+
             switch (type)
             {
                 case MiracleType.RedBasic:

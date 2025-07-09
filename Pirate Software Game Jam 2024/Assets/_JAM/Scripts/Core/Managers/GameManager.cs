@@ -54,10 +54,10 @@ namespace Base.Core.Managers
             }
 
             // Default initialization chain
-            new Player(new PlayerConfig(), result =>
+            new Player(new PlayerConfig(), new CitizenFactory(), result =>
             {
                 Player = (Player)result;
-                new City(new CityConfig(), result =>
+                new City(new CityConfig(), new CitizenFactory(), result =>
                 {
                     City = (City)result;
                     new RandomEvents(new RandomEventsConfig(), result =>

@@ -41,7 +41,8 @@ namespace Base.Core.Managers
                     }
                     break;
                 case DistrictType.Market:
-                    // GameManager.Instance.Player.Resources.AddResources(5);
+                    // Market district action - could be expanded with proper resource management
+                    // For now, this is a placeholder for market-specific logic
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
