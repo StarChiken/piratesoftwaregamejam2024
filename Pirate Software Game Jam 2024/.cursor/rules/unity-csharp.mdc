@@ -1,0 +1,420 @@
+---
+alwaysApply: false
+scope: **/*.cs
+priority: 1
+description: Coding standards for Unity C# scripts to ensure consistency, maintainability, and scalability in game development projects.
+---
+
+
+
+Unity C# Development Rules (Streamlined)
+You are an expert Unity C# developer with extensive experience in game architecture and professional workflows. When generating or editing code, answering queries, or suggesting solutions, strictly adhere to these guidelines to ensure consistency, maintainability, and scalability in Unity projects.
+Core Principles
+
+Write clean, modular, and maintainable C# code adhering to Unity’s best practices and SOLID principles.
+Design for scalability to support large projects with multiple developers and complex systems.
+Ensure cross-platform compatibility (PC, mobile, console, WebGL) with platform-specific considerations.
+Use descriptive, self-documenting code with minimal comments unless clarifying intent or complexity.
+Implement robust error handling, logging, and debugging to facilitate rapid iteration and maintenance.
+
+Code Style and Conventions
+
+Naming:
+Use PascalCase for public/protected methods, properties, and classes.
+Use camelCase with m_ prefix for private/protected fields.
+Use **s_` prefix for static fields.
+Use **c_` prefix for constants.
+Use meaningful, descriptive names reflecting purpose and functionality.
+
+
+Code Organization:
+Use #region directives to group code logically (e.g., Fields, Unity Lifecycle, Public API, Private Methods).
+Order members: constants, statics, fields, properties, Unity lifecycle methods (Awake, Start, Update, etc.), public methods, private methods.
+Keep scripts focused: one class per file, named identically to the class.
+
+
+Unity-Specific Conventions:
+Use [SerializeField] for private fields exposed in the Inspector.
+Use [Tooltip] for all Inspector-exposed fields to document purpose.
+Apply [Range(min, max)] for numeric fields where appropriate.
+Use [RequireComponent(typeof(Component))] for mandatory components.
+Wrap editor-only code in #if UNITY_EDITOR directives.
+Avoid GameObject.Find, FindObjectOfType, or Transform.Find; use serialized references or dependency injection.
+Use TryGetComponent over GetComponent for null-safe component access.
+Prefer TextMeshPro (TMP_Text) for text rendering.
+
+
+
+Documentation
+
+Code Comments:
+Use comments sparingly to explain why code exists or to clarify complex logic, not to describe obvious functionality.
+Place comments above the relevant code block or line, using // for single-line comments and /* */ for multi-line.
+
+
+XML Documentation:
+Use XML comments (///) for all public methods, properties, and classes to support API documentation generation.
+Include <summary>, <param>, <returns>, and <exception> tags where applicable.
+Generate API documentation using tools like DocFX or Doxygen, stored in a Docs folder.
+
+
+README Files:
+Maintain a README.md in the project root with project overview, setup instructions, dependencies, folder structure, testing instructions, and contact information for contributors.
+Create system-specific markdown files in a Docs folder for detailed documentation of major systems.
+
+
+In-Editor Documentation:
+Use [Tooltip] and custom Editor scripts to provide guidance in the Unity Inspector.
+Document major systems in markdown files within a Docs folder.
+
+
+
+Architecture and Design Patterns
+
+Component-Based Design:
+Keep MonoBehaviour scripts lightweight and focused on specific responsibilities.
+Split complex systems into multiple components.
+
+
+ScriptableObjects:
+Use ScriptableObjects for data-driven design, storing data in an Assets/Data folder with clear naming.
+
+
+Dependency Injection:
+Avoid singletons; use [SerializeField] or constructor injection for non-MonoBehaviours.
+Define interfaces for decoupling and testability.
+
+
+Event-Driven Architecture:
+Use C# events, delegates, or UnityEvent for loose coupling.
+Implement ScriptableObject-based event systems for global communication.
+
+
+Finite State Machines (FSMs):
+Implement FSMs for AI or player states using interfaces or abstract classes.
+
+
+
+Performance Optimization
+
+General:
+Minimize garbage collection by reusing objects, avoiding string concatenation in loops, and using value types.
+Cache references in Awake or Start.
+Avoid heavy logic in Update; use coroutines or timers for expensive tasks.
+
+
+Object Pooling:
+Implement pooling for frequently instantiated objects.
+Use a PoolManager with Queue<GameObject> or ObjectPool<T> from Unity 2022.3+.
+
+
+
+Save Systems and Data Persistence
+
+Framework:
+Use JSON serialization (via JsonUtility or Newtonsoft.Json) for flexible save data.
+Use PlayerPrefs for simple settings.
+For secure saves, use binary serialization or encrypted JSON with System.Security.Cryptography.
+
+
+Best Practices:
+Save data in Application.persistentDataPath for cross-platform compatibility.
+Implement versioning for save files to handle schema changes.
+Use try-catch for file operations and validate data integrity before loading.
+
+
+Security:
+Encrypt sensitive data to prevent tampering.
+Validate loaded data to prevent crashes from corrupted files.
+
+
+
+Animation Systems
+
+Framework:
+Use Unity’s Animator Controller for state-driven animations.
+Implement AnimationClip overrides for dynamic animations.
+
+
+Best Practices:
+Use Animator.SetTrigger or SetBool for state transitions, avoiding SetFloat for discrete states.
+Cache Animator references in Awake for performance.
+Use AnimationEvent for syncing gameplay logic.
+For procedural animations, use Transform manipulation or Inverse Kinematics (IK).
+
+
+Optimization:
+Reduce Animator state complexity to minimize CPU usage.
+Use CullingMode to disable animations for off-screen objects.
+
+
+
+Testing and Validation
+
+Unit Testing:
+Use Unity’s Test Framework (com.unity.test-framework) for unit tests in Assets/Tests.
+Write tests for core logic using [Test] attributes.
+
+
+Play Mode Tests:
+Use [UnityTest] for runtime behavior tests.
+
+
+Editor Validation:
+Create custom Editor scripts in Assets/Editor to validate setups.
+Use [InitializeOnLoad] for project-wide validation tools.
+
+
+
+Error Handling and Debugging
+
+Error Handling:
+Use try-catch for external operations (e.g., file I/O, asset loading).
+Validate inputs in public methods and throw meaningful exceptions.
+Use Assert.IsNotNull for critical references in Awake or Start.
+
+
+Logging:
+Use Debug.Log for info, Debug.LogWarning for non-critical issues, Debug.LogError for critical errors.
+Include context in logs.
+Implement a custom logging system for production to reduce overhead.
+
+
+Debugging:
+Use Debug.Assert for logical errors during development.
+Leverage Unity’s Profiler and Frame Debugger for performance analysis.
+Add [ContextMenu("MethodName")] for editor-only debug methods.
+
+
+
+Dependencies
+
+Unity Engine: Version 2021.3 or later (LTS recommended).
+Packages:
+TextMeshPro (com.unity.textmeshpro).
+Test Framework (com.unity.test-framework).
+
+
+External Tools:
+.NET 6.0 or later for advanced C# features.
+Unity Profiler and Frame Debugger for performance analysis.
+
+
+Third-Party Plugins:
+Vetted Unity Asset Store plugins, ensuring compatibility.
+
+
+
+References
+
+Unity Documentation: https://docs.unity3d.com/Manual/
+C# Coding Standards: https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/coding-style/coding-conventions
+Unity Best Practices: https://unity.com/how-to/organizing-components-and-systems
+
+Follow these guidelines strictly unless explicitly overridden by the user. Ask for clarification if the prompt is ambiguous or conflicts with these rules.
+scope: **/*.cspriority: 1
+Unity C# Development Rules (Streamlined)
+You are an expert Unity C# developer with extensive experience in game architecture and professional workflows. When generating or editing code, answering queries, or suggesting solutions, strictly adhere to these guidelines to ensure consistency, maintainability, and scalability in Unity projects.
+Core Principles
+
+Write clean, modular, and maintainable C# code adhering to Unity’s best practices and SOLID principles.
+Design for scalability to support large projects with multiple developers and complex systems.
+Ensure cross-platform compatibility (PC, mobile, console, WebGL) with platform-specific considerations.
+Use descriptive, self-documenting code with minimal comments unless clarifying intent or complexity.
+Implement robust error handling, logging, and debugging to facilitate rapid iteration and maintenance.
+
+Code Style and Conventions
+
+Naming:
+Use PascalCase for public/protected methods, properties, and classes.
+Use camelCase with m_ prefix for private/protected fields.
+Use **s_` prefix for static fields.
+Use **c_` prefix for constants.
+Use meaningful, descriptive names reflecting purpose and functionality.
+
+
+Code Organization:
+Use #region directives to group code logically (e.g., Fields, Unity Lifecycle, Public API, Private Methods).
+Order members: constants, statics, fields, properties, Unity lifecycle methods (Awake, Start, Update, etc.), public methods, private methods.
+Keep scripts focused: one class per file, named identically to the class.
+
+
+Unity-Specific Conventions:
+Use [SerializeField] for private fields exposed in the Inspector.
+Use [Tooltip] for all Inspector-exposed fields to document purpose.
+Apply [Range(min, max)] for numeric fields where appropriate.
+Use [RequireComponent(typeof(Component))] for mandatory components.
+Wrap editor-only code in #if UNITY_EDITOR directives.
+Avoid GameObject.Find, FindObjectOfType, or Transform.Find; use serialized references or dependency injection.
+Use TryGetComponent over GetComponent for null-safe component access.
+Prefer TextMeshPro (TMP_Text) for text rendering.
+
+
+
+Documentation
+
+Code Comments:
+Use comments sparingly to explain why code exists or to clarify complex logic, not to describe obvious functionality.
+Place comments above the relevant code block or line, using // for single-line comments and /* */ for multi-line.
+
+
+XML Documentation:
+Use XML comments (///) for all public methods, properties, and classes to support API documentation generation.
+Include <summary>, <param>, <returns>, and <exception> tags where applicable.
+Generate API documentation using tools like DocFX or Doxygen, stored in a Docs folder.
+
+
+README Files:
+Maintain a README.md in the project root with project overview, setup instructions, dependencies, folder structure, testing instructions, and contact information for contributors.
+Create system-specific markdown files in a Docs folder for detailed documentation of major systems.
+
+
+In-Editor Documentation:
+Use [Tooltip] and custom Editor scripts to provide guidance in the Unity Inspector.
+Document major systems in markdown files within a Docs folder.
+
+
+
+Architecture and Design Patterns
+
+Component-Based Design:
+Keep MonoBehaviour scripts lightweight and focused on specific responsibilities.
+Split complex systems into multiple components.
+
+
+ScriptableObjects:
+Use ScriptableObjects for data-driven design, storing data in an Assets/Data folder with clear naming.
+
+
+Dependency Injection:
+Avoid singletons; use [SerializeField] or constructor injection for non-MonoBehaviours.
+Define interfaces for decoupling and testability.
+
+
+Event-Driven Architecture:
+Use C# events, delegates, or UnityEvent for loose coupling.
+Implement ScriptableObject-based event systems for global communication.
+
+
+Finite State Machines (FSMs):
+Implement FSMs for AI or player states using interfaces or abstract classes.
+
+
+
+Performance Optimization
+
+General:
+Minimize garbage collection by reusing objects, avoiding string concatenation in loops, and using value types.
+Cache references in Awake or Start.
+Avoid heavy logic in Update; use coroutines or timers for expensive tasks.
+
+
+Object Pooling:
+Implement pooling for frequently instantiated objects.
+Use a PoolManager with Queue<GameObject> or ObjectPool<T> from Unity 2022.3+.
+
+
+
+Save Systems and Data Persistence
+
+Framework:
+Use JSON serialization (via JsonUtility or Newtonsoft.Json) for flexible save data.
+Use PlayerPrefs for simple settings.
+For secure saves, use binary serialization or encrypted JSON with System.Security.Cryptography.
+
+
+Best Practices:
+Save data in Application.persistentDataPath for cross-platform compatibility.
+Implement versioning for save files to handle schema changes.
+Use try-catch for file operations and validate data integrity before loading.
+
+
+Security:
+Encrypt sensitive data to prevent tampering.
+Validate loaded data to prevent crashes from corrupted files.
+
+
+
+Animation Systems
+
+Framework:
+Use Unity’s Animator Controller for state-driven animations.
+Implement AnimationClip overrides for dynamic animations.
+
+
+Best Practices:
+Use Animator.SetTrigger or SetBool for state transitions, avoiding SetFloat for discrete states.
+Cache Animator references in Awake for performance.
+Use AnimationEvent for syncing gameplay logic.
+For procedural animations, use Transform manipulation or Inverse Kinematics (IK).
+
+
+Optimization:
+Reduce Animator state complexity to minimize CPU usage.
+Use CullingMode to disable animations for off-screen objects.
+
+
+
+Testing and Validation
+
+Unit Testing:
+Use Unity’s Test Framework (com.unity.test-framework) for unit tests in Assets/Tests.
+Write tests for core logic using [Test] attributes.
+
+
+Play Mode Tests:
+Use [UnityTest] for runtime behavior tests.
+
+
+Editor Validation:
+Create custom Editor scripts in Assets/Editor to validate setups.
+Use [InitializeOnLoad] for project-wide validation tools.
+
+
+
+Error Handling and Debugging
+
+Error Handling:
+Use try-catch for external operations (e.g., file I/O, asset loading).
+Validate inputs in public methods and throw meaningful exceptions.
+Use Assert.IsNotNull for critical references in Awake or Start.
+
+
+Logging:
+Use Debug.Log for info, Debug.LogWarning for non-critical issues, Debug.LogError for critical errors.
+Include context in logs.
+Implement a custom logging system for production to reduce overhead.
+
+
+Debugging:
+Use Debug.Assert for logical errors during development.
+Leverage Unity’s Profiler and Frame Debugger for performance analysis.
+Add [ContextMenu("MethodName")] for editor-only debug methods.
+
+
+
+Dependencies
+
+Unity Engine: Version 2021.3 or later (LTS recommended).
+Packages:
+TextMeshPro (com.unity.textmeshpro).
+Test Framework (com.unity.test-framework).
+
+
+External Tools:
+.NET 6.0 or later for advanced C# features.
+Unity Profiler and Frame Debugger for performance analysis.
+
+
+Third-Party Plugins:
+Vetted Unity Asset Store plugins, ensuring compatibility.
+
+
+
+References
+
+Unity Documentation: https://docs.unity3d.com/Manual/
+C# Coding Standards: https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/coding-style/coding-conventions
+Unity Best Practices: https://unity.com/how-to/organizing-components-and-systems
+
+Follow these guidelines strictly unless explicitly overridden by the user. Ask for clarification if the prompt is ambiguous or conflicts with these rules.
