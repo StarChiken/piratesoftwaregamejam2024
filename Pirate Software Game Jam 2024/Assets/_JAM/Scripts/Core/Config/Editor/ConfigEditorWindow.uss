@@ -1,0 +1,109 @@
+.header {
+    padding: 10px;
+    background-color: #2d2d30;
+    border-bottom: 1px solid #3e3e42;
+}
+
+.header .title {
+    font-size: 18px;
+    font-weight: bold;
+    color: #ffffff;
+    margin-bottom: 5px;
+}
+
+.header .subtitle {
+    font-size: 12px;
+    color: #cccccc;
+}
+
+.toolbar {
+    flex-direction: row;
+    padding: 10px;
+    background-color: #1e1e1e;
+    border-bottom: 1px solid #3e3e42;
+    align-items: center;
+}
+
+.toolbar > * {
+    margin-right: 10px;
+}
+
+.config-list {
+    flex: 1;
+    margin: 10px;
+}
+
+.config-item {
+    padding: 10px;
+    margin: 5px 0;
+    background-color: #2d2d30;
+    border: 1px solid #3e3e42;
+    border-radius: 4px;
+}
+
+.config-header {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 5px;
+}
+
+.config-name {
+    font-weight: bold;
+    color: #ffffff;
+    font-size: 14px;
+}
+
+.config-type {
+    font-size: 11px;
+    color: #888888;
+    background-color: #1e1e1e;
+    padding: 2px 6px;
+    border-radius: 3px;
+}
+
+.config-path {
+    font-size: 10px;
+    color: #666666;
+    margin-bottom: 8px;
+}
+
+.config-actions {
+    flex-direction: row;
+    justify-content: flex-end;
+}
+
+.action-button {
+    margin-left: 5px;
+    padding: 4px 8px;
+    font-size: 11px;
+    background-color: #0078d4;
+    border: none;
+    border-radius: 3px;
+    color: white;
+}
+
+.action-button:hover {
+    background-color: #106ebe;
+}
+
+.footer {
+    flex-direction: row;
+    padding: 10px;
+    background-color: #1e1e1e;
+    border-top: 1px solid #3e3e42;
+    justify-content: space-between;
+}
+
+.footer Button {
+    padding: 8px 16px;
+    background-color: #0078d4;
+    border: none;
+    border-radius: 4px;
+    color: white;
+    font-size: 12px;
+}
+
+.footer Button:hover {
+    background-color: #106ebe;
+} 
