@@ -9,7 +9,12 @@ namespace Base.Gameplay
     /// <summary>
     /// Handles pathfinding logic for grid-based movement.
     /// </summary>
-    public class PathfindingTest : MonoBehaviour
+    public interface IPathfindingService
+    {
+        Vector2[] FindPath(Vector2 start, Vector2 end);
+    }
+
+    public class PathfindingTest : IPathfindingService
     {
         [SerializeField] private GenerationTest generationTestScript;
         private Vector2[] adjacentPositions = new Vector2[8];

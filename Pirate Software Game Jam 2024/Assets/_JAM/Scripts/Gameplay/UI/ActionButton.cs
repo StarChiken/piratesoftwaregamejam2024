@@ -11,21 +11,18 @@ namespace Base.Gameplay
     {
         [SerializeField] private FactionAction factionActions;
         [SerializeField] private DistrictScript district;
-        [SerializeField] private Gameplay gameplayManager;
 
-        private void Awake()
-        {
-            // Allow assignment via inspector, fallback to Find for legacy scenes
-            if (gameplayManager == null)
-                gameplayManager = GameObject.Find("Gameplay").GetComponent<Gameplay>();
-        }
+        /// <summary>
+        /// Event triggered when the action button is pressed.
+        /// </summary>
+        public event System.Action<FactionAction, Faction> OnActionTriggered;
 
         /// <summary>
         /// Triggers the faction action on the district's faction.
         /// </summary>
         public void DoAction()
         {
-            gameplayManager.DoFactionAction(factionActions, district.district.DistrictFaction);
+            OnActionTriggered?.Invoke(factionActions, district.district.DistrictFaction);
         }
     }
 }

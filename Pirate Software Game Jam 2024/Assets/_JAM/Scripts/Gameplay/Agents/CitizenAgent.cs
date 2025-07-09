@@ -51,6 +51,9 @@ namespace Base.Gameplay
 
         private Vector2[] currentPath;
 
+        private IGridManager gridManager;
+        private IPathfindingService pathfindingTest;
+
         /// <summary>
         /// Unity Start method. Initializes citizen needs and randomizes some parameters.
         /// </summary>
@@ -72,7 +75,7 @@ namespace Base.Gameplay
             if (destination == null)
             {
                 destination = GetNextDestination();
-                occupyingBuilding = generationTestScript.GridManager.GetBuildingAt(citizen.housePosition);
+                occupyingBuilding = gridManager.GetBuildingAt(citizen.housePosition);
                 modelObject.SetActive(false);
             }
 
@@ -114,7 +117,7 @@ namespace Base.Gameplay
                         if (destination != occupyingBuilding)
                         {
                             // Find a path to the new destination and start moving
-                            currentPath = pathfindingTestScript.FindPath(new Vector2(transform.position.x, transform.position.z), destination.gridPositions[0]);
+                            currentPath = pathfindingTest.FindPath(new Vector2(transform.position.x, transform.position.z), destination.gridPositions[0]);
                             StartCoroutine(MoveCitizen());
                             print(destination.name);
                         }
@@ -204,11 +207,11 @@ namespace Base.Gameplay
 
             if (buildingType == BuildingType.House)
             {
-                return generationTestScript.GridManager.GetBuildingAt(citizen.housePosition);
+                return gridManager.GetBuildingAt(citizen.housePosition);
             }
             else
             {
-                return generationTestScript.GetRandomBuildingByType(buildingType);
+                return gridManager.GetRandomBuildingByType(buildingType);
             }
         }
 
@@ -219,6 +222,12 @@ namespace Base.Gameplay
         public void SetHousePosition(Vector2 _housePos)
         {
             citizen.housePosition = _housePos;
+        }
+
+        public void Init(IGridManager gridManager, IPathfindingService pathfindingTest)
+        {
+            this.gridManager = gridManager;
+            this.pathfindingTest = pathfindingTest;
         }
     }
 }

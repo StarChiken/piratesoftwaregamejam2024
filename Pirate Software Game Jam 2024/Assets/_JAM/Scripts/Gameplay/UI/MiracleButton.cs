@@ -13,14 +13,11 @@ namespace Base.Gameplay
         [SerializeField] private MiracleType miracleType;
         [SerializeField] private DistrictScript district;
         private List<Citizen> districtPop = new();
-        [SerializeField] private Gameplay gameplayManager;
 
-        private void Awake()
-        {
-            // Allow assignment via inspector, fallback to Find for legacy scenes
-            if (gameplayManager == null)
-                gameplayManager = GameObject.Find("Gameplay").GetComponent<Gameplay>();
-        }
+        /// <summary>
+        /// Event triggered when the miracle button is pressed.
+        /// </summary>
+        public event System.Action<MiracleType, List<Citizen>> OnMiracleTriggered;
 
         /// <summary>
         /// Triggers the miracle on the district's citizens.
@@ -28,7 +25,7 @@ namespace Base.Gameplay
         public void DoMiracle()
         {
             districtPop = district.district.DistrictPopulace;
-            gameplayManager.DoMiracleOnCitizens(miracleType, districtPop);
+            OnMiracleTriggered?.Invoke(miracleType, districtPop);
         }
     }
 }

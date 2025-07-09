@@ -67,7 +67,7 @@ namespace Base.Gameplay
         {
             pathfindingScript = GetComponent<PathfindingTest>();
             gridManager = new GridManager();
-            citizenSpawner = new CitizenSpawner(citizenPrefab);
+            citizenSpawner = new CitizenSpawner(citizenPrefab, gridManager, pathfindingScript);
             buildings[0] = building1x1;
             buildings[1] = building2x1;
             buildings[2] = buildingL;
@@ -175,7 +175,7 @@ namespace Base.Gameplay
                             Vector3 buildingPosition = childObjects[i].transform.position;
                             if (buildingsSpawned < houses)
                             {
-                                citizenSpawner.SpawnCitizen(buildingPosition, building, this, pathfindingScript);
+                                citizenSpawner.SpawnCitizen(buildingPosition, building);
                             }
                         }
                     }

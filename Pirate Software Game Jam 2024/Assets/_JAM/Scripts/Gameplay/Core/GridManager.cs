@@ -1,87 +1,79 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using Base.Core.Managers;
 
 namespace Base.Gameplay
 {
     /// <summary>
     /// Manages the city grid, building placement, and lookup operations.
     /// </summary>
-    public class GridManager
+    public interface IGridManager
+    {
+        Building GetBuildingAt(Vector2 position);
+        Building GetRandomBuildingByType(BuildingType type);
+    }
+
+    public class GridManager : IGridManager
     {
         // Internal dictionary mapping grid positions to buildings
         private readonly Dictionary<Vector2, Building> _buildingGrid = new();
 
         /// <summary>
-        /// Adds a building to the grid at the specified positions.
+        /// Adds a building to the grid at its specified positions.
         /// </summary>
         /// <param name="building">The building to add.</param>
         public void AddBuilding(Building building)
         {
-            foreach (var pos in building.gridPositions)
+            foreach (var position in building.gridPositions)
             {
-                _buildingGrid[pos] = building;
+                _buildingGrid[position] = building;
             }
         }
 
         /// <summary>
-        /// Removes a building from the grid at the specified positions.
+        /// Gets the building at the specified grid position.
         /// </summary>
-        /// <param name="building">The building to remove.</param>
-        public void RemoveBuilding(Building building)
-        {
-            foreach (var pos in building.gridPositions)
-            {
-                _buildingGrid.Remove(pos);
-            }
-        }
-
-        /// <summary>
-        /// Gets a building at a specific grid position.
-        /// </summary>
-        /// <param name="position">The grid position to query.</param>
+        /// <param name="position">The grid position to check.</param>
         /// <returns>The building at the position, or null if none exists.</returns>
         public Building GetBuildingAt(Vector2 position)
         {
-            _buildingGrid.TryGetValue(position, out var building);
+            _buildingGrid.TryGetValue(position, out Building building);
             return building;
         }
 
         /// <summary>
         /// Gets all buildings of a specific type.
         /// </summary>
-        /// <param name="type">The type of building to retrieve.</param>
+        /// <param name="type">The type of buildings to retrieve.</param>
         /// <returns>A list of buildings of the specified type.</returns>
         public List<Building> GetBuildingsByType(BuildingType type)
         {
             var result = new List<Building>();
             var seen = new HashSet<Building>();
+
             foreach (var building in _buildingGrid.Values)
             {
-                if (building.buildingType == type && seen.Add(building))
+                if (building.buildingType == type && !seen.Contains(building))
                 {
                     result.Add(building);
+                    seen.Add(building);
                 }
             }
+
             return result;
         }
 
         /// <summary>
-        /// Gets a random building of a specific type.
+        /// Returns a random building of the specified type using the GridManager.
         /// </summary>
-        /// <param name="type">The type of building to retrieve.</param>
-        /// <returns>A random building of the specified type, or null if none exist.</returns>
+        /// <param name="buildingType">The type of building to retrieve.</param>
+        /// <returns>A random Building of the specified type, or null if none exist.</returns>
         public Building GetRandomBuildingByType(BuildingType type)
         {
             var buildings = GetBuildingsByType(type);
             if (buildings.Count == 0) return null;
-            return buildings[UnityEngine.Random.Range(0, buildings.Count)];
+            return RandomUtil.GetRandom(buildings);
         }
-
-        /// <summary>
-        /// Returns all grid positions currently in use.
-        /// </summary>
-        /// <returns>An enumerable of all grid positions.</returns>
-        public IEnumerable<Vector2> GetAllPositions() => _buildingGrid.Keys;
     }
 } 
