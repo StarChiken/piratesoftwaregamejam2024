@@ -1,42 +1,54 @@
 ﻿using System;
 using UnityEngine;
+using System.Collections.Generic;
 
 namespace Base.Core.Managers
 {
+    /// <summary>
+    /// Configuration for random events, including thresholds and messages.
+    /// </summary>
+    [Serializable]
+    public class RandomEventsConfig
+    {
+        public int HappinessThreshold = 10;
+        public Dictionary<GameEventType, string> EventMessages = new()
+        {
+            { GameEventType.GiveDevotionPoints, "The People Are Weirded Out By Our Practices. But Our Lord Is Merciful. He Bestowed us With More Power!" },
+            { GameEventType.GiveHappiness, "A Random Happiness Event Occurred!" }
+        };
+    }
+
+    /// <summary>
+    /// Manages random game events and their execution.
+    /// </summary>
     public class RandomEvents : BaseManager
     {
-        private GameEventType Events;
-        private int happinessThreshold;
+        private readonly RandomEventsConfig _config;
+        private GameEventType _currentEvent;
         
-        public RandomEvents(Action<BaseManager> onComplete) : base(onComplete)
+        public RandomEvents(RandomEventsConfig config, Action<BaseManager> onComplete) : base(onComplete)
         {
+            _config = config ?? throw new ArgumentNullException(nameof(config));
             OnInitComplete();
         }
         
         public string DoEventGiveDevotionPoints()
         {
             GameManager.Player.Devotion.ChangeDevotionAmount(5);
-            return "The People Are Weirded Out By Our Practices. But Our Lord Is Merciful. He Bestowed us With More Power!";
+            return _config.EventMessages[GameEventType.GiveDevotionPoints];
         }
 
         public bool CheckEvents()
         {
-            switch (Events)
+            switch (_currentEvent)
             {
-                case GameEventType.GiveHappiness: // check with an Event MonoBhaviour component, if to initiate the happiness event
-                    
-                    Debug.Log($"<color=red>A Random Event Happened!</color>");
-                    
+                case GameEventType.GiveHappiness:
+                    Debug.Log("<color=red>A Random Event Happened!</color>");
                     return CheckHappinessEvent();
-                
-                case GameEventType.GiveDevotionPoints: // silly example how you can still do something by type without returning the bool
-                    
-                    Debug.Log($"<color=red>A Random Event Happened!</color>");
-                    
+                case GameEventType.GiveDevotionPoints:
+                    Debug.Log("<color=red>A Random Event Happened!</color>");
                     DoEventGiveDevotionPoints();
-                    
                     return true;
-                
                 default:
                     throw new ArgumentOutOfRangeException();
             }
@@ -45,33 +57,26 @@ namespace Base.Core.Managers
         private bool CheckHappinessEvent()
         {
             int totalHappiness = CalculateTotalHappiness();
-            
-            if (totalHappiness <= happinessThreshold)
+            if (totalHappiness <= _config.HappinessThreshold)
             {
                 // Trigger a give happiness event
                 return true;
             }
-
             return false;
         }
 
         private int CalculateTotalHappiness()
         {
             int totalHappiness = 0;
-
-            var sectors = GameManager.City.Sectors;
-
-            foreach (var sector in sectors)
+            var districts = GameManager.City.Districts;
+            foreach (var district in districts)
             {
-                var sectorPop = sector.SectorPopulace;
-                
-                foreach (Citizen citizen in sectorPop)
+                var districtPop = district.DistrictPopulace;
+                foreach (Citizen citizen in districtPop)
                 {
                     totalHappiness += citizen.Happiness;
                 }
             }
-
-
             return totalHappiness;
         }
     }

@@ -37,27 +37,32 @@ namespace Base.Gameplay
                 player = GameManager.Player;
                 city = GameManager.City;
 
-                InitializeSectorObjects();
+                InitializeDistrictObjects();
             });
         }
 
-        private void InitializeSectorObjects()
+        private void InitializeDistrictObjects()
         {
-            SectorScript[] sectorScriptList = FindObjectsByType<SectorScript>(FindObjectsSortMode.None);
+            DistrictScript[] districtScriptList = FindObjectsByType<DistrictScript>(FindObjectsSortMode.None);
             
-            for (int i = 0; i < sectorScriptList.Length; i++)
+            for (int i = 0; i < districtScriptList.Length; i++)
             {
-                // Access the corresponding sector using the loop index
-                Sector sector = city.Sectors[i];
-                SectorScript sectorScript = sectorScriptList[i];
+                // Access the corresponding district using the loop index
+                District district = city.Districts[i];
+                DistrictScript districtScript = districtScriptList[i];
 
-                // Assign the sector name to the SectorScript
-                sectorScript.sector = sector;
-                sectorScript.name.text = $"{sectorScript.sector.SectorName}";
+                // Assign the district name to the DistrictScript
+                districtScript.district = district;
+                districtScript.nameText.text = $"{districtScript.district.DistrictName}";
             }
         }
 
 
+        /// <summary>
+        /// Casts a miracle on a list of citizens, increasing their faith attraction and devotion points.
+        /// </summary>
+        /// <param name="miracleType">The type of miracle to cast.</param>
+        /// <param name="targetCitizens">The list of citizens to cast the miracle on.</param>
         public void DoMiracleOnCitizens(MiracleType miracleType, List<Citizen> targetCitizens)
         {
             int devotionPoints = GameManager.Player.Devotion.DevotionPoints;
@@ -72,8 +77,8 @@ namespace Base.Gameplay
                 {
                     GameManager.Player.Devotion.DoMiracle(miracleType, citizen);
                     
-                    // Match Miracle Type to Trait Type and Change Attraction
-                    if (IsTraitMatchingMiracle(citizen.FaithAttractionTrait, miracleType))
+                    // Use shared trait-miracle matcher
+                    if (TraitMiracleMatcher.IsTraitMatchingMiracle(citizen.FaithAttractionTrait, miracleType))
                     {
                         int attractionAmount = GameManager.Player.Devotion.MiracleFaithAttractionByType(miracleType);
                         citizen.ChangeAttractionAmount(attractionAmount);
@@ -89,87 +94,35 @@ namespace Base.Gameplay
             }
         }
 
+        /// <summary>
+        /// Performs a faction action if the faction alignment is sufficient.
+        /// </summary>
+        /// <param name="factionAction">The action to perform.</param>
+        /// <param name="faction">The target faction.</param>
         public void DoFactionAction(FactionAction factionAction, Faction faction)
         {
-            switch (factionAction)
+            int requiredAlignment = factionAction switch
             {
-                case FactionAction.GetResource:
-                    if (faction.FactionAlignment >= 10)
-                    {
-                        faction.DoAction(factionAction);
+                FactionAction.GetResource => 10,
+                FactionAction.GetFavor => 11,
+                FactionAction.GetInfluence => 50,
+                _ => throw new ArgumentOutOfRangeException()
+            };
 
-                    }
-                    else
-                    {
-                        Debug.Log($"A <color=red>{factionAction}</color> was NOT preformed! " +
-                                  $"FactionAlignment is bellow 10");
-                    }
-                    break;
-                
-                case FactionAction.GetFavor:
-                    if (faction.FactionAlignment >= 11)
-                    {
-                        faction.DoAction(factionAction);
-
-                    }
-                    else
-                    {
-                        Debug.Log($"A <color=red>{factionAction}</color> was NOT preformed! " +
-                                  $"FactionAlignment is bellow 10");
-                    }
-                    break;
-                
-                case FactionAction.GetInfluence:
-                    if (faction.FactionAlignment >= 50)
-                    {
-                        faction.DoAction(factionAction);
-
-                    }
-                    else
-                    {
-                        Debug.Log($"A <color=red>{factionAction}</color> was NOT preformed! " +
-                                  $"FactionAlignment is bellow 50");
-                    }
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
+            if (faction.FactionAlignment >= requiredAlignment)
+            {
+                faction.DoAction(factionAction);
             }
-        }
-        private bool IsTraitMatchingMiracle(TraitType citizenTrait, MiracleType miracleType)
-        {
-            switch (citizenTrait)
+            else
             {
-                case TraitType.Academic:
-                case TraitType.Apologist:
-                case TraitType.Spiritual:
-                    return miracleType is MiracleType.RedBasic or MiracleType.RedIntermediate or MiracleType.RedSuperior;
-                case TraitType.Collector:
-                case TraitType.Witch:
-                    return miracleType is MiracleType.RedBasic or MiracleType.RedIntermediate or MiracleType.RedSuperior 
-                        or MiracleType.GreenBasic or MiracleType.GreenIntermediate or MiracleType.GreenSuperior;
-                case TraitType.Poet:
-                case TraitType.Scheduled:
-                    return miracleType is MiracleType.RedBasic or MiracleType.RedIntermediate or MiracleType.RedSuperior or MiracleType.BlueBasic;
-                case TraitType.Performer:
-                case TraitType.Naturalist:
-                case TraitType.Soldier:
-                    return miracleType is MiracleType.BlueBasic or MiracleType.BlueIntermediate or MiracleType.BlueSuperior;
-                case TraitType.Aesthetic:
-                case TraitType.Masochist:
-                    return miracleType is MiracleType.GreenBasic or MiracleType.GreenIntermediate or MiracleType.GreenSuperior
-                        or MiracleType.BlueBasic or MiracleType.BlueIntermediate or MiracleType.BlueSuperior;
-                case TraitType.Fanatic:
-                case TraitType.Noble:
-                case TraitType.Farmer:
-                    return miracleType is MiracleType.GreenBasic or MiracleType.GreenIntermediate or MiracleType.GreenSuperior;
-                default:
-                    throw new ArgumentOutOfRangeException();
+                Debug.Log($"A <color=red>{factionAction}</color> was NOT preformed! " +
+                          $"FactionAlignment is below {requiredAlignment}");
             }
         }
         
         private void CalculateBonusDevotionPoints()
         {
-            List<Citizen> followerCount = GameManager.Player.FollowerCount;
+            var followerCount = GameManager.Player.FollowerCount;
             
             if (followerCount.Count == 0)
             {
@@ -205,16 +158,16 @@ namespace Base.Gameplay
         
         private void CalculateFaithAttractionForCity()
         {
-            var sectors = GameManager.City.Sectors;
+            var districts = GameManager.City.Districts;
 
-            foreach (var sector in sectors)
+            foreach (var district in districts)
             {
-                var sectorPop = sector.SectorPopulace;
+                var districtPop = district.DistrictPopulace;
                 
                 // calculate faith attraction for all citizens
-                foreach (Citizen citizen in sectorPop)
+                foreach (Citizen citizen in districtPop)
                 {
-                    CheckIfCitizensCanBecomeFollowers(citizen, GameManager.Player.FollowerCount);
+                    CheckIfCitizensCanBecomeFollowers(citizen, (List<Citizen>)GameManager.Player.FollowerCount);
                 }
             
                 Debug.Log("<color=red>Calculated faith attraction to all citizens!</color>");
@@ -287,7 +240,7 @@ namespace Base.Gameplay
                     devotionPointsText.text = GameManager.Player.Devotion.DevotionPoints.ToString();
                     myGameStateText.text = "Start Game Phase, Choose First Commandment";
 
-                    commandmentPanel.GetComponent<EventsPanel>().OpenPanel(panelType.ChooseCommandment);
+                    commandmentPanel.GetComponent<EventsPanel>().OpenPanel(PanelType.ChooseCommandment);
                     
                     // wait for GameManager.Player input
                     // Choose First Commandment
@@ -295,7 +248,7 @@ namespace Base.Gameplay
                 
                 case GameState.PlayerTurnPhase:
                     devotionPointsText.text = GameManager.Player.Devotion.DevotionPoints.ToString();
-                    myGameStateText.text = "Player Phase, Choose A Miracle To Be Cast On Random City Sector";
+                    myGameStateText.text = "Player Phase, Choose A Miracle To Be Cast On Random City District";
                     
                     commandmentPanel.SetActive(false);
                     

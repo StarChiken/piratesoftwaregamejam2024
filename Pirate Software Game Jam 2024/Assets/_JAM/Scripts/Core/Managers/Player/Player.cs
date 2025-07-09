@@ -1,45 +1,55 @@
 ﻿using System;
 using System.Collections.Generic;
-using UnityEngine.Serialization;
 
 namespace Base.Core.Managers
 {
+    /// <summary>
+    /// Manages player data, followers, devotion, and resources.
+    /// </summary>
     [Serializable]
     public class Player : BaseManager
     {
-        // Player Data
-        public string CharacterName;
-        
-        // Player Followers Data
-        public List<Citizen> FollowerCount = new();
-        private int _startingFollowerAmount = 2;
-        
-        // Player Curses & Miracles system
-        public Devotion Devotion;
-        private int _startingDevotionAmount = 2;
-        
-        // Player Factions System
-        public int Resources;
-        
-        public Player(Action<BaseManager> onComplete) : base(onComplete)
+        private readonly PlayerConfig _config;
+        private readonly PlayerNameProvider _nameProvider;
+
+        /// <summary>
+        /// The player's character name.
+        /// </summary>
+        public string CharacterName { get; private set; }
+        /// <summary>
+        /// The list of followers for the player.
+        /// </summary>
+        public IReadOnlyList<Citizen> FollowerCount => _followerCount;
+        private readonly List<Citizen> _followerCount = new();
+        /// <summary>
+        /// The player's devotion system.
+        /// </summary>
+        public Devotion Devotion { get; private set; }
+        /// <summary>
+        /// The player's resources.
+        /// </summary>
+        public int Resources { get; set; }
+
+        /// <summary>
+        /// Initializes a new player with starting followers and devotion using the provided configuration.
+        /// </summary>
+        /// <param name="config">Configuration for the player.</param>
+        /// <param name="onComplete">Callback when initialization is complete.</param>
+        public Player(PlayerConfig config, Action<BaseManager> onComplete) : base(onComplete)
         {
-            for (int i = 0; i < _startingFollowerAmount; i++)
+            _config = config ?? throw new ArgumentNullException(nameof(config));
+            _nameProvider = new PlayerNameProvider(_config.PlayerNames);
+            for (int i = 0; i < _config.StartingFollowerAmount; i++)
             {
                 Citizen follower = new Citizen();
                 follower.ChangeAttractionAmount(3);
-                FollowerCount.Add(follower);
+                _followerCount.Add(follower);
             }
-            
-            Devotion = new(_startingDevotionAmount);
-            CharacterName = GenerateName();
+            Devotion = new Devotion(new DevotionConfig {
+                StartingDevotionPoints = _config.StartingDevotionAmount
+            });
+            CharacterName = _nameProvider.TakeRandom();
             OnInitComplete();
-        }
-        
-        private string GenerateName()
-        {
-            string[] names = { "John", "Jane", "Alex", "Emily", "Michael", "Olivia", "David", "Sophia" };
-            int index = UnityEngine.Random.Range(0, names.Length);
-            return names[index];
         }
     }
 }

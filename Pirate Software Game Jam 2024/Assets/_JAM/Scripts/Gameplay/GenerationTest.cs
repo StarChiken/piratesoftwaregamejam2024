@@ -5,54 +5,76 @@ using UnityEngine;
 using Random = UnityEngine.Random;
 using Base.Core.Managers;
 using UnityEngine.InputSystem;
+using Base.Gameplay;
 
 namespace Base.Gameplay
 {
+    /// <summary>
+    /// Handles procedural generation of buildings and citizens for the city grid.
+    /// </summary>
     public class GenerationTest : MyMonoBehaviour
     {
-        [Header("Grid Settings")] public int gridX;
+        [Header("Grid Settings")]
+        /// <summary>Number of grid cells in the X direction.</summary>
+        public int gridX;
+        /// <summary>Number of grid cells in the Z direction.</summary>
         public int gridZ;
+        /// <summary>Spacing between grid cells.</summary>
         public int gridSpacing;
 
+        /// <summary>Minimum number of starting houses.</summary>
         public int minStartingHouses;
+        /// <summary>Maximum number of starting houses.</summary>
         public int maxStartingHouses;
 
-        [Header("Building Color By Type")] public Color houseColor;
+        [Header("Building Color By Type")]
+        /// <summary>Color for house buildings.</summary>
+        public Color houseColor;
+        /// <summary>Material for house buildings.</summary>
         public Material houseMaterial;
+        /// <summary>Material for faction duty buildings.</summary>
         public Material factionDutyMaterial;
+        /// <summary>Material for sanity buildings.</summary>
         public Material sanityMaterial;
+        /// <summary>Material for health buildings.</summary>
         public Material healthMaterial;
 
-        [Header("Prefab Assignemnt")]
+        [Header("Prefab Assignment")]
+        /// <summary>Prefab for 1x1 building.</summary>
         public GameObject building1x1;
+        /// <summary>Prefab for 2x2 building.</summary>
         public GameObject building2x2;
+        /// <summary>Prefab for 2x1 building.</summary>
         public GameObject building2x1;
+        /// <summary>Prefab for L-shaped building.</summary>
         public GameObject buildingL;
+        /// <summary>Prefab for citizen agent.</summary>
         public GameObject citizenPrefab;
 
         private bool canSpawnTemple = true;
-
         private GameObject[] buildings = new GameObject[3];
-
         private Material[] buildingMaterials = new Material[4];
-
-        public Dictionary<Vector2, Building> buildingGrid = new();
-
+        private GridManager gridManager;
+        private CitizenSpawner citizenSpawner;
         private PathfindingTest pathfindingScript;
 
+        public GridManager GridManager => gridManager;
+
+        /// <summary>
+        /// Unity Start method. Initializes grid, managers, and generates the city grid.
+        /// </summary>
         void Start()
         {
             pathfindingScript = GetComponent<PathfindingTest>();
-
+            gridManager = new GridManager();
+            citizenSpawner = new CitizenSpawner(citizenPrefab);
             buildings[0] = building1x1;
             buildings[1] = building2x1;
             buildings[2] = buildingL;
-
             buildingMaterials[0] = houseMaterial;
             buildingMaterials[1] = factionDutyMaterial;
             buildingMaterials[2] = sanityMaterial;
             buildingMaterials[3] = healthMaterial;
-
             GenerateGrid(Random.Range(minStartingHouses, maxStartingHouses + 1));
         }
 
@@ -114,6 +136,10 @@ namespace Base.Gameplay
             }*/
         }
 
+        /// <summary>
+        /// Generates the city grid and populates it with buildings and citizens.
+        /// </summary>
+        /// <param name="houses">Number of houses to spawn.</param>
         private void GenerateGrid(int houses)
         {
             int buildingsSpawned = 0;
@@ -122,28 +148,14 @@ namespace Base.Gameplay
                 for (int z = 0; z < gridZ; z++)
                 {
                     Vector3 position = new Vector3(x + 0.5f, 0, z + 0.5f);
-
-                    //Randomly picks a building prefab to spawn from the buildings array
+                    // Randomly pick a building prefab to spawn
                     int randomBuildingIndex = Random.Range(0, 3);
                     GameObject buildingObject = Instantiate(buildings[randomBuildingIndex], position, Quaternion.Euler(90, Random.Range(1, 4) * 90, 0));
-
-                    int buildingTypeIndex;
-
-                    if (buildingsSpawned < houses)
-                    {
-                        buildingTypeIndex = 0;
-                    }
-                    else
-                    {
-                        buildingTypeIndex = Random.Range(1, 4);
-                    }
-
+                    int buildingTypeIndex = (buildingsSpawned < houses) ? 0 : Random.Range(1, 4);
                     buildingObject.GetComponent<BuildingObject>().SetRoofMaterial(buildingMaterials[buildingTypeIndex]);
-
                     Transform[] childObjects = buildingObject.GetComponentsInChildren<Transform>();
-
                     List<Vector2> buildingChildrenPositions = new();
-
+                    // Collect all grid tile positions for this building
                     for (int i = 0; i < childObjects.Length; i++)
                     {
                         if (childObjects[i].tag == "Grid Tile")
@@ -152,147 +164,37 @@ namespace Base.Gameplay
                             buildingChildrenPositions.Add(new Vector2(buildingPosition.x, buildingPosition.z));
                         }
                     }
-
-                    Building building = new Building($"Grid {x} {z} {(BuildingType)buildingTypeIndex}", buildingChildrenPositions.ToArray(), (BuildingSize)randomBuildingIndex, buildingObject, (BuildingType)buildingTypeIndex);
-
+                    // Create and register the building
+                    Building building = BuildingFactory.CreateBuilding($"Grid {x} {z} {(BuildingType)buildingTypeIndex}", buildingChildrenPositions.ToArray(), (BuildingSize)randomBuildingIndex, buildingObject, (BuildingType)buildingTypeIndex);
+                    gridManager.AddBuilding(building);
+                    // Spawn citizens for house buildings
                     for (int i = 0; i < childObjects.Length; i++)
                     {
                         if (childObjects[i].tag == "Grid Tile")
                         {
                             Vector3 buildingPosition = childObjects[i].transform.position;
-                            buildingGrid.Add(new Vector2(buildingPosition.x, buildingPosition.z), building);
-
                             if (buildingsSpawned < houses)
                             {
-                                CitizenAgent citizenAgent = Instantiate(citizenPrefab, buildingPosition, Quaternion.identity).GetComponent<CitizenAgent>();
-                                citizenAgent.generationTestScript = this;
-                                citizenAgent.pathfindingTestScript = pathfindingScript;
-                                citizenAgent.citizen = new Citizen();
-                                citizenAgent.citizen.housePosition = new Vector2(buildingPosition.x, buildingPosition.z);
+                                citizenSpawner.SpawnCitizen(buildingPosition, building, this, pathfindingScript);
                             }
                         }
                     }
-
                     buildingObject.name = $"Grid {x} {z} {(BuildingType)buildingTypeIndex}";
-
                     z += gridSpacing;
                     buildingsSpawned++;
                 }
-
                 x += gridSpacing;
             }
         }
 
+        /// <summary>
+        /// Returns a random building of the specified type using the GridManager.
+        /// </summary>
+        /// <param name="buildingType">The type of building to retrieve.</param>
+        /// <returns>A random Building of the specified type, or null if none exist.</returns>
         public Building GetRandomBuildingByType(BuildingType buildingType)
         {
-            List<Vector2> buildingPositions = new();
-            foreach (Vector2 gridPos in buildingGrid.Keys)
-            {
-                if (buildingGrid[gridPos].buildingType == buildingType)
-                {
-                    buildingPositions.Add(gridPos);
-                }
-            }
-            return buildingGrid[buildingPositions[Random.Range(0, buildingPositions.Count)]];
+            return gridManager.GetRandomBuildingByType(buildingType);
         }
-    }
-
-    [Serializable]
-    public class Building
-    {
-        // Etho
-        public string name;
-        public Vector2[] gridPositions;
-        public BuildingSize buildingSize;
-        public GameObject buildingObject;
-        public Mesh buildingMesh;
-
-        // Shy
-        public BuildingType buildingType;
-        public ActionOptions buildingActionOptions;
-        public List<Citizen> tempListForDoAction = new();
-
-        public Building(string _name, Vector2[] _gridPositions, BuildingSize _buildingSize,
-            GameObject _buildingObject, BuildingType buildingType)
-        {
-            name = _name;
-            buildingSize = _buildingSize;
-            gridPositions = _gridPositions;
-            buildingObject = _buildingObject;
-
-            // Shy
-            this.buildingType = buildingType;
-        }
-
-        // Shy
-        public void DoBuildingAction()
-        {
-            switch (buildingActionOptions)
-            {
-                case ActionOptions.DoAction:
-
-                    switch (buildingType)
-                    {
-                        // Get Happiness for Followers
-                        case BuildingType.Sanity:
-                            foreach (var citizen in tempListForDoAction)
-                            {
-                                citizen.Sanity += 1;
-                            }
-
-                            break;
-                        // Get a bit of Devotion Points ??? Shy
-                        case BuildingType.Temple:
-                            //GameManager.Player.Devotion.ChangeDevotionAmount(5); 
-                            break;
-                        default:
-                            throw new ArgumentOutOfRangeException();
-                    }
-
-                    break;
-                case ActionOptions.AskFavorFromFaction:
-                    break;
-                case ActionOptions.ReplaceWithTemple:
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
-        }
-
-        public void TurnBuildingIntoTemple(Color templeColor)
-        {
-            buildingType = BuildingType.Temple;
-
-
-            for (int i = 0; i < buildingObject.transform.childCount; i++)
-            {
-                SpriteRenderer[] spriteRenderers = buildingObject.GetComponentsInChildren<SpriteRenderer>();
-                spriteRenderers[i].color = templeColor;
-            }
-        }
-    }
-
-    public enum BuildingSize
-    {
-        OneByOne,
-        TwoByOne,
-        LTwoByTwo,
-        TwoByTwo
-    }
-
-    public enum BuildingType
-    {
-        House,
-        Faction,
-        Sanity,
-        Health,
-        Temple
-    }
-
-    public enum ActionOptions
-    {
-        DoAction,
-        AskFavorFromFaction,
-        ReplaceWithTemple
     }
 }

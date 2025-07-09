@@ -4,10 +4,12 @@ using UnityEngine;
 
 namespace Base.Gameplay
 {
+    /// <summary>
+    /// Handles pausing and time scale modification for the game.
+    /// </summary>
     public class Pause : MyMonoBehaviour
     {
-        [Range(0.1f, 2)] 
-        public float modifiedScale;
+        [SerializeField, Range(0.1f, 2)] private float modifiedScale = 1f;
 
         private void OnEnable()
         {
@@ -19,7 +21,7 @@ namespace Base.Gameplay
             Time.timeScale = 1f;
         }
 
-            void Update()
+        private void Update()
         {
             Time.timeScale = modifiedScale;
         }

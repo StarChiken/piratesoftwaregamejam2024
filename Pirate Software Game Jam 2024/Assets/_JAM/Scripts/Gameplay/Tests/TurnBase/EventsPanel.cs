@@ -5,20 +5,26 @@ using UnityEngine;
 
 namespace Base.Gameplay
 {
+    /// <summary>
+    /// Handles UI logic for switching between event and commandment panels.
+    /// </summary>
     public class EventsPanel : MonoBehaviour
     {
-        public GameObject panelCommandment;
-        public GameObject panelEvent;
+        [SerializeField] private GameObject panelCommandment;
+        [SerializeField] private GameObject panelEvent;
         
-        public void OpenPanel(panelType type)
+        /// <summary>
+        /// Opens the specified panel type.
+        /// </summary>
+        public void OpenPanel(PanelType type)
         {
             switch (type)
             {
-                case panelType.RandomEvent:
+                case PanelType.RandomEvent:
                     panelEvent.SetActive(true);
                     panelCommandment.SetActive(false);
                     break;
-                case panelType.ChooseCommandment:
+                case PanelType.ChooseCommandment:
                     panelEvent.SetActive(false);
                     panelCommandment.SetActive(true);
                     break;
@@ -28,7 +34,7 @@ namespace Base.Gameplay
         }
     }
 
-    public enum panelType
+    public enum PanelType
     {
         RandomEvent,
         ChooseCommandment

@@ -9,6 +9,9 @@ using Random = UnityEngine.Random;
 
 namespace Base.Gameplay
 {
+    /// <summary>
+    /// Controls the behavior and needs of a citizen agent in the game.
+    /// </summary>
     public class CitizenAgent : MyMonoBehaviour
     {
         public int buildingChecksPerMove;
@@ -48,6 +51,9 @@ namespace Base.Gameplay
 
         private Vector2[] currentPath;
 
+        /// <summary>
+        /// Unity Start method. Initializes citizen needs and randomizes some parameters.
+        /// </summary>
         void Start()
         {
             citizen.CitizenNeeds.CalculateNeeds(citizen.Sanity, citizen.Health, citizen.FactionDuty);
@@ -58,12 +64,15 @@ namespace Base.Gameplay
             gridZOffset = Random.Range(0, 0.25f);
         }
 
+        /// <summary>
+        /// Unity FixedUpdate method. Handles movement, stat draining, and building checks.
+        /// </summary>
         private void FixedUpdate()
         {
             if (destination == null)
             {
                 destination = GetNextDestination();
-                occupyingBuilding = generationTestScript.buildingGrid[citizen.housePosition];
+                occupyingBuilding = generationTestScript.GridManager.GetBuildingAt(citizen.housePosition);
                 modelObject.SetActive(false);
             }
 
@@ -78,6 +87,7 @@ namespace Base.Gameplay
             {
                 checkTimer = 0;
 
+                // Apply stat bonuses based on building type
                 switch (destination.buildingType)
                 {
                     case BuildingType.Faction:
@@ -103,6 +113,7 @@ namespace Base.Gameplay
                         destination = GetNextDestination();
                         if (destination != occupyingBuilding)
                         {
+                            // Find a path to the new destination and start moving
                             currentPath = pathfindingTestScript.FindPath(new Vector2(transform.position.x, transform.position.z), destination.gridPositions[0]);
                             StartCoroutine(MoveCitizen());
                             print(destination.name);
@@ -112,6 +123,9 @@ namespace Base.Gameplay
             }
         }
 
+        /// <summary>
+        /// Coroutine to move the citizen along the current path.
+        /// </summary>
         private IEnumerator MoveCitizen()
         {
             isMoving = true;
@@ -130,6 +144,9 @@ namespace Base.Gameplay
             isMoving = false;
         }
 
+        /// <summary>
+        /// Drains the citizen's stats over time, applying additional penalties if needed.
+        /// </summary>
         private void DrainStats()
         {
             drainTimer += Time.fixedDeltaTime;
@@ -163,10 +180,15 @@ namespace Base.Gameplay
             }
         }
 
+        /// <summary>
+        /// Determines the next building destination for the citizen based on their needs.
+        /// </summary>
+        /// <returns>The next building to move to.</returns>
         private Building GetNextDestination()
         {
             BuildingType buildingType = BuildingType.House;
 
+            // Prioritize needs: health, then duty, then sanity
             if (citizen.CitizenNeeds.healthRatio < 0.5f)
             {
                 buildingType = BuildingType.Health;
@@ -182,7 +204,7 @@ namespace Base.Gameplay
 
             if (buildingType == BuildingType.House)
             {
-                return generationTestScript.buildingGrid[citizen.housePosition];
+                return generationTestScript.GridManager.GetBuildingAt(citizen.housePosition);
             }
             else
             {
@@ -190,6 +212,10 @@ namespace Base.Gameplay
             }
         }
 
+        /// <summary>
+        /// Sets the house position for the citizen.
+        /// </summary>
+        /// <param name="_housePos">The new house position.</param>
         public void SetHousePosition(Vector2 _housePos)
         {
             citizen.housePosition = _housePos;

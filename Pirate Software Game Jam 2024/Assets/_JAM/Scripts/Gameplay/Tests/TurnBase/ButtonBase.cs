@@ -1,15 +1,17 @@
 using System.Collections.Generic;
 using Base.Core.Components;
-using Base.Core.Managers;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace Base.Gameplay
 {
+    /// <summary>
+    /// Handles UI logic for opening/closing a panel and managing other panels.
+    /// </summary>
     public class ButtonBase : MyMonoBehaviour
     {
-        public GameObject panel;
-        public GameObject[] otherPanels;
+        [SerializeField] private GameObject panel;
+        [SerializeField] private GameObject[] otherPanels;
         private bool panelState;
         private float startTime;
         
@@ -18,10 +20,12 @@ namespace Base.Gameplay
             OpenClosePanel(false);
         }
 
+        /// <summary>
+        /// Opens or closes the panel, and manages other panels accordingly.
+        /// </summary>
         public void OpenClosePanel(bool isActive)
         {
             panel.SetActive(isActive);
-
             foreach (var obj in otherPanels)
             {
                 if (obj.activeSelf)
@@ -29,7 +33,6 @@ namespace Base.Gameplay
                     obj.SetActive(!isActive);
                 }
             }
-
             panelState = isActive;
             // Reset open count and start timer when opening the panel
             if (isActive)
@@ -40,14 +43,9 @@ namespace Base.Gameplay
 
         private void Update()
         {
-            // if (panelState)
-            // {
-            //     // Close the panel after 30 seconds
-            //     if (Time.time - startTime > 10)
-            //     {
-            //         OpenClosePanel(false);
-            //     }
-            // }
+            // Example: auto-close after 10 seconds (commented out for now)
+            // if (panelState && Time.time - startTime > 10)
+            //     OpenClosePanel(false);
         }
     }
 }
