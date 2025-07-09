@@ -9,6 +9,8 @@ namespace Base.Gameplay
         Faction,
         Sanity,
         Health,
-        Temple
+        Temple,
+        Market,
+        Entertainment
     }
 } 

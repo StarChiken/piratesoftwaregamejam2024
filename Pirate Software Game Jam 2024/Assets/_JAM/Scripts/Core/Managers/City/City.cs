@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Base.Core.Config;
 
 namespace Base.Core.Managers
 {

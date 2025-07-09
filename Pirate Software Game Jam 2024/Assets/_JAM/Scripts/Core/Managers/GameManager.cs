@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityEngine;
+using Base.Core.Config;
 
 namespace Base.Core.Managers
 {
@@ -53,14 +54,19 @@ namespace Base.Core.Managers
                 return;
             }
 
-            // Default initialization chain
-            new Player(new PlayerConfig(), new CitizenFactory(), result =>
+            // Load configs from ScriptableObjects
+            var playerConfig = ConfigManager.Instance.GetConfig<PlayerConfig>();
+            var cityConfig = ConfigManager.Instance.GetConfig<CityConfig>();
+            var randomEventsConfig = ConfigManager.Instance.GetConfig<Base.Core.Config.RandomEventsConfig>();
+
+            // Default initialization chain with loaded configs
+            new Player(playerConfig, new CitizenFactory(), result =>
             {
                 Player = (Player)result;
-                new City(new CityConfig(), new CitizenFactory(), result =>
+                new City(cityConfig, new CitizenFactory(), result =>
                 {
                     City = (City)result;
-                    new RandomEvents(new RandomEventsConfig(), result =>
+                    new RandomEvents(randomEventsConfig, result =>
                     {
                         GameEvents = (RandomEvents)result;
                         _onCompleteAction?.Invoke();

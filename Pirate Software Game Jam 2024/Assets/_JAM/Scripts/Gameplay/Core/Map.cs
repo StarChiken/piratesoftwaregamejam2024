@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Serialization;
+using Base.Core.Config;
 using Random = UnityEngine.Random;
 
 namespace Base.Gameplay
@@ -12,40 +13,17 @@ namespace Base.Gameplay
     public class Map : MonoBehaviour
     {
         [Header("Grid Settings")]
-        [SerializeField] private int numberOfDistricts = 9;
-        [SerializeField] private int gridX = 5;
-        [SerializeField] private int gridZ = 5;
-        [SerializeField] private int gridSpacing = 5;
-        [SerializeField] private int gridPadding = 5;
         [SerializeField] private List<GameObject> objectsControlList;
         
         [Header("Assignment")]
-        [SerializeField] private GameObject building1x1;
-        [SerializeField] private GameObject building2x2;
-        [SerializeField] private GameObject building2x1;
-        [SerializeField] private GameObject buildingL;
         [SerializeField] private GameObject[] buildings;
         
         [Header("Variation State")]
         [SerializeField] private PaddingVariationState paddingState;
 
-        [Header("Sinusoidal Variation")]
-        [SerializeField] private float sinusoidalAmplitude = 2f;
-
-        [Header("Random Variation")]
-        [SerializeField] private float randomMin = -1f;
-        [SerializeField] private float randomMax = 1f;
-
-        [Header("Exponential Decay Variation")]
-        [SerializeField] private float exponentialDecayRate = 0.1f;
-
-        [Header("Step Function Variation")]
-        [SerializeField] private int stepInterval = 3;
-        [SerializeField] private float stepFunctionValue = 2f;
-
-        [Header("Triangle Wave Variation")]
-        [SerializeField] private float triangleWaveFrequency = 0.1f;
-        [SerializeField] private float triangleWaveAmplitude = 2f;
+        // Config properties
+        private GameplayConfig GameplayConfig => ConfigManager.Instance.GetConfig<GameplayConfig>();
+        private BuildingConfig BuildingConfig => ConfigManager.Instance.GetConfig<BuildingConfig>();
 
         /// <summary>
         /// Enumeration of different variations on padding amount.
@@ -61,7 +39,7 @@ namespace Base.Gameplay
         
         private void Start()
         {
-            buildings = new [] { building1x1, building2x1, buildingL };
+            buildings = new [] { BuildingConfig.Building1x1, BuildingConfig.Building2x1, BuildingConfig.BuildingL };
         }
 
         private void Update()
@@ -84,8 +62,8 @@ namespace Base.Gameplay
 
         private void GenerateGridForEachDistrict()
         {
-            int districtsPerRow = Mathf.CeilToInt(Mathf.Sqrt(numberOfDistricts));
-            for (int i = 0; i < numberOfDistricts; i++)
+            int districtsPerRow = Mathf.CeilToInt(Mathf.Sqrt(GameplayConfig.NumberOfDistricts));
+            for (int i = 0; i < GameplayConfig.NumberOfDistricts; i++)
             {
                 int row = i / districtsPerRow;
                 int col = i % districtsPerRow;
@@ -115,13 +93,13 @@ namespace Base.Gameplay
 
         private void GenerateGrid(int row, int col, List<GameObject> list)
         {
-            for (int x = 0; x < gridX; x++)
+            for (int x = 0; x < GameplayConfig.GridX; x++)
             {
-                for (int z = 0; z < gridZ; z++)
+                for (int z = 0; z < GameplayConfig.GridZ; z++)
                 {
-                    float xPos = (x + col * gridX) * gridSpacing;
+                    float xPos = (x + col * GameplayConfig.GridX) * GameplayConfig.GridSpacing;
                     float yPos = 0;
-                    float zPos = (z + row * gridZ) * gridSpacing;
+                    float zPos = (z + row * GameplayConfig.GridZ) * GameplayConfig.GridSpacing;
                     Vector3 position = new Vector3(xPos, yPos, zPos);
                     var randomIndex = Random.Range(0, buildings.Length);
                     var building = Instantiate(Resources.Load(buildings[randomIndex].name), position, Quaternion.identity) as GameObject;
@@ -167,15 +145,15 @@ namespace Base.Gameplay
             switch (paddingState)
             {
                 case PaddingVariationState.Sinusoidal:
-                    return Mathf.Sin(x * sinusoidalAmplitude) * gridSpacing;
+                    return Mathf.Sin(x * GameplayConfig.SinusoidalAmplitude) * GameplayConfig.GridSpacing;
                 case PaddingVariationState.Random:
-                    return Random.Range(randomMin, randomMax);
+                    return Random.Range(GameplayConfig.RandomMin, GameplayConfig.RandomMax);
                 case PaddingVariationState.ExponentialDecay:
-                    return Mathf.Exp(-x * exponentialDecayRate);
+                    return Mathf.Exp(-x * GameplayConfig.ExponentialDecayRate);
                 case PaddingVariationState.StepFunction:
-                    return (x % stepInterval == 0 ? stepFunctionValue : 0f);
+                    return (x % GameplayConfig.StepInterval == 0 ? GameplayConfig.StepFunctionValue : 0f);
                 case PaddingVariationState.TriangleWave:
-                    return Mathf.PingPong(x * triangleWaveFrequency, triangleWaveAmplitude);
+                    return Mathf.PingPong(x * GameplayConfig.TriangleWaveFrequency, GameplayConfig.TriangleWaveAmplitude);
                 default:
                     return 0f;
             }

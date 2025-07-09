@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Base.Core.Managers;
+using Base.Core.Config;
 using TMPro;
 using UnityEngine;
 
@@ -23,7 +24,7 @@ namespace Base.Gameplay
         public TextMeshProUGUI GameStateText;
         public GameObject CommandmentPanel;
         public CanvasGroup UI;
-        public List<int> DevotionMilestones = new() { 12, 48, 192, 768 };
+        public List<int> DevotionMilestones => ConfigManager.Instance.GetConfig<GameplayConfig>()?.DevotionMilestones ?? new() { 12, 48, 192, 768 };
 
         public event Action<GameState> OnStateChanged;
 

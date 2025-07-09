@@ -10,5 +10,7 @@
     "autoReferenced": true,
     "defineConstraints": [],
     "versionDefines": [],
-    "noEngineReferences": false
+    "noEngineReferences": false,
+    "assemblyName": "Base.Core",
+    "defineConstraints": []
 }

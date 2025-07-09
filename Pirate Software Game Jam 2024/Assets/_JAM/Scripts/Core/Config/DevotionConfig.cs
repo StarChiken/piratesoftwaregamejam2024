@@ -1,22 +1,29 @@
 using System;
 using System.Collections.Generic;
+using UnityEngine;
+using Base.Core.Managers;
 
-namespace Base.Core.Managers
+namespace Base.Core.Config
 {
     /// <summary>
     /// Configuration data for initializing Devotion.
     /// </summary>
-    [Serializable]
-    public class DevotionConfig
+    [CreateAssetMenu(fileName = "DevotionConfig", menuName = "Game/Config/Devotion Config")]
+    public class DevotionConfig : BaseConfig
     {
-        public int StartingDevotionPoints = 2;
-        public List<MiracleType> MiracleTypes = new()
+        [Header("Starting Values")]
+        [SerializeField] private int startingDevotionPoints = 2;
+        
+        [Header("Miracle Types")]
+        [SerializeField] private List<MiracleType> miracleTypes = new()
         {
             MiracleType.RedBasic, MiracleType.RedIntermediate, MiracleType.RedSuperior,
             MiracleType.BlueBasic, MiracleType.BlueIntermediate, MiracleType.BlueSuperior,
             MiracleType.GreenBasic, MiracleType.GreenIntermediate, MiracleType.GreenSuperior
         };
-        public List<CommandmentType> CommandmentTypes = new()
+        
+        [Header("Commandment Types")]
+        [SerializeField] private List<CommandmentType> commandmentTypes = new()
         {
             CommandmentType.ReadingScripture, CommandmentType.CopyingText, CommandmentType.Research, CommandmentType.Prayer,
             CommandmentType.Confessions, CommandmentType.Exorcism, CommandmentType.Alchemy, CommandmentType.Dance, CommandmentType.Song,
@@ -24,5 +31,12 @@ namespace Base.Core.Managers
             CommandmentType.RitualSacrifice, CommandmentType.MaterialOfferings, CommandmentType.Relics, CommandmentType.Shrines,
             CommandmentType.GatheringBlood, CommandmentType.Donations, CommandmentType.ReligiousCultivation
         };
+
+        // Public properties for backward compatibility
+        public int StartingDevotionPoints => startingDevotionPoints;
+        public List<MiracleType> MiracleTypes => miracleTypes;
+        public List<CommandmentType> CommandmentTypes => commandmentTypes;
+
+        protected override string ConfigFileName => "DevotionConfig";
     }
 } 

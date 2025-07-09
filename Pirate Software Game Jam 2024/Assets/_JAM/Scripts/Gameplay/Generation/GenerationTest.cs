@@ -4,8 +4,8 @@ using Base.Core.Components;
 using UnityEngine;
 using Random = UnityEngine.Random;
 using Base.Core.Managers;
+using Base.Core.Config;
 using UnityEngine.InputSystem;
-using Base.Gameplay;
 
 namespace Base.Gameplay
 {
@@ -14,42 +14,9 @@ namespace Base.Gameplay
     /// </summary>
     public class GenerationTest : MyMonoBehaviour
     {
-        [Header("Grid Settings")]
-        /// <summary>Number of grid cells in the X direction.</summary>
-        public int gridX;
-        /// <summary>Number of grid cells in the Z direction.</summary>
-        public int gridZ;
-        /// <summary>Spacing between grid cells.</summary>
-        public int gridSpacing;
-
-        /// <summary>Minimum number of starting houses.</summary>
-        public int minStartingHouses;
-        /// <summary>Maximum number of starting houses.</summary>
-        public int maxStartingHouses;
-
-        [Header("Building Color By Type")]
-        /// <summary>Color for house buildings.</summary>
-        public Color houseColor;
-        /// <summary>Material for house buildings.</summary>
-        public Material houseMaterial;
-        /// <summary>Material for faction duty buildings.</summary>
-        public Material factionDutyMaterial;
-        /// <summary>Material for sanity buildings.</summary>
-        public Material sanityMaterial;
-        /// <summary>Material for health buildings.</summary>
-        public Material healthMaterial;
-
-        [Header("Prefab Assignment")]
-        /// <summary>Prefab for 1x1 building.</summary>
-        public GameObject building1x1;
-        /// <summary>Prefab for 2x2 building.</summary>
-        public GameObject building2x2;
-        /// <summary>Prefab for 2x1 building.</summary>
-        public GameObject building2x1;
-        /// <summary>Prefab for L-shaped building.</summary>
-        public GameObject buildingL;
-        /// <summary>Prefab for citizen agent.</summary>
-        public GameObject citizenPrefab;
+        // Config properties
+        public GameplayConfig GameplayConfig => ConfigManager.Instance.GetConfig<GameplayConfig>();
+        private BuildingConfig BuildingConfig => ConfigManager.Instance.GetConfig<BuildingConfig>();
 
         private bool canSpawnTemple = true;
         private GameObject[] buildings = new GameObject[3];
@@ -67,15 +34,15 @@ namespace Base.Gameplay
         {
             pathfindingScript = GetComponent<PathfindingTest>();
             gridManager = new GridManager();
-            citizenSpawner = new CitizenSpawner(citizenPrefab, gridManager, pathfindingScript);
-            buildings[0] = building1x1;
-            buildings[1] = building2x1;
-            buildings[2] = buildingL;
-            buildingMaterials[0] = houseMaterial;
-            buildingMaterials[1] = factionDutyMaterial;
-            buildingMaterials[2] = sanityMaterial;
-            buildingMaterials[3] = healthMaterial;
-            GenerateGrid(Random.Range(minStartingHouses, maxStartingHouses + 1));
+            citizenSpawner = new CitizenSpawner(BuildingConfig.CitizenPrefab, gridManager, pathfindingScript);
+            buildings[0] = BuildingConfig.Building1x1;
+            buildings[1] = BuildingConfig.Building2x1;
+            buildings[2] = BuildingConfig.BuildingL;
+            buildingMaterials[0] = BuildingConfig.HouseMaterial;
+            buildingMaterials[1] = BuildingConfig.FactionDutyMaterial;
+            buildingMaterials[2] = BuildingConfig.SanityMaterial;
+            buildingMaterials[3] = BuildingConfig.HealthMaterial;
+            GenerateGrid(Random.Range(GameplayConfig.MinStartingHouses, GameplayConfig.MaxStartingHouses + 1));
         }
 
         private void Update()
@@ -143,9 +110,9 @@ namespace Base.Gameplay
         private void GenerateGrid(int houses)
         {
             int buildingsSpawned = 0;
-            for (int x = 0; x < gridX; x++)
+            for (int x = 0; x < GameplayConfig.GridX; x++)
             {
-                for (int z = 0; z < gridZ; z++)
+                for (int z = 0; z < GameplayConfig.GridZ; z++)
                 {
                     Vector3 position = new Vector3(x + 0.5f, 0, z + 0.5f);
                     // Randomly pick a building prefab to spawn
@@ -180,10 +147,10 @@ namespace Base.Gameplay
                         }
                     }
                     buildingObject.name = $"Grid {x} {z} {(BuildingType)buildingTypeIndex}";
-                    z += gridSpacing;
+                    z += GameplayConfig.GridSpacing;
                     buildingsSpawned++;
                 }
-                x += gridSpacing;
+                x += GameplayConfig.GridSpacing;
             }
         }
 

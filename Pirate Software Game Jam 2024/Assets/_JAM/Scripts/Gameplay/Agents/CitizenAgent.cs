@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Base.Core.Components;
 using Base.Core.Managers;
+using Base.Core.Config;
 using DG.Tweening;
 using Random = UnityEngine.Random;
 
@@ -14,16 +15,8 @@ namespace Base.Gameplay
     /// </summary>
     public class CitizenAgent : MyMonoBehaviour
     {
-        public int buildingChecksPerMove;
-        public float checkBuildingTime;
-
-        public float moveTime;
-
-        public int dutySanityDrainPerSecond;
-
-        public int naturalHealthDrainPerSecond;
-        public int naturalSanityDrainPerSecond;
-        public int naturalDutyDrainPerSecond;
+        // Config properties
+        private GameplayConfig GameplayConfig => ConfigManager.Instance.GetConfig<GameplayConfig>();
 
         public GenerationTest generationTestScript;
         public PathfindingTest pathfindingTestScript;
@@ -61,8 +54,8 @@ namespace Base.Gameplay
         {
             citizen.CitizenNeeds.CalculateNeeds(citizen.Sanity, citizen.Health, citizen.FactionDuty);
             checkTimer = Random.Range(0, 1f);
-            buildingChecks = Random.Range(0, buildingChecksPerMove + 1);
-            checkBuildingTime += Random.Range(0, 0.15f);
+            buildingChecks = Random.Range(0, GameplayConfig.BuildingChecksPerMove + 1);
+            float checkBuildingTime = Random.Range(0, 0.15f);
             gridXOffset = Random.Range(0, 0.25f);
             gridZOffset = Random.Range(0, 0.25f);
         }
@@ -86,7 +79,7 @@ namespace Base.Gameplay
             DrainStats();
 
             checkTimer += Time.fixedDeltaTime;
-            if (checkTimer >= checkBuildingTime)
+            if (checkTimer >= GameplayConfig.CheckBuildingTime)
             {
                 checkTimer = 0;
 
@@ -110,7 +103,7 @@ namespace Base.Gameplay
                 if (!isMoving)
                 {
                     buildingChecks++;
-                    if (buildingChecks > buildingChecksPerMove)
+                    if (buildingChecks > GameplayConfig.BuildingChecksPerMove)
                     {
                         buildingChecks = 0;
                         destination = GetNextDestination();
@@ -136,8 +129,8 @@ namespace Base.Gameplay
 
             for (int i = currentPath.Length - 1; i >= 0; i--)
             {
-                transform.DOMove(new Vector3(currentPath[i].x, 0, currentPath[i].y), moveTime);
-                yield return new WaitForSeconds(moveTime);
+                transform.DOMove(new Vector3(currentPath[i].x, 0, currentPath[i].y), GameplayConfig.MoveTime);
+                yield return new WaitForSeconds(GameplayConfig.MoveTime);
             }
 
             transform.position = new Vector3(destination.gridPositions[0].x + gridXOffset, 0, destination.gridPositions[0].y + gridZOffset);
@@ -160,20 +153,20 @@ namespace Base.Gameplay
 
                 if (citizen.Health > 0 && !isGainingHealth)
                 {
-                    citizen.Health -= naturalHealthDrainPerSecond;
+                    citizen.Health -= GameplayConfig.NaturalHealthDrainPerSecond;
                 }
 
                 if (citizen.FactionDuty > 0 && !isGainingDuty)
                 {
-                    citizen.FactionDuty -= naturalDutyDrainPerSecond;
+                    citizen.FactionDuty -= GameplayConfig.NaturalDutyDrainPerSecond;
                 }
 
                 if (citizen.Sanity > 0 && !isGainingSanity)
                 {
-                    citizen.Sanity -= naturalSanityDrainPerSecond;
+                    citizen.Sanity -= GameplayConfig.NaturalSanityDrainPerSecond;
                     if (citizen.CitizenNeeds.dutyRatio < 0.25f)
                     {
-                        citizen.Sanity -= dutySanityDrainPerSecond;
+                        citizen.Sanity -= GameplayConfig.DutySanityDrainPerSecond;
                     }
                 }
 

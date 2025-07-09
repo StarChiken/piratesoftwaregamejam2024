@@ -68,7 +68,7 @@ namespace Base.Gameplay
                 for (int i = 0; i < 8; i++)
                 {
                     Vector2 nodePos = currentNode.GetPosition() + adjacentPositions[i];
-                    if (nodePos.x < 0 || nodePos.x > generationTestScript.gridX || nodePos.y < 0 || nodePos.y > generationTestScript.gridZ)
+                    if (nodePos.x < 0 || nodePos.x > generationTestScript.GameplayConfig.gridX || nodePos.y < 0 || nodePos.y > generationTestScript.GameplayConfig.gridZ)
                     {
                         continue;
                     }

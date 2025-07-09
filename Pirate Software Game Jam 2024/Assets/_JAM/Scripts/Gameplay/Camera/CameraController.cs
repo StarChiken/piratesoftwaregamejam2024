@@ -2,6 +2,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Cinemachine;
+using Base.Core.Config;
 
 namespace Base.Gameplay
 {
@@ -10,24 +11,10 @@ namespace Base.Gameplay
     /// </summary>
     public class CameraController : MyMonoBehaviour
     {
-        [Header("Movement")]
-        [SerializeField] private float minZoomMoveTime;
-        [SerializeField] private float maxZoomMoveTime;
-        [SerializeField] private float rotationSpeed;
-        [SerializeField] private int mouseEdgeMoveRangeRatio;
-
-        [Header("Min-Max Position")]
-        [SerializeField] private float maxXPos;
-        [SerializeField] private float minXPos;
-        [SerializeField] private float maxZPos;
-        [SerializeField] private float minZPos;
+        // Config properties
+        private CameraConfig CameraConfig => ConfigManager.Instance.GetConfig<CameraConfig>();
 
         [Header("Camera Zoom")]
-        [SerializeField] private float targetFieldOfView;
-        [SerializeField] private float fieldOfViewMax;
-        [SerializeField] private float fieldOfViewMin;
-        [SerializeField] private float startingZoomYOffset;
-        [SerializeField] private float endingZoomXOffset;
         [SerializeField] private CinemachineVirtualCamera cinemachineVirtualCamera;
 
         private float rotateDirection = 0f;
@@ -40,7 +27,7 @@ namespace Base.Gameplay
         private void Start()
         {
             rb = GetComponent<Rigidbody>();
-            Vector2 mouseMovementRange = new Vector2(Screen.width - (Screen.width / mouseEdgeMoveRangeRatio), Screen.height - (Screen.height / mouseEdgeMoveRangeRatio));
+            Vector2 mouseMovementRange = new Vector2(Screen.width - (Screen.width / CameraConfig.MouseEdgeMoveRangeRatio), Screen.height - (Screen.height / CameraConfig.MouseEdgeMoveRangeRatio));
             mouseMovementRangeOffset = new Vector2(mouseMovementRange.x - (Screen.width / 2), mouseMovementRange.y - (Screen.height / 2));
         }
 
@@ -50,7 +37,7 @@ namespace Base.Gameplay
             HandleCameraZoom();
             MoveCamera(keyboardInputDirection);
             HandleMouseCameraMove();
-            transform.position = new Vector3(Mathf.Clamp(transform.position.x, minXPos, maxXPos), transform.position.y, Mathf.Clamp(transform.position.z, minZPos, maxZPos));
+            transform.position = new Vector3(Mathf.Clamp(transform.position.x, CameraConfig.MinXPos, CameraConfig.MaxXPos), transform.position.y, Mathf.Clamp(transform.position.z, CameraConfig.MinZPos, CameraConfig.MaxZPos));
         }
         
         /// <summary>
@@ -82,7 +69,7 @@ namespace Base.Gameplay
         /// </summary>
         private void HandleCameraRotation()
         {
-            transform.eulerAngles += new Vector3(0, rotateDirection * rotationSpeed * Time.deltaTime, 0);
+            transform.eulerAngles += new Vector3(0, rotateDirection * CameraConfig.RotationSpeed * Time.deltaTime, 0);
         }
 
         /// <summary>
@@ -90,10 +77,10 @@ namespace Base.Gameplay
         /// </summary>
         private void HandleCameraZoom()
         {
-            cinemachineVirtualCamera.m_Lens.FieldOfView = Mathf.Lerp(cinemachineVirtualCamera.m_Lens.FieldOfView, targetFieldOfView, Time.deltaTime * 5f);
-            float t = (targetFieldOfView - fieldOfViewMin) / (fieldOfViewMax - fieldOfViewMin);
-            cinemachineVirtualCamera.GetCinemachineComponent<CinemachineTransposer>().m_FollowOffset.y = Mathf.Lerp(endingZoomXOffset, startingZoomYOffset, t);
-            currentMoveTime = Mathf.Lerp(maxZoomMoveTime, minZoomMoveTime, t);
+            cinemachineVirtualCamera.m_Lens.FieldOfView = Mathf.Lerp(cinemachineVirtualCamera.m_Lens.FieldOfView, CameraConfig.TargetFieldOfView, Time.deltaTime * 5f);
+            float t = (CameraConfig.TargetFieldOfView - CameraConfig.FieldOfViewMin) / (CameraConfig.FieldOfViewMax - CameraConfig.FieldOfViewMin);
+            cinemachineVirtualCamera.GetCinemachineComponent<CinemachineTransposer>().m_FollowOffset.y = Mathf.Lerp(CameraConfig.EndingZoomXOffset, CameraConfig.StartingZoomYOffset, t);
+            currentMoveTime = Mathf.Lerp(CameraConfig.MaxZoomMoveTime, CameraConfig.MinZoomMoveTime, t);
         }
 
         /// <summary>
@@ -120,13 +107,13 @@ namespace Base.Gameplay
             float scrollYValue = inputValue.Get<float>();
             if (scrollYValue == 1f)
             {
-                targetFieldOfView -= 0.5f;
+                CameraConfig.TargetFieldOfView -= 0.5f;
             }
             else if (scrollYValue == -1f)
             {
-                targetFieldOfView += 0.5f;
+                CameraConfig.TargetFieldOfView += 0.5f;
             }
-            targetFieldOfView = Mathf.Clamp(targetFieldOfView, fieldOfViewMin, fieldOfViewMax);
+            CameraConfig.TargetFieldOfView = Mathf.Clamp(CameraConfig.TargetFieldOfView, CameraConfig.FieldOfViewMin, CameraConfig.FieldOfViewMax);
         }
     }
 }

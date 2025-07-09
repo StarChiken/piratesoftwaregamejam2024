@@ -1,32 +1,19 @@
 ﻿using System;
 using UnityEngine;
 using System.Collections.Generic;
+using Base.Core.Config;
 
 namespace Base.Core.Managers
 {
-    /// <summary>
-    /// Configuration for random events, including thresholds and messages.
-    /// </summary>
-    [Serializable]
-    public class RandomEventsConfig
-    {
-        public int HappinessThreshold = 10;
-        public Dictionary<GameEventType, string> EventMessages = new()
-        {
-            { GameEventType.GiveDevotionPoints, "The People Are Weirded Out By Our Practices. But Our Lord Is Merciful. He Bestowed us With More Power!" },
-            { GameEventType.GiveHappiness, "A Random Happiness Event Occurred!" }
-        };
-    }
-
     /// <summary>
     /// Manages random game events and their execution.
     /// </summary>
     public class RandomEvents : BaseManager
     {
-        private readonly RandomEventsConfig _config;
+        private readonly Base.Core.Config.RandomEventsConfig _config;
         private GameEventType _currentEvent;
         
-        public RandomEvents(RandomEventsConfig config, Action<BaseManager> onComplete) : base(onComplete)
+        public RandomEvents(Base.Core.Config.RandomEventsConfig config, Action<BaseManager> onComplete) : base(onComplete)
         {
             _config = config ?? throw new ArgumentNullException(nameof(config));
             OnInitComplete();

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Base.Core.Config;
 
 namespace Base.Core.Managers
 {
@@ -48,9 +49,10 @@ namespace Base.Core.Managers
                 follower.ChangeAttractionAmount(3);
                 _followerCount.Add(follower);
             }
-            Devotion = new Devotion(new DevotionConfig {
-                StartingDevotionPoints = _config.StartingDevotionAmount
-            });
+            
+            // Load devotion config from ScriptableObject
+            var devotionConfig = ConfigManager.Instance.GetConfig<DevotionConfig>();
+            Devotion = new Devotion(devotionConfig);
             CharacterName = _nameProvider.TakeRandom();
             OnInitComplete();
         }
