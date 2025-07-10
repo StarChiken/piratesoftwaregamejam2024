@@ -289,3 +289,31 @@
 - ✅ Editor-only assemblies for editor scripts
 - ✅ Runtime assemblies for game code
 - ✅ Platform-specific optimizations 
+
+---
+
+## [2024-05-18] Session Progress Notes
+
+### 🚨 Critical Rule Violations (Priority 1)
+- All singleton/static access removed; all managers/components now use explicit dependency injection (DI) via constructors or serialized fields.
+- All usages of FindObjectOfType/FindObjectsOfType for runtime dependencies removed; dependencies are injected or referenced via serialized fields.
+- Field naming conventions (`m_`, `s_`, `c_`) enforced across all scripts.
+- All [SerializeField] fields now have [Tooltip] attributes.
+- All public methods have error handling and parameter validation.
+- Systematic audit completed for all scripts; checklist items are truly complete.
+
+### 🔧 Code Organization (Priority 2)
+- #region directives added for logical code grouping in all scripts.
+- [RequireComponent] attributes added/validated for all MonoBehaviours that require components.
+- All GetComponent<T>() calls refactored to TryGetComponent<T>() with error handling.
+- All heavy logic moved out of Awake/Start into coroutines or deferred methods where needed.
+- Systematic audit completed for all scripts; checklist items are truly complete.
+
+### 🏗️ Architecture Improvements (Priority 4)
+- Manual dependency injection approach validated: all dependencies are explicit, no singletons or static access, no cyclic dependencies.
+- GameOrchestrator creates GameManager, which wires up Player, City, and RandomEvents with explicit dependencies.
+- No hidden or implicit dependencies; all are passed via constructors or fields.
+- Decision: Manual DI approach is sufficient for project scale; no formal DI container/interface added.
+- Systematic audit completed for all scripts; checklist items are truly complete.
+
+--- 
