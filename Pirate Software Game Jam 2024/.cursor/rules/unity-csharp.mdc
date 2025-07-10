@@ -1,5 +1,5 @@
 ---
-alwaysApply: false
+alwaysApply: true
 scope: **/*.cs
 priority: 1
 description: Coding standards for Unity C# scripts to ensure consistency, maintainability, and scalability in game development projects.
