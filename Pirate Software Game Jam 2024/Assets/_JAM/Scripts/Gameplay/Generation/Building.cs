@@ -2,8 +2,6 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Base.Gameplay
-{
     /// <summary>
     /// Represents a building in the city grid, with type, size, and associated GameObject.
     /// </summary>
@@ -68,4 +66,3 @@ namespace Base.Gameplay
             }
         }
     }
-} 

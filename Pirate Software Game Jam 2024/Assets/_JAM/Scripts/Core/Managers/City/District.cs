@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Base.Core.Managers
-{
     /// <summary>
     /// Represents a city district, its type, name, stats, populace, and faction.
     /// </summary>
@@ -49,14 +47,3 @@ namespace Base.Core.Managers
             }
         }
     }
-
-    public enum DistrictType
-    {
-        Default,
-        Entertainment,
-        Park,
-        Market,
-        Labor,
-        Samurai
-    }
-}

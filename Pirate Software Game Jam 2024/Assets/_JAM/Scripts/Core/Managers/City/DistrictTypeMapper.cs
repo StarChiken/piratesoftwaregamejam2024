@@ -1,8 +1,6 @@
 using System;
 using System.Collections.Generic;
 
-namespace Base.Core.Managers
-{
     /// <summary>
     /// Maps district names to district types.
     /// </summary>
@@ -40,4 +38,3 @@ namespace Base.Core.Managers
             return _mapping.TryGetValue(districtName, out var type) ? type : DistrictType.Default;
         }
     }
-} 

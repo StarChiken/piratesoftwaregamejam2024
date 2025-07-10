@@ -1,19 +1,16 @@
 ﻿using System;
 using UnityEngine;
 using System.Collections.Generic;
-using Base.Core.Config;
 
-namespace Base.Core.Managers
-{
     /// <summary>
     /// Manages random game events and their execution.
     /// </summary>
     public class RandomEvents : BaseManager
     {
-        private readonly Base.Core.Config.RandomEventsConfig _config;
+        private readonly RandomEventsConfig _config;
         private GameEventType _currentEvent;
         
-        public RandomEvents(Base.Core.Config.RandomEventsConfig config, Action<BaseManager> onComplete) : base(onComplete)
+        public RandomEvents(RandomEventsConfig config, Action<BaseManager> onComplete) : base(onComplete)
         {
             _config = config ?? throw new ArgumentNullException(nameof(config));
             OnInitComplete();
@@ -67,9 +64,3 @@ namespace Base.Core.Managers
             return totalHappiness;
         }
     }
-    public enum GameEventType
-    {
-        GiveDevotionPoints,
-        GiveHappiness,
-    }
-}

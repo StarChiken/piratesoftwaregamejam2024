@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Base.Core.Managers
-{
     /// <summary>
     /// Represents a faction in the city, with actions and alignment.
     /// </summary>
@@ -83,10 +81,3 @@ namespace Base.Core.Managers
         }
     }
 
-    public enum FactionAction
-    {
-        GetResource,
-        GetFavor,
-        GetInfluence
-    }
-}

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using Base.Core.Config;
 
 /// <summary>
 /// Maps CommandmentType to MiracleType for devotion actions.

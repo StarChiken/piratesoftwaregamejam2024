@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Base.Core.Managers
-{
     /// <summary>
     /// Interface for creating Citizen instances.
     /// </summary>
@@ -103,4 +101,3 @@ namespace Base.Core.Managers
             }
         }
     }
-}

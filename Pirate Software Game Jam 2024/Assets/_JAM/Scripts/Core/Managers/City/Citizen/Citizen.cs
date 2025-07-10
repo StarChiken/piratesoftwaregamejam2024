@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-namespace Base.Core.Managers
-{
+
     //[Serializable]
     public class Citizen
     {
@@ -249,32 +248,7 @@ namespace Base.Core.Managers
 
     }
     
-    public enum FaithType
-    {
-        PlayerGod,
-        GodOfLore,
-        GoddessOfPoetry,
-        SeekerGod,
-        FatherOfTheGods,
-        MotherOfTheGods,
-        TricksterGoddess,
-        ChaosGoddess,
-        BeautyGoddess,
-        LoveGod,
-        NatureGoddess,
-        FuryGoddess,
-        WarGod,
-        EvilGod,
-        WealthGod,
-        HouseholdGod
-    }
 
-    public enum Faciton
-    {
-        Farmer,
-        Smith,
-        Noble
-    }
 
     public class CitizenNeeds
     {
@@ -289,4 +263,3 @@ namespace Base.Core.Managers
             dutyRatio = factionDuty / 100f;
         }
     }
-}

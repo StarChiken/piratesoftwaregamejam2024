@@ -2,10 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
-using Base.Core.Config;
 
-namespace Base.Core.Managers
-{
     /// <summary>
     /// Stores player settings data for saving/loading.
     /// </summary>
@@ -90,9 +87,3 @@ namespace Base.Core.Managers
         }
         public float GetSettingsAmountInt() => SettingsAmount;
     }
-    
-    public enum SettingsType
-    {
-        MasterVolume, MusicVolume, SFXVolume 
-    }
-}

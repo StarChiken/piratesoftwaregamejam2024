@@ -1,8 +1,6 @@
 ﻿using System;
 using UnityEngine;
 
-namespace Base.Core.Managers
-{
     /// <summary>
     /// Coordinates core game managers and provides global access.
     /// </summary>
@@ -115,7 +113,7 @@ namespace Base.Core.Managers
                 // Load configs from ScriptableObjects
                 var playerConfig = ConfigManager.Instance?.GetConfig<PlayerConfig>();
                 var cityConfig = ConfigManager.Instance?.GetConfig<CityConfig>();
-                var randomEventsConfig = ConfigManager.Instance?.GetConfig<Base.Core.Config.RandomEventsConfig>();
+                var randomEventsConfig = ConfigManager.Instance?.GetConfig<RandomEventsConfig>();
 
                 if (playerConfig == null || cityConfig == null || randomEventsConfig == null)
                 {
@@ -166,4 +164,3 @@ namespace Base.Core.Managers
         }
         #endregion
     }
-}

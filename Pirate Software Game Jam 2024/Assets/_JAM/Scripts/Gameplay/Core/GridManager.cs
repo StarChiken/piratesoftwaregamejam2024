@@ -2,8 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Base.Gameplay
-{
+
     /// <summary>
     /// Manages the city grid, building placement, and lookup operations.
     /// </summary>
@@ -75,4 +74,3 @@ namespace Base.Gameplay
             return RandomUtil.GetRandom(buildings);
         }
     }
-} 

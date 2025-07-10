@@ -1,14 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using Base.Core.Components;
-using Base.Core.Managers;
 using TMPro;
 using UnityEngine;
 
 using Random = UnityEngine.Random;
 
-namespace Base.Gameplay
-{
+
     public class Gameplay : MyMonoBehaviour
     {
         [Header("References")]
@@ -39,11 +36,4 @@ namespace Base.Gameplay
         // (Remove all other orchestration/state logic)
     }
 
-}
-    public enum GameState
-    {
-        StartGamePhase = 0,
-        PlayerTurnPhase = 1,
-        CalculateCityPhase = 2,
-        GetCommandmentPhase = 3,
-    }
+

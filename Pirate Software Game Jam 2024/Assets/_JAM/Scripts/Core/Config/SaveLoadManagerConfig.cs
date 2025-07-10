@@ -2,8 +2,6 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Base.Core.Config
-{
     /// <summary>
     /// Configuration data for initializing SaveLoadManager and default settings.
     /// </summary>
@@ -19,8 +17,7 @@ namespace Base.Core.Config
         };
 
         // Public property for backward compatibility
-        public Dictionary DefaultSettings => defaultSettings;
+        public Dictionary<SettingsType, float> DefaultSettings => defaultSettings;
 
         protected override string ConfigFileName => "SaveLoadManagerConfig";
     }
-} 

@@ -1,8 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Base.Core.Managers
-{
+
     /// <summary>
     /// Provides random player names from a list, removing them as they are used.
     /// </summary>
@@ -27,4 +26,3 @@ namespace Base.Core.Managers
         }
         public int Count => _names.Count;
     }
-} 

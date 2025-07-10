@@ -1,12 +1,9 @@
 using System;
 using System.Collections.Generic;
-using Base.Core.Managers;
-using Base.Core.Config;
 using TMPro;
 using UnityEngine;
 
-namespace Base.Gameplay
-{
+
     /// <summary>
     /// Central orchestrator for game state, events, and high-level gameplay coordination.
     /// </summary>
@@ -223,12 +220,3 @@ namespace Base.Gameplay
             followers.Add(citizen);
         }
     }
-
-    public enum GameState
-    {
-        StartGamePhase = 0,
-        PlayerTurnPhase = 1,
-        CalculateCityPhase = 2,
-        GetCommandmentPhase = 3,
-    }
-} 

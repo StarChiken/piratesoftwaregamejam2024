@@ -2,8 +2,6 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Base.Core.Config
-{
     /// <summary>
     /// Configuration data for initializing Devotion.
     /// </summary>
@@ -38,4 +36,3 @@ namespace Base.Core.Config
 
         protected override string ConfigFileName => "DevotionConfig";
     }
-} 

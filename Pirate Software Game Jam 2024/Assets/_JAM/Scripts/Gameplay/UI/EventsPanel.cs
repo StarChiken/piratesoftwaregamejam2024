@@ -3,15 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Base.Gameplay
-{
     /// <summary>
     /// Handles UI logic for switching between event and commandment panels.
     /// </summary>
     public class EventsPanel : MonoBehaviour
     {
-        [SerializeField] private GameObject panelCommandment;
-        [SerializeField] private GameObject panelEvent;
+        [SerializeField] private GameObject m_panelCommandment;
+        [SerializeField] private GameObject m_panelEvent;
         
         /// <summary>
         /// Opens the specified panel type.
@@ -21,22 +19,15 @@ namespace Base.Gameplay
             switch (type)
             {
                 case PanelType.RandomEvent:
-                    panelEvent.SetActive(true);
-                    panelCommandment.SetActive(false);
+                    m_panelEvent.SetActive(true);
+                    m_panelCommandment.SetActive(false);
                     break;
                 case PanelType.ChooseCommandment:
-                    panelEvent.SetActive(false);
-                    panelCommandment.SetActive(true);
+                    m_panelEvent.SetActive(false);
+                    m_panelCommandment.SetActive(true);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(type), type, null);
             }
         }
     }
-
-    public enum PanelType
-    {
-        RandomEvent,
-        ChooseCommandment
-    }
-}

@@ -1,8 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Base.Core.Managers
-{
+
     /// <summary>
     /// Generic provider for random items from a list, removing them as they are used.
     /// </summary>
@@ -41,4 +40,3 @@ namespace Base.Core.Managers
         /// </summary>
         public int Count => _items.Count;
     }
-} 
