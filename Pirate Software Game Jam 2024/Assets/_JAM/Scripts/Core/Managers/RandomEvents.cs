@@ -7,24 +7,24 @@ using System.Collections.Generic;
     /// </summary>
     public class RandomEvents : BaseManager
     {
-        private readonly RandomEventsConfig _config;
-        private GameEventType _currentEvent;
+        private readonly RandomEventsConfig m_config;
+        private GameEventType m_currentEvent;
         
         public RandomEvents(RandomEventsConfig config, Action<BaseManager> onComplete) : base(onComplete)
         {
-            _config = config ?? throw new ArgumentNullException(nameof(config));
+            m_config = config ?? throw new ArgumentNullException(nameof(config));
             OnInitComplete();
         }
         
         public string DoEventGiveDevotionPoints()
         {
             GameManager.Player.Devotion.ChangeDevotionAmount(5);
-            return _config.EventMessages[GameEventType.GiveDevotionPoints];
+            return m_config.EventMessages[GameEventType.GiveDevotionPoints];
         }
 
         public bool CheckEvents()
         {
-            switch (_currentEvent)
+            switch (m_currentEvent)
             {
                 case GameEventType.GiveHappiness:
                     Debug.Log("<color=red>A Random Event Happened!</color>");
@@ -41,7 +41,7 @@ using System.Collections.Generic;
         private bool CheckHappinessEvent()
         {
             int totalHappiness = CalculateTotalHappiness();
-            if (totalHappiness <= _config.HappinessThreshold)
+            if (totalHappiness <= m_config.HappinessThreshold)
             {
                 // Trigger a give happiness event
                 return true;

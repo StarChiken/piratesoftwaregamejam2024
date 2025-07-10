@@ -8,32 +8,32 @@ using Cinemachine;
 public class CameraController : MyMonoBehaviour
 {
     // Config properties
-    private CameraConfig CameraConfig => ConfigManager.Instance.GetConfig<CameraConfig>();
+    private CameraConfig m_cameraConfig => ConfigManager.Instance.GetConfig<CameraConfig>();
 
     [Header("Camera Zoom")]
-    [SerializeField] private CinemachineVirtualCamera cinemachineVirtualCamera;
+    [SerializeField] private CinemachineVirtualCamera m_cinemachineVirtualCamera;
 
-    private float rotateDirection = 0f;
-    private float currentMoveTime;
-    private Vector2 keyboardInputDirection = Vector2.zero;
-    private Vector2 mouseMovementRangeOffset = Vector2.zero;
-    private Vector3 currentVelocity = Vector3.zero;
-    private Rigidbody rb;
+    private float m_rotateDirection = 0f;
+    private float m_currentMoveTime;
+    private Vector2 m_keyboardInputDirection = Vector2.zero;
+    private Vector2 m_mouseMovementRangeOffset = Vector2.zero;
+    private Vector3 m_currentVelocity = Vector3.zero;
+    private Rigidbody m_rb;
 
     private void Start()
     {
-        rb = GetComponent<Rigidbody>();
-        Vector2 mouseMovementRange = new Vector2(Screen.width - (Screen.width / CameraConfig.MouseEdgeMoveRangeRatio), Screen.height - (Screen.height / CameraConfig.MouseEdgeMoveRangeRatio));
-        mouseMovementRangeOffset = new Vector2(mouseMovementRange.x - (Screen.width / 2), mouseMovementRange.y - (Screen.height / 2));
+        m_rb = GetComponent<Rigidbody>();
+        Vector2 mouseMovementRange = new Vector2(Screen.width - (Screen.width / m_cameraConfig.MouseEdgeMoveRangeRatio), Screen.height - (Screen.height / m_cameraConfig.MouseEdgeMoveRangeRatio));
+        m_mouseMovementRangeOffset = new Vector2(mouseMovementRange.x - (Screen.width / 2), mouseMovementRange.y - (Screen.height / 2));
     }
 
     private void Update()
     {
         HandleCameraRotation();
         HandleCameraZoom();
-        MoveCamera(keyboardInputDirection);
+        MoveCamera(m_keyboardInputDirection);
         HandleMouseCameraMove();
-        transform.position = new Vector3(Mathf.Clamp(transform.position.x, CameraConfig.MinXPos, CameraConfig.MaxXPos), transform.position.y, Mathf.Clamp(transform.position.z, CameraConfig.MinZPos, CameraConfig.MaxZPos));
+        transform.position = new Vector3(Mathf.Clamp(transform.position.x, m_cameraConfig.MinXPos, m_cameraConfig.MaxXPos), transform.position.y, Mathf.Clamp(transform.position.z, m_cameraConfig.MinZPos, m_cameraConfig.MaxZPos));
     }
     
     /// <summary>
@@ -41,10 +41,10 @@ public class CameraController : MyMonoBehaviour
     /// </summary>
     private void HandleMouseCameraMove() 
     {
-        if (keyboardInputDirection.magnitude == 0)
+        if (m_keyboardInputDirection.magnitude == 0)
         {
             Vector2 mousePositionOffset = new Vector2(Mouse.current.position.value.x - (Screen.width / 2), Mouse.current.position.value.y - (Screen.height / 2));
-            if (Mathf.Abs(mousePositionOffset.x) > Mathf.Abs(mouseMovementRangeOffset.x) || Mathf.Abs(mousePositionOffset.y) > Mathf.Abs(mouseMovementRangeOffset.y))
+            if (Mathf.Abs(mousePositionOffset.x) > Mathf.Abs(m_mouseMovementRangeOffset.x) || Mathf.Abs(mousePositionOffset.y) > Mathf.Abs(m_mouseMovementRangeOffset.y))
             {
                 MoveCamera(mousePositionOffset);
             }
@@ -57,7 +57,7 @@ public class CameraController : MyMonoBehaviour
     private void MoveCamera(Vector2 moveVector)
     {
         Vector3 moveDir = transform.forward * moveVector.normalized.y + transform.right * moveVector.normalized.x;
-        transform.position = Vector3.SmoothDamp(transform.position, transform.position + moveDir, ref currentVelocity, currentMoveTime);
+        transform.position = Vector3.SmoothDamp(transform.position, transform.position + moveDir, ref m_currentVelocity, m_currentMoveTime);
     }
 
     /// <summary>
@@ -65,7 +65,7 @@ public class CameraController : MyMonoBehaviour
     /// </summary>
     private void HandleCameraRotation()
     {
-        transform.eulerAngles += new Vector3(0, rotateDirection * CameraConfig.RotationSpeed * Time.deltaTime, 0);
+        transform.eulerAngles += new Vector3(0, m_rotateDirection * m_cameraConfig.RotationSpeed * Time.deltaTime, 0);
     }
 
     /// <summary>
@@ -73,10 +73,10 @@ public class CameraController : MyMonoBehaviour
     /// </summary>
     private void HandleCameraZoom()
     {
-        cinemachineVirtualCamera.m_Lens.FieldOfView = Mathf.Lerp(cinemachineVirtualCamera.m_Lens.FieldOfView, CameraConfig.TargetFieldOfView, Time.deltaTime * 5f);
-        float t = (CameraConfig.TargetFieldOfView - CameraConfig.FieldOfViewMin) / (CameraConfig.FieldOfViewMax - CameraConfig.FieldOfViewMin);
-        cinemachineVirtualCamera.GetCinemachineComponent<CinemachineTransposer>().m_FollowOffset.y = Mathf.Lerp(CameraConfig.EndingZoomXOffset, CameraConfig.StartingZoomYOffset, t);
-        currentMoveTime = Mathf.Lerp(CameraConfig.MaxZoomMoveTime, CameraConfig.MinZoomMoveTime, t);
+        m_cinemachineVirtualCamera.m_Lens.FieldOfView = Mathf.Lerp(m_cinemachineVirtualCamera.m_Lens.FieldOfView, m_cameraConfig.TargetFieldOfView, Time.deltaTime * 5f);
+        float t = (m_cameraConfig.TargetFieldOfView - m_cameraConfig.FieldOfViewMin) / (m_cameraConfig.FieldOfViewMax - m_cameraConfig.FieldOfViewMin);
+        m_cinemachineVirtualCamera.GetCinemachineComponent<CinemachineTransposer>().m_FollowOffset.y = Mathf.Lerp(m_cameraConfig.EndingZoomXOffset, m_cameraConfig.StartingZoomYOffset, t);
+        m_currentMoveTime = Mathf.Lerp(m_cameraConfig.MaxZoomMoveTime, m_cameraConfig.MinZoomMoveTime, t);
     }
 
     /// <summary>
@@ -84,7 +84,7 @@ public class CameraController : MyMonoBehaviour
     /// </summary>
     private void OnMovementInputDirection(InputValue inputValue)
     {
-        keyboardInputDirection = inputValue.Get<Vector2>();
+        m_keyboardInputDirection = inputValue.Get<Vector2>();
     }
 
     /// <summary>
@@ -92,7 +92,7 @@ public class CameraController : MyMonoBehaviour
     /// </summary>
     private void OnRotateInputDirection(InputValue inputValue)
     {
-        rotateDirection = inputValue.Get<float>();
+        m_rotateDirection = inputValue.Get<float>();
     }
 
     /// <summary>
@@ -103,12 +103,12 @@ public class CameraController : MyMonoBehaviour
         float scrollYValue = inputValue.Get<float>();
         if (scrollYValue == 1f)
         {
-            CameraConfig.TargetFieldOfView -= 0.5f;
+            m_cameraConfig.TargetFieldOfView -= 0.5f;
         }
         else if (scrollYValue == -1f)
         {
-            CameraConfig.TargetFieldOfView += 0.5f;
+            m_cameraConfig.TargetFieldOfView += 0.5f;
         }
-        CameraConfig.TargetFieldOfView = Mathf.Clamp(CameraConfig.TargetFieldOfView, CameraConfig.FieldOfViewMin, CameraConfig.FieldOfViewMax);
+        m_cameraConfig.TargetFieldOfView = Mathf.Clamp(m_cameraConfig.TargetFieldOfView, m_cameraConfig.FieldOfViewMin, m_cameraConfig.FieldOfViewMax);
     }
 }

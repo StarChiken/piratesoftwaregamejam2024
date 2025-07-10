@@ -11,32 +11,32 @@ public class GenerationTest : MyMonoBehaviour
 {
     // Config properties
     public GameplayConfig GameplayConfig => ConfigManager.Instance.GetConfig<GameplayConfig>();
-    private BuildingConfig BuildingConfig => ConfigManager.Instance.GetConfig<BuildingConfig>();
+    private BuildingConfig m_buildingConfig => ConfigManager.Instance.GetConfig<BuildingConfig>();
 
-    private bool canSpawnTemple = true;
-    private GameObject[] buildings = new GameObject[3];
-    private Material[] buildingMaterials = new Material[4];
-    private GridManager gridManager;
-    private CitizenSpawner citizenSpawner;
-    private PathfindingTest pathfindingScript;
+    private bool m_canSpawnTemple = true;
+    private GameObject[] m_buildings = new GameObject[3];
+    private Material[] m_buildingMaterials = new Material[4];
+    private GridManager m_gridManager;
+    private CitizenSpawner m_citizenSpawner;
+    private PathfindingTest m_pathfindingScript;
 
-    public GridManager GridManager => gridManager;
+    public GridManager GridManager => m_gridManager;
 
     /// <summary>
     /// Unity Start method. Initializes grid, managers, and generates the city grid.
     /// </summary>
     void Start()
     {
-        pathfindingScript = GetComponent<PathfindingTest>();
-        gridManager = new GridManager();
-        citizenSpawner = new CitizenSpawner(BuildingConfig.CitizenPrefab, gridManager, pathfindingScript);
-        buildings[0] = BuildingConfig.Building1x1;
-        buildings[1] = BuildingConfig.Building2x1;
-        buildings[2] = BuildingConfig.BuildingL;
-        buildingMaterials[0] = BuildingConfig.HouseMaterial;
-        buildingMaterials[1] = BuildingConfig.FactionDutyMaterial;
-        buildingMaterials[2] = BuildingConfig.SanityMaterial;
-        buildingMaterials[3] = BuildingConfig.HealthMaterial;
+        m_pathfindingScript = GetComponent<PathfindingTest>();
+        m_gridManager = new GridManager();
+        m_citizenSpawner = new CitizenSpawner(m_buildingConfig.CitizenPrefab, m_gridManager, m_pathfindingScript);
+        m_buildings[0] = m_buildingConfig.Building1x1;
+        m_buildings[1] = m_buildingConfig.Building2x1;
+        m_buildings[2] = m_buildingConfig.BuildingL;
+        m_buildingMaterials[0] = m_buildingConfig.HouseMaterial;
+        m_buildingMaterials[1] = m_buildingConfig.FactionDutyMaterial;
+        m_buildingMaterials[2] = m_buildingConfig.SanityMaterial;
+        m_buildingMaterials[3] = m_buildingConfig.HealthMaterial;
         GenerateGrid(Random.Range(GameplayConfig.MinStartingHouses, GameplayConfig.MaxStartingHouses + 1));
     }
 
@@ -44,7 +44,7 @@ public class GenerationTest : MyMonoBehaviour
     {
         //Testing Temple Choosing
         /*
-        if (canSpawnTemple && Mouse.current.leftButton.wasPressedThisFrame)
+        if (m_canSpawnTemple && Mouse.current.leftButton.wasPressedThisFrame)
         {
             Ray ray = Camera.main.ScreenPointToRay(Mouse.current.position.value);
             RaycastHit hit;
@@ -90,7 +90,7 @@ public class GenerationTest : MyMonoBehaviour
 
                         Destroy(clickedBuilding.buildingObject);
 
-                        canSpawnTemple = false;
+                        m_canSpawnTemple = false;
                         break;
                     }
                 }
@@ -112,9 +112,9 @@ public class GenerationTest : MyMonoBehaviour
                 Vector3 position = new Vector3(x + 0.5f, 0, z + 0.5f);
                 // Randomly pick a building prefab to spawn
                 int randomBuildingIndex = Random.Range(0, 3);
-                GameObject buildingObject = Instantiate(buildings[randomBuildingIndex], position, Quaternion.Euler(90, Random.Range(1, 4) * 90, 0));
+                GameObject buildingObject = Instantiate(m_buildings[randomBuildingIndex], position, Quaternion.Euler(90, Random.Range(1, 4) * 90, 0));
                 int buildingTypeIndex = (buildingsSpawned < houses) ? 0 : Random.Range(1, 4);
-                buildingObject.GetComponent<BuildingObject>().SetRoofMaterial(buildingMaterials[buildingTypeIndex]);
+                buildingObject.GetComponent<BuildingObject>().SetRoofMaterial(m_buildingMaterials[buildingTypeIndex]);
                 Transform[] childObjects = buildingObject.GetComponentsInChildren<Transform>();
                 List<Vector2> buildingChildrenPositions = new();
                 // Collect all grid tile positions for this building
@@ -128,7 +128,7 @@ public class GenerationTest : MyMonoBehaviour
                 }
                 // Create and register the building
                 Building building = BuildingFactory.CreateBuilding($"Grid {x} {z} {(BuildingType)buildingTypeIndex}", buildingChildrenPositions.ToArray(), (BuildingSize)randomBuildingIndex, buildingObject, (BuildingType)buildingTypeIndex);
-                gridManager.AddBuilding(building);
+                m_gridManager.AddBuilding(building);
                 // Spawn citizens for house buildings
                 for (int i = 0; i < childObjects.Length; i++)
                 {
@@ -137,7 +137,7 @@ public class GenerationTest : MyMonoBehaviour
                         Vector3 buildingPosition = childObjects[i].transform.position;
                         if (buildingsSpawned < houses)
                         {
-                            citizenSpawner.SpawnCitizen(buildingPosition, building);
+                            m_citizenSpawner.SpawnCitizen(buildingPosition, building);
                         }
                     }
                 }
@@ -156,6 +156,6 @@ public class GenerationTest : MyMonoBehaviour
     /// <returns>A random Building of the specified type, or null if none exist.</returns>
     public Building GetRandomBuildingByType(BuildingType buildingType)
     {
-        return gridManager.GetRandomBuildingByType(buildingType);
+        return m_gridManager.GetRandomBuildingByType(buildingType);
     }
 }

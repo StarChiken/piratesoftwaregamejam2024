@@ -10,13 +10,13 @@ using System.Collections.Generic;
         public int FactionGiveAmount { get; set; }
         public int FactionAlignment { get; set; }
         public bool InFavor { get; set; }
-        private readonly IGameManager _gameManager;
+        private readonly IGameManager m_gameManager;
 
         public Faction(int factionGiveAmount, IGameManager gameManager = null)
         {
             FactionGiveAmount = factionGiveAmount;
             FactionAlignment = 10;
-            _gameManager = gameManager ?? GameManager.Instance;
+            m_gameManager = gameManager ?? GameManager.Instance;
         }
 
         /// <summary>
@@ -24,7 +24,7 @@ using System.Collections.Generic;
         /// </summary>
         public void DoAction(FactionAction factionAction)
         {
-            FactionActionStrategy.Execute(this, factionAction, _gameManager);
+            FactionActionStrategy.Execute(this, factionAction, m_gameManager);
         }
     }
 

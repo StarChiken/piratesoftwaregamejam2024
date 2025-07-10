@@ -8,8 +8,8 @@ using System.Collections.Generic;
     /// <typeparam name="T">The type of items to provide.</typeparam>
     public class NameProvider<T> where T : class
     {
-        private readonly List<T> _items;
-        private readonly Func<T> _fallbackProvider;
+        private readonly List<T> m_items;
+        private readonly Func<T> m_fallbackProvider;
 
         /// <summary>
         /// Initializes a new NameProvider with a list of items.
@@ -18,8 +18,8 @@ using System.Collections.Generic;
         /// <param name="fallbackProvider">Optional fallback provider when items are exhausted.</param>
         public NameProvider(List<T> items, Func<T> fallbackProvider = null)
         {
-            _items = new List<T>(items);
-            _fallbackProvider = fallbackProvider;
+            m_items = new List<T>(items);
+            m_fallbackProvider = fallbackProvider;
         }
 
         /// <summary>
@@ -28,15 +28,15 @@ using System.Collections.Generic;
         /// <returns>A randomly selected item.</returns>
         public T TakeRandom()
         {
-            if (_items.Count == 0)
+            if (m_items.Count == 0)
             {
-                return _fallbackProvider?.Invoke() ?? throw new InvalidOperationException("No items left to provide.");
+                return m_fallbackProvider?.Invoke() ?? throw new InvalidOperationException("No items left to provide.");
             }
-            return RandomUtil.TakeRandom(_items);
+            return RandomUtil.TakeRandom(m_items);
         }
 
         /// <summary>
         /// Gets the number of remaining items.
         /// </summary>
-        public int Count => _items.Count;
+        public int Count => m_items.Count;
     }

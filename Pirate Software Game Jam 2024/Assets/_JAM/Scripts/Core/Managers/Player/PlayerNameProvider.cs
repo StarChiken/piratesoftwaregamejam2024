@@ -7,22 +7,22 @@ using System.Collections.Generic;
     /// </summary>
     public class PlayerNameProvider
     {
-        private readonly List<string> _names;
+        private readonly List<string> m_names;
         public PlayerNameProvider(List<string> names)
         {
-            _names = new List<string>(names);
+            m_names = new List<string>(names);
         }
         public string TakeRandom()
         {
-            if (_names.Count == 0)
+            if (m_names.Count == 0)
             {
                 // Return a fallback name instead of throwing an exception
                 return "Player" + UnityEngine.Random.Range(1000, 9999);
             }
-            int index = UnityEngine.Random.Range(0, _names.Count);
-            string value = _names[index];
-            _names.RemoveAt(index);
+            int index = UnityEngine.Random.Range(0, m_names.Count);
+            string value = m_names[index];
+            m_names.RemoveAt(index);
             return value;
         }
-        public int Count => _names.Count;
+        public int Count => m_names.Count;
     }

@@ -9,10 +9,10 @@ using UnityEngine;
     public class DevotionConfig : BaseConfig
     {
         [Header("Starting Values")]
-        [SerializeField] private int startingDevotionPoints = 2;
+        [SerializeField] private int m_startingDevotionPoints = 2;
         
         [Header("Miracle Types")]
-        [SerializeField] private List<MiracleType> miracleTypes = new()
+        [SerializeField] private List<MiracleType> m_miracleTypes = new()
         {
             MiracleType.RedBasic, MiracleType.RedIntermediate, MiracleType.RedSuperior,
             MiracleType.BlueBasic, MiracleType.BlueIntermediate, MiracleType.BlueSuperior,
@@ -20,7 +20,7 @@ using UnityEngine;
         };
         
         [Header("Commandment Types")]
-        [SerializeField] private List<CommandmentType> commandmentTypes = new()
+        [SerializeField] private List<CommandmentType> m_commandmentTypes = new()
         {
             CommandmentType.ReadingScripture, CommandmentType.CopyingText, CommandmentType.Research, CommandmentType.Prayer,
             CommandmentType.Confessions, CommandmentType.Exorcism, CommandmentType.Alchemy, CommandmentType.Dance, CommandmentType.Song,
@@ -30,9 +30,9 @@ using UnityEngine;
         };
 
         // Public properties for backward compatibility
-        public int StartingDevotionPoints => startingDevotionPoints;
-        public List<MiracleType> MiracleTypes => miracleTypes;
-        public List<CommandmentType> CommandmentTypes => commandmentTypes;
+        public int StartingDevotionPoints => m_startingDevotionPoints;
+        public List<MiracleType> MiracleTypes => m_miracleTypes;
+        public List<CommandmentType> CommandmentTypes => m_commandmentTypes;
 
         protected override string ConfigFileName => "DevotionConfig";
     }

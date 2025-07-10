@@ -6,7 +6,7 @@ using UnityEngine;
 /// </summary>
 public class Pause : MyMonoBehaviour
 {
-    [SerializeField, Range(0.1f, 2)] private float modifiedScale = 1f;
+    [SerializeField, Range(0.1f, 2)] private float m_modifiedScale = 1f;
 
     private void OnEnable()
     {
@@ -20,6 +20,6 @@ public class Pause : MyMonoBehaviour
 
     private void Update()
     {
-        Time.timeScale = modifiedScale;
+        Time.timeScale = m_modifiedScale;
     }
 }

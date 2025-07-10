@@ -6,10 +6,10 @@ using UnityEngine.UI;
 /// </summary>
 public class ButtonBase : MyMonoBehaviour
 {
-    [SerializeField] private GameObject panel;
-    [SerializeField] private GameObject[] otherPanels;
-    private bool panelState;
-    private float startTime;
+    [SerializeField] private GameObject m_panel;
+    [SerializeField] private GameObject[] m_otherPanels;
+    private bool m_panelState;
+    private float m_startTime;
     
     private void Awake()
     {
@@ -21,26 +21,26 @@ public class ButtonBase : MyMonoBehaviour
     /// </summary>
     public void OpenClosePanel(bool isActive)
     {
-        panel.SetActive(isActive);
-        foreach (var obj in otherPanels)
+        m_panel.SetActive(isActive);
+        foreach (var obj in m_otherPanels)
         {
             if (obj.activeSelf)
             {
                 obj.SetActive(!isActive);
             }
         }
-        panelState = isActive;
+        m_panelState = isActive;
         // Reset open count and start timer when opening the panel
         if (isActive)
         {
-            startTime = Time.time;
+            m_startTime = Time.time;
         }
     }
 
     private void Update()
     {
         // Example: auto-close after 10 seconds (commented out for now)
-        // if (panelState && Time.time - startTime > 10)
+        // if (m_panelState && Time.time - m_startTime > 10)
         //     OpenClosePanel(false);
     }
 }

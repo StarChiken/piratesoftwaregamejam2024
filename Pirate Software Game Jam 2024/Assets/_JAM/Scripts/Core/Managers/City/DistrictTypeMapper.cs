@@ -6,7 +6,7 @@ using System.Collections.Generic;
     /// </summary>
     public static class DistrictTypeMapper
     {
-        private static readonly Dictionary<string, DistrictType> _mapping = new()
+        private static readonly Dictionary<string, DistrictType> s_mapping = new()
         {
             // Entertainment
             { "Tea Garden District", DistrictType.Entertainment },
@@ -35,6 +35,6 @@ using System.Collections.Generic;
         };
         public static DistrictType GetDistrictType(string districtName)
         {
-            return _mapping.TryGetValue(districtName, out var type) ? type : DistrictType.Default;
+            return s_mapping.TryGetValue(districtName, out var type) ? type : DistrictType.Default;
         }
     }

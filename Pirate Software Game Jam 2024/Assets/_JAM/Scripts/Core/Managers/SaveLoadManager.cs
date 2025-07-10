@@ -24,13 +24,13 @@ using UnityEngine;
     /// </summary>
     public class SaveLoadManager : BaseManager
     {
-        private readonly SaveLoadManagerConfig _config;
-        private PlayerSettingsData _playerSettings;
+        private readonly SaveLoadManagerConfig m_config;
+        private PlayerSettingsData m_playerSettings;
         
         public SaveLoadManager(SaveLoadManagerConfig config, Action<BaseManager> onComplete) : base(onComplete)
         {
-            _config = config ?? throw new ArgumentNullException(nameof(config));
-            _playerSettings = new PlayerSettingsData(_config.DefaultSettings);
+            m_config = config ?? throw new ArgumentNullException(nameof(config));
+            m_playerSettings = new PlayerSettingsData(m_config.DefaultSettings);
             OnInitComplete();
         }
         
@@ -44,25 +44,25 @@ using UnityEngine;
         
         public void ChangeValue(float value, SettingsType scoreTypes)
         {
-            if (!_playerSettings.SettingsList.TryGetValue(scoreTypes, out var scoreData))
+            if (!m_playerSettings.SettingsList.TryGetValue(scoreTypes, out var scoreData))
             {
-                _playerSettings.SettingsList.Add(scoreTypes, new SettingsData
+                m_playerSettings.SettingsList.Add(scoreTypes, new SettingsData
                 {
                     SettingsType = scoreTypes,
                     SettingsAmount = 0
                 });
             }
-            _playerSettings.SettingsList[scoreTypes].ChangeAmount(value);
-            SaveData(_playerSettings);
+            m_playerSettings.SettingsList[scoreTypes].ChangeAmount(value);
+            SaveData(m_playerSettings);
         }
         
         public float GetValueAsFloat(SettingsType scoreTypes)
         {
-            if (_playerSettings.SettingsList.TryGetValue(scoreTypes, out var settingsData))
+            if (m_playerSettings.SettingsList.TryGetValue(scoreTypes, out var settingsData))
             {
                 return settingsData.GetSettingsAmountInt();
             }
-            _playerSettings.SettingsList.Add(scoreTypes, new SettingsData{ SettingsType = scoreTypes,SettingsAmount = 0} );
+            m_playerSettings.SettingsList.Add(scoreTypes, new SettingsData{ SettingsType = scoreTypes,SettingsAmount = 0} );
             Debug.Log($"Given key {scoreTypes} was not present in the dictionary, created new and set score to 0.");
             return 0;
         }

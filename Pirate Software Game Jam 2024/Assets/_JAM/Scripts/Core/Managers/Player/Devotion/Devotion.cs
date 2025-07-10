@@ -6,7 +6,7 @@ using System.Collections.Generic;
 /// </summary>
 public static class CommandmentMiracleMapper
 {
-    private static readonly Dictionary<CommandmentType, MiracleType> _mapping = new()
+    private static readonly Dictionary<CommandmentType, MiracleType> s_mapping = new()
     {
         // Red Commandments
         { CommandmentType.Prayer, MiracleType.RedBasic },
@@ -35,7 +35,7 @@ public static class CommandmentMiracleMapper
 
     public static MiracleType GetMiracleType(CommandmentType commandment)
     {
-        return _mapping.TryGetValue(commandment, out var miracleType) 
+        return s_mapping.TryGetValue(commandment, out var miracleType) 
             ? miracleType 
             : throw new ArgumentException($"No miracle type mapped for commandment: {commandment}");
     }
@@ -47,7 +47,7 @@ public static class CommandmentMiracleMapper
 [Serializable]
 public class Devotion
 {
-    private readonly DevotionConfig _config;
+    private readonly DevotionConfig m_config;
     /// <summary>
     /// The current devotion points.
     /// </summary>
@@ -55,13 +55,13 @@ public class Devotion
     /// <summary>
     /// The list of devotion actions for each miracle type.
     /// </summary>
-    public IReadOnlyDictionary<MiracleType, int> DevotionActionsList => _devotionActionsList;
-    private readonly Dictionary<MiracleType, int> _devotionActionsList;
+    public IReadOnlyDictionary<MiracleType, int> DevotionActionsList => m_devotionActionsList;
+    private readonly Dictionary<MiracleType, int> m_devotionActionsList;
     /// <summary>
     /// The list of commandments and their status.
     /// </summary>
-    public IReadOnlyDictionary<CommandmentType, bool> CommandmentsList => _commandmentsList;
-    private readonly Dictionary<CommandmentType, bool> _commandmentsList;
+    public IReadOnlyDictionary<CommandmentType, bool> CommandmentsList => m_commandmentsList;
+    private readonly Dictionary<CommandmentType, bool> m_commandmentsList;
 
     /// <summary>
     /// Initializes a new Devotion system using the provided configuration.
@@ -69,14 +69,14 @@ public class Devotion
     /// <param name="config">Configuration for devotion.</param>
     public Devotion(DevotionConfig config)
     {
-        _config = config ?? throw new ArgumentNullException(nameof(config));
-        DevotionPoints = _config.StartingDevotionPoints;
-        _devotionActionsList = new Dictionary<MiracleType, int>();
-        foreach (var miracle in _config.MiracleTypes)
-            _devotionActionsList[miracle] = 0;
-        _commandmentsList = new Dictionary<CommandmentType, bool>();
-        foreach (var cmd in _config.CommandmentTypes)
-            _commandmentsList[cmd] = false;
+        m_config = config ?? throw new ArgumentNullException(nameof(config));
+        DevotionPoints = m_config.StartingDevotionPoints;
+        m_devotionActionsList = new Dictionary<MiracleType, int>();
+        foreach (var miracle in m_config.MiracleTypes)
+            m_devotionActionsList[miracle] = 0;
+        m_commandmentsList = new Dictionary<CommandmentType, bool>();
+        foreach (var cmd in m_config.CommandmentTypes)
+            m_commandmentsList[cmd] = false;
     }
 
     /// <summary>
@@ -85,8 +85,8 @@ public class Devotion
     public void AddCommandment(CommandmentType commandment)
     {
         var miracleType = CommandmentMiracleMapper.GetMiracleType(commandment);
-        _devotionActionsList[miracleType]++;
-        _commandmentsList[commandment] = true;
+        m_devotionActionsList[miracleType]++;
+        m_commandmentsList[commandment] = true;
     }
 
     /// <summary>
@@ -143,7 +143,7 @@ public class Devotion
     /// </summary>
     public int MiracleFaithAttractionByType(MiracleType type)
     {
-        _devotionActionsList.TryGetValue(type, out int amount);
+        m_devotionActionsList.TryGetValue(type, out int amount);
         return amount;
     }
 

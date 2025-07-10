@@ -13,27 +13,27 @@ using UnityEngine.Serialization;
 /// </summary>
 public class MyGameLoader : MyMonoBehaviour
 {
-    [SerializeField] private TMP_Text TMPText;
-    [SerializeField] private string sceneName;
-    [SerializeField] private Slider sliderFillImage;
-    [SerializeField] private float fillAmountDuration = 0.1f;
-    [SerializeField] private bool isLoading = false;
-    [SerializeField] private int DOValue = 10;
-    [SerializeField] private Image fade;
-    [SerializeField] private GameObject JamLogo;
-    [SerializeField] private GameObject GameLogo;
-    [SerializeField] private GameObject Menu;
-    [SerializeField] private AudioClip Intro;
-    [SerializeField] private AudioClip OpeningLoop;
-    [SerializeField] private AudioClip GameplayLoop;
-    [SerializeField] private AudioClip LoseSound;
-    [SerializeField] private AudioClip WinSound;
-    [SerializeField] private float ShortDuration = 0.5f;
-    [SerializeField] private float LongDuration = 1.5f;
-    private Animator menuAnim;
-    private Animator gameLogoAnim;
-    private AudioComponent audio;
-    private bool doOnce = true;
+    [SerializeField] private TMP_Text m_TMPText;
+    [SerializeField] private string m_sceneName;
+    [SerializeField] private Slider m_sliderFillImage;
+    [SerializeField] private float m_fillAmountDuration = 0.1f;
+    [SerializeField] private bool m_isLoading = false;
+    [SerializeField] private int m_DOValue = 10;
+    [SerializeField] private Image m_fade;
+    [SerializeField] private GameObject m_JamLogo;
+    [SerializeField] private GameObject m_GameLogo;
+    [SerializeField] private GameObject m_Menu;
+    [SerializeField] private AudioClip m_Intro;
+    [SerializeField] private AudioClip m_OpeningLoop;
+    [SerializeField] private AudioClip m_GameplayLoop;
+    [SerializeField] private AudioClip m_LoseSound;
+    [SerializeField] private AudioClip m_WinSound;
+    [SerializeField] private float m_ShortDuration = 0.5f;
+    [SerializeField] private float m_LongDuration = 1.5f;
+    private Animator m_menuAnim;
+    private Animator m_gameLogoAnim;
+    private AudioComponent m_audio;
+    private bool m_doOnce = true;
 
     /// <summary>
     /// Quits the application.
@@ -47,22 +47,22 @@ public class MyGameLoader : MyMonoBehaviour
     {
         DontDestroyOnLoad(this);
         SceneManager.sceneLoaded += FadeOut;
-        audio = GameObject.Find("AudioManager").GetComponent<AudioComponent>();
-        menuAnim = Menu.GetComponent<Animator>();
-        gameLogoAnim = GameLogo.GetComponent<Animator>();
+        m_audio = GameObject.Find("AudioManager").GetComponent<AudioComponent>();
+        m_menuAnim = m_Menu.GetComponent<Animator>();
+        m_gameLogoAnim = m_GameLogo.GetComponent<Animator>();
     }
     
     private void FadeOut(Scene scene, LoadSceneMode mode)
     {
-        if (scene.name == sceneName)
+        if (scene.name == m_sceneName)
         {
-            fade.DOFade(0, 1f);
+            m_fade.DOFade(0, 1f);
         }
     }
     
     private void Update()
     {
-        if (isLoading)
+        if (m_isLoading)
         {
             DoLoadBar();
         }
@@ -71,13 +71,13 @@ public class MyGameLoader : MyMonoBehaviour
 
     private void GamePlaySound()
     {
-        if (SceneManager.GetActiveScene().name == sceneName && doOnce)
+        if (SceneManager.GetActiveScene().name == m_sceneName && m_doOnce)
         {
-            audio.MusicAudioSource.loop = true;
-            audio.MusicAudioSource.volume = 0;
-            audio.PlayBackgroundSound(GameplayLoop);
-            audio.MusicAudioSource.DOFade(1, 5f);
-            doOnce = false;
+            m_audio.MusicAudioSource.loop = true;
+            m_audio.MusicAudioSource.volume = 0;
+            m_audio.PlayBackgroundSound(m_GameplayLoop);
+            m_audio.MusicAudioSource.DOFade(1, 5f);
+            m_doOnce = false;
         }
     }
 
@@ -86,10 +86,10 @@ public class MyGameLoader : MyMonoBehaviour
     /// </summary>
     public void StartButton()
     {
-        audio.MusicAudioSource.DOFade(0, 0.5f).OnComplete(() =>
+        m_audio.MusicAudioSource.DOFade(0, 0.5f).OnComplete(() =>
         {
-            fade.DOFade(1, 1f);
-            SceneManager.LoadScene(sceneName);
+            m_fade.DOFade(1, 1f);
+            SceneManager.LoadScene(m_sceneName);
         });
     }
 
@@ -101,26 +101,26 @@ public class MyGameLoader : MyMonoBehaviour
     private IEnumerator TweenJamLogo()
     {
         yield return new WaitForSeconds(1f);
-        audio.PlayBackgroundSound(Intro);
-        JamLogo.GetComponent<Image>().DOFade(1.0f, ShortDuration);
+        m_audio.PlayBackgroundSound(m_Intro);
+        m_JamLogo.GetComponent<Image>().DOFade(1.0f, m_ShortDuration);
         yield return new WaitForSeconds(1f);
-        JamLogo.GetComponent<Image>().DOFade(0.0f, ShortDuration).OnComplete(TweenGameLogo);
+        m_JamLogo.GetComponent<Image>().DOFade(0.0f, m_ShortDuration).OnComplete(TweenGameLogo);
     }
     
     private void TweenGameLogo()
     {
-        GameLogo.GetComponent<Image>().DOFade(1.0f, LongDuration).OnComplete(CallAnim);
+        m_GameLogo.GetComponent<Image>().DOFade(1.0f, m_LongDuration).OnComplete(CallAnim);
     }
 
     private void CallAnim()
     {
-        menuAnim.SetTrigger("Menu");
-        gameLogoAnim.SetTrigger("Logo");
+        m_menuAnim.SetTrigger("Menu");
+        m_gameLogoAnim.SetTrigger("Logo");
     }
 
     private void DoLoadBar()
     {
-        sliderFillImage.DOValue(DOValue, fillAmountDuration).SetEase(Ease.InBounce);
-        TMPText.text = sceneName == null ? "Loading . . ." : $"Loading {sceneName}";
+        m_sliderFillImage.DOValue(m_DOValue, m_fillAmountDuration).SetEase(Ease.InBounce);
+        m_TMPText.text = m_sceneName == null ? "Loading . . ." : $"Loading {m_sceneName}";
     }
 }

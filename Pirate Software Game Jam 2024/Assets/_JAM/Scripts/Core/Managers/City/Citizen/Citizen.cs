@@ -87,12 +87,12 @@ using Random = UnityEngine.Random;
     public class CitizenFaith
     {
         public Dictionary<FaithType, int> FaithTypeDictionary;
-        private Citizen _thisCitizen;
+        private Citizen m_thisCitizen;
         
         public CitizenFaith(Citizen thisCitizen)
         {
             // Initialize faith types with default values
-            _thisCitizen = thisCitizen;
+            m_thisCitizen = thisCitizen;
             FaithTypeDictionary = new Dictionary<FaithType, int> {
                 {FaithType.PlayerGod, 0},
                 { FaithType.GodOfLore, 0 },
@@ -113,7 +113,7 @@ using Random = UnityEngine.Random;
             };
             
             // Assign faith type values based on the citizen's trait
-            switch (_thisCitizen.FaithAttractionTrait)
+            switch (m_thisCitizen.FaithAttractionTrait)
             {
                 case TraitType.Academic:
                     FaithTypeDictionary[FaithType.GodOfLore] = 3;

@@ -26,11 +26,11 @@ using System.Collections.Generic;
     [Serializable]
     public class City : BaseManager
     {
-        private readonly CityConfig _config;
-        private readonly NameProvider<string> _districtNameProvider;
-        private readonly NameProvider<string> _factionNameProvider;
-        private readonly NameProvider<string> _cityNameProvider;
-        private readonly ICitizenFactory _citizenFactory;
+        private readonly CityConfig m_config;
+        private readonly NameProvider<string> m_districtNameProvider;
+        private readonly NameProvider<string> m_factionNameProvider;
+        private readonly NameProvider<string> m_cityNameProvider;
+        private readonly ICitizenFactory m_citizenFactory;
 
         /// <summary>
         /// The name of the city.
@@ -39,8 +39,8 @@ using System.Collections.Generic;
         /// <summary>
         /// The list of districts in the city.
         /// </summary>
-        public IReadOnlyList<District> Districts => _districts;
-        private readonly List<District> _districts = new();
+        public IReadOnlyList<District> Districts => m_districts;
+        private readonly List<District> m_districts = new();
 
         /// <summary>
         /// Initializes a new City and its districts/factions using the provided configuration.
@@ -50,11 +50,11 @@ using System.Collections.Generic;
         /// <param name="onComplete">Callback when initialization is complete.</param>
         public City(CityConfig config, ICitizenFactory citizenFactory, Action<BaseManager> onComplete) : base(onComplete)
         {
-            _config = config ?? throw new ArgumentNullException(nameof(config));
-            _citizenFactory = citizenFactory ?? throw new ArgumentNullException(nameof(citizenFactory));
-            _districtNameProvider = new NameProvider<string>(_config.DistrictNames, () => "District" + UnityEngine.Random.Range(1000, 9999));
-            _factionNameProvider = new NameProvider<string>(_config.FactionNames, () => "Faction" + UnityEngine.Random.Range(1000, 9999));
-            _cityNameProvider = new NameProvider<string>(_config.CityNames, () => "City" + UnityEngine.Random.Range(1000, 9999));
+            m_config = config ?? throw new ArgumentNullException(nameof(config));
+            m_citizenFactory = citizenFactory ?? throw new ArgumentNullException(nameof(citizenFactory));
+            m_districtNameProvider = new NameProvider<string>(m_config.DistrictNames, () => "District" + UnityEngine.Random.Range(1000, 9999));
+            m_factionNameProvider = new NameProvider<string>(m_config.FactionNames, () => "Faction" + UnityEngine.Random.Range(1000, 9999));
+            m_cityNameProvider = new NameProvider<string>(m_config.CityNames, () => "City" + UnityEngine.Random.Range(1000, 9999));
             InitializeCity();
             OnInitComplete();
         }
@@ -64,16 +64,16 @@ using System.Collections.Generic;
         /// </summary>
         private void InitializeCity()
         {
-            for (int i = 0; i < _config.StartingDistrictsAmount; i++)
+            for (int i = 0; i < m_config.StartingDistrictsAmount; i++)
             {
                 District district = new();
-                district.DistrictName = _districtNameProvider.TakeRandom();
+                district.DistrictName = m_districtNameProvider.TakeRandom();
                 district.DistrictType = DistrictTypeMapper.GetDistrictType(district.DistrictName);
                 PopulateDistrict(district);
-                _districts.Add(district);
+                m_districts.Add(district);
             }
             InitFactions();
-            CityName = _cityNameProvider.TakeRandom();
+            CityName = m_cityNameProvider.TakeRandom();
         }
 
         /// <summary>
@@ -81,10 +81,10 @@ using System.Collections.Generic;
         /// </summary>
         private void InitFactions()
         {
-            foreach (var district in _districts)
+            foreach (var district in m_districts)
             {
-                district.DistrictFaction = new Faction(_config.StartingFactionGiveAmount);
-                district.DistrictFaction.FactionName = _factionNameProvider.TakeRandom();
+                district.DistrictFaction = new Faction(m_config.StartingFactionGiveAmount);
+                district.DistrictFaction.FactionName = m_factionNameProvider.TakeRandom();
             }
         }
 
@@ -94,9 +94,9 @@ using System.Collections.Generic;
         /// <param name="district">The district to populate.</param>
         private void PopulateDistrict(District district)
         {
-            for (int i = 0; i < _config.StartingCitizenAmountPerDistrict; i++)
+            for (int i = 0; i < m_config.StartingCitizenAmountPerDistrict; i++)
             {
-                Citizen citizen = _citizenFactory.CreateCitizen();
+                Citizen citizen = m_citizenFactory.CreateCitizen();
                 district.DistrictPopulace.Add(citizen);
             }
         }

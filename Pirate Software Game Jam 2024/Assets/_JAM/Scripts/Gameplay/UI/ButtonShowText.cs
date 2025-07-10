@@ -8,13 +8,13 @@ using UnityEngine.EventSystems;
 /// </summary>
 public class ButtonShowText : MyMonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
-    [SerializeField] private Button button;
-    [SerializeField] private TextMeshProUGUI text;
-    [SerializeField] private string actionName;
+    [SerializeField] private Button m_button;
+    [SerializeField] private TextMeshProUGUI m_text;
+    [SerializeField] private string m_actionName;
 
     private void Start()
     {
-        button = GetComponent<Button>();
+        m_button = GetComponent<Button>();
     }
 
     /// <summary>
@@ -22,7 +22,7 @@ public class ButtonShowText : MyMonoBehaviour, IPointerEnterHandler, IPointerExi
     /// </summary>
     public void OnPointerEnter(PointerEventData eventData)
     {
-        text.text = actionName;
+        m_text.text = m_actionName;
     }
 
     /// <summary>
@@ -30,6 +30,6 @@ public class ButtonShowText : MyMonoBehaviour, IPointerEnterHandler, IPointerExi
     /// </summary>
     public void OnPointerExit(PointerEventData eventData)
     {
-        text.text = "";
+        m_text.text = "";
     }
 }
