@@ -13,23 +13,23 @@ using UnityEngine.Serialization;
 /// </summary>
 public class MyGameLoader : MyMonoBehaviour
 {
-    [SerializeField] private TMP_Text m_TMPText;
-    [SerializeField] private string m_sceneName;
-    [SerializeField] private Slider m_sliderFillImage;
-    [SerializeField] private float m_fillAmountDuration = 0.1f;
-    [SerializeField] private bool m_isLoading = false;
-    [SerializeField] private int m_DOValue = 10;
-    [SerializeField] private Image m_fade;
-    [SerializeField] private GameObject m_JamLogo;
-    [SerializeField] private GameObject m_GameLogo;
-    [SerializeField] private GameObject m_Menu;
-    [SerializeField] private AudioClip m_Intro;
-    [SerializeField] private AudioClip m_OpeningLoop;
-    [SerializeField] private AudioClip m_GameplayLoop;
-    [SerializeField] private AudioClip m_LoseSound;
-    [SerializeField] private AudioClip m_WinSound;
-    [SerializeField] private float m_ShortDuration = 0.5f;
-    [SerializeField] private float m_LongDuration = 1.5f;
+    [SerializeField, Tooltip("Text component for loading display")] private TMP_Text m_TMPText;
+    [SerializeField, Tooltip("Name of the scene to load")] private string m_sceneName;
+    [SerializeField, Tooltip("Slider for loading bar fill")] private Slider m_sliderFillImage;
+    [SerializeField, Tooltip("Duration for fill amount animation")] private float m_fillAmountDuration = 0.1f;
+    [SerializeField, Tooltip("Whether the game is currently loading")] private bool m_isLoading = false;
+    [SerializeField, Tooltip("Value to set for loading bar animation")] private int m_DOValue = 10;
+    [SerializeField, Tooltip("Image for fade transitions")] private Image m_fade;
+    [SerializeField, Tooltip("Jam logo GameObject")] private GameObject m_JamLogo;
+    [SerializeField, Tooltip("Game logo GameObject")] private GameObject m_GameLogo;
+    [SerializeField, Tooltip("Menu GameObject")] private GameObject m_Menu;
+    [SerializeField, Tooltip("Intro audio clip")] private AudioClip m_Intro;
+    [SerializeField, Tooltip("Opening loop audio clip")] private AudioClip m_OpeningLoop;
+    [SerializeField, Tooltip("Gameplay loop audio clip")] private AudioClip m_GameplayLoop;
+    [SerializeField, Tooltip("Lose sound audio clip")] private AudioClip m_LoseSound;
+    [SerializeField, Tooltip("Win sound audio clip")] private AudioClip m_WinSound;
+    [SerializeField, Tooltip("Short duration for animations")] private float m_ShortDuration = 0.5f;
+    [SerializeField, Tooltip("Long duration for animations")] private float m_LongDuration = 1.5f;
     private Animator m_menuAnim;
     private Animator m_gameLogoAnim;
     private AudioComponent m_audio;
@@ -47,9 +47,19 @@ public class MyGameLoader : MyMonoBehaviour
     {
         DontDestroyOnLoad(this);
         SceneManager.sceneLoaded += FadeOut;
-        m_audio = GameObject.Find("AudioManager").GetComponent<AudioComponent>();
-        m_menuAnim = m_Menu.GetComponent<Animator>();
-        m_gameLogoAnim = m_GameLogo.GetComponent<Animator>();
+        var audioManagerObj = GameObject.Find("AudioManager");
+        if (audioManagerObj != null && audioManagerObj.TryGetComponent<AudioComponent>(out var audioComponent))
+            m_audio = audioComponent;
+        else
+            Debug.LogError("AudioManager or AudioComponent missing!");
+        if (m_Menu != null && m_Menu.TryGetComponent<Animator>(out var menuAnim))
+            m_menuAnim = menuAnim;
+        else
+            Debug.LogError("Menu GameObject or Animator missing!");
+        if (m_GameLogo != null && m_GameLogo.TryGetComponent<Animator>(out var gameLogoAnim))
+            m_gameLogoAnim = gameLogoAnim;
+        else
+            Debug.LogError("GameLogo GameObject or Animator missing!");
     }
     
     private void FadeOut(Scene scene, LoadSceneMode mode)
@@ -102,14 +112,23 @@ public class MyGameLoader : MyMonoBehaviour
     {
         yield return new WaitForSeconds(1f);
         m_audio.PlayBackgroundSound(m_Intro);
-        m_JamLogo.GetComponent<Image>().DOFade(1.0f, m_ShortDuration);
+        if (m_JamLogo != null && m_JamLogo.TryGetComponent<Image>(out var jamLogoImage))
+            jamLogoImage.DOFade(1.0f, m_ShortDuration);
+        else
+            Debug.LogError("JamLogo GameObject or Image missing!");
         yield return new WaitForSeconds(1f);
-        m_JamLogo.GetComponent<Image>().DOFade(0.0f, m_ShortDuration).OnComplete(TweenGameLogo);
+        if (m_JamLogo != null && m_JamLogo.TryGetComponent<Image>(out var jamLogoImage2))
+            jamLogoImage2.DOFade(0.0f, m_ShortDuration).OnComplete(TweenGameLogo);
+        else
+            Debug.LogError("JamLogo GameObject or Image missing!");
     }
     
     private void TweenGameLogo()
     {
-        m_GameLogo.GetComponent<Image>().DOFade(1.0f, m_LongDuration).OnComplete(CallAnim);
+        if (m_GameLogo != null && m_GameLogo.TryGetComponent<Image>(out var gameLogoImage))
+            gameLogoImage.DOFade(1.0f, m_LongDuration).OnComplete(CallAnim);
+        else
+            Debug.LogError("GameLogo GameObject or Image missing!");
     }
 
     private void CallAnim()

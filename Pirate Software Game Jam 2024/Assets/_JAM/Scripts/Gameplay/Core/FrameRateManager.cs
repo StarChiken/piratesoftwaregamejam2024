@@ -13,7 +13,10 @@ public class FrameRateManager : MyMonoBehaviour
 
     private void Start()
     {
-        textMesh = GetComponent<TextMeshProUGUI>();
+        if (!TryGetComponent<TextMeshProUGUI>(out textMesh))
+        {
+            Debug.LogError("TextMeshProUGUI component is missing from FrameRateManager.");
+        }
     }
 
     private void Update()

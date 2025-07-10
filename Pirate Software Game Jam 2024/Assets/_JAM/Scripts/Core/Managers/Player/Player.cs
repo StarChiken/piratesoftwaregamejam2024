@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 /// <summary>
 /// Manages player data, followers, devotion, and resources.
@@ -10,6 +11,8 @@ public class Player : BaseManager
     private readonly PlayerConfig _config;
     private readonly NameProvider<string> _nameProvider;
     private readonly ICitizenFactory _citizenFactory;
+    [SerializeField, Tooltip("Reference to the ConfigManager for player initialization")]
+    private ConfigManager m_configManager;
 
     /// <summary>
     /// The player's character name.
@@ -48,7 +51,7 @@ public class Player : BaseManager
         }
         
         // Load devotion config from ScriptableObject
-        var devotionConfig = ConfigManager.Instance.GetConfig<DevotionConfig>();
+        var devotionConfig = m_configManager.GetConfig<DevotionConfig>();
         Devotion = new Devotion(devotionConfig);
         CharacterName = _nameProvider.TakeRandom();
         OnInitComplete();

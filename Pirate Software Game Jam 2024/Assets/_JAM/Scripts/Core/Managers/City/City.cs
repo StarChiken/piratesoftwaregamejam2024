@@ -50,6 +50,8 @@ using System.Collections.Generic;
         /// <param name="onComplete">Callback when initialization is complete.</param>
         public City(CityConfig config, ICitizenFactory citizenFactory, Action<BaseManager> onComplete) : base(onComplete)
         {
+            if (onComplete == null)
+                throw new ArgumentNullException(nameof(onComplete), "Completion callback cannot be null.");
             m_config = config ?? throw new ArgumentNullException(nameof(config));
             m_citizenFactory = citizenFactory ?? throw new ArgumentNullException(nameof(citizenFactory));
             m_districtNameProvider = new NameProvider<string>(m_config.DistrictNames, () => "District" + UnityEngine.Random.Range(1000, 9999));
@@ -83,7 +85,7 @@ using System.Collections.Generic;
         {
             foreach (var district in m_districts)
             {
-                district.DistrictFaction = new Faction(m_config.StartingFactionGiveAmount);
+                district.DistrictFaction = new Faction(m_config.StartingFactionGiveAmount, m_gameManager);
                 district.DistrictFaction.FactionName = m_factionNameProvider.TakeRandom();
             }
         }
@@ -94,6 +96,8 @@ using System.Collections.Generic;
         /// <param name="district">The district to populate.</param>
         private void PopulateDistrict(District district)
         {
+            if (district == null)
+                throw new ArgumentNullException(nameof(district), "District cannot be null.");
             for (int i = 0; i < m_config.StartingCitizenAmountPerDistrict; i++)
             {
                 Citizen citizen = m_citizenFactory.CreateCitizen();

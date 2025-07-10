@@ -16,6 +16,13 @@ namespace Base.Core.Config.Editor
         private DropdownField categoryDropdown;
         private List<BaseConfig> allConfigs = new();
         private List<BaseConfig> filteredConfigs = new();
+        private ConfigManager m_configManager;
+
+        public static void SetConfigManager(ConfigManager configManager)
+        {
+            // Allow injection from editor setup or test harness
+            m_configManager = configManager;
+        }
 
         [MenuItem("Tools/Game Configs")]
         public static void ShowWindow()
@@ -173,7 +180,15 @@ namespace Base.Core.Config.Editor
 
         private void RefreshConfigs()
         {
-            allConfigs = ConfigManager.GetAllConfigs();
+            if (m_configManager == null)
+            {
+                Debug.LogError("ConfigManager instance not set in ConfigEditorWindow. Please inject via SetConfigManager().");
+                allConfigs = new List<BaseConfig>();
+            }
+            else
+            {
+                allConfigs = m_configManager.GetAllConfigs();
+            }
             FilterConfigs();
         }
 

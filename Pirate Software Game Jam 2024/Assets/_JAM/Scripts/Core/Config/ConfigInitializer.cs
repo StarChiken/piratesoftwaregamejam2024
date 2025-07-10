@@ -8,6 +8,7 @@ public class ConfigInitializer : MonoBehaviour
     [Header("Auto Initialization")]
     [SerializeField] private bool autoInitializeOnStart = true;
     [SerializeField] private bool preloadAllConfigs = true;
+    [SerializeField] private ConfigManager m_configManager;
 
     private void Start()
     {
@@ -23,7 +24,7 @@ public class ConfigInitializer : MonoBehaviour
     public void InitializeConfigSystem()
     {
         // Ensure ConfigManager instance exists
-        var configManager = ConfigManager.Instance;
+        var configManager = m_configManager;
         
         if (preloadAllConfigs)
         {
@@ -42,7 +43,7 @@ public class ConfigInitializer : MonoBehaviour
     [ContextMenu("Preload All Configs")]
     public void PreloadAllConfigs()
     {
-        ConfigManager.Instance.PreloadAllConfigs();
+        m_configManager.PreloadAllConfigs();
         Debug.Log("All configs preloaded manually.");
     }
 
@@ -52,7 +53,7 @@ public class ConfigInitializer : MonoBehaviour
     [ContextMenu("Clear Config Cache")]
     public void ClearConfigCache()
     {
-        ConfigManager.Instance.ClearCache();
+        m_configManager.ClearCache();
         Debug.Log("Config cache cleared.");
     }
 } 

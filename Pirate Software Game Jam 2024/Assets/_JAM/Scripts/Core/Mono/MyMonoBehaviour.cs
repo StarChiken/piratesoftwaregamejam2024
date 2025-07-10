@@ -16,7 +16,7 @@ public class MyMonoBehaviour : MonoBehaviour
         {
             try
             {
-                var gameManager = GameManager.Instance;
+                var gameManager = GameManager;
                 if (gameManager == null)
                 {
                     throw new System.InvalidOperationException("GameManager instance is null. Ensure it's properly initialized.");
@@ -58,7 +58,7 @@ public class MyMonoBehaviour : MonoBehaviour
     {
         try
         {
-            var gameManager = GameManager.Instance;
+            var gameManager = GameManager;
             if (gameManager == null)
             {
                 Debug.LogWarning("GameManager is not initialized. Some functionality may not work correctly.");

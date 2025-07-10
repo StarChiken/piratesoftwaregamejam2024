@@ -18,7 +18,7 @@ using System.Collections.Generic;
         
         public string DoEventGiveDevotionPoints()
         {
-            GameManager.Player.Devotion.ChangeDevotionAmount(5);
+            m_gameManager.Player.Devotion.ChangeDevotionAmount(5);
             return m_config.EventMessages[GameEventType.GiveDevotionPoints];
         }
 
@@ -52,7 +52,7 @@ using System.Collections.Generic;
         private int CalculateTotalHappiness()
         {
             int totalHappiness = 0;
-            var districts = GameManager.City.Districts;
+            var districts = m_gameManager.City.Districts;
             foreach (var district in districts)
             {
                 var districtPop = district.DistrictPopulace;

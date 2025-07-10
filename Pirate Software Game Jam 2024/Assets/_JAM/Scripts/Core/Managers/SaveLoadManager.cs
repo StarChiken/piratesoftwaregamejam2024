@@ -36,6 +36,8 @@ using UnityEngine;
         
         public void SaveData(ISaveData saveData)
         {
+            if (saveData == null)
+                throw new ArgumentNullException(nameof(saveData), "Save data cannot be null.");
             var typeName = saveData.GetType().FullName;
             var savePath = $"{Application.persistentDataPath}/{typeName}.SaveFile";
             //var dataText = JsonConvert.SerializeObject(saveData);

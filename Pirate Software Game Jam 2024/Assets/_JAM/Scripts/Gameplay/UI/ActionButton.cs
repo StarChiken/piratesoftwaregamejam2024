@@ -87,8 +87,7 @@ public class ActionButton : MyMonoBehaviour
 
         if (m_button == null)
         {
-            m_button = GetComponent<Button>();
-            if (m_button == null)
+            if (!TryGetComponent<Button>(out m_button))
             {
                 Debug.LogError("Button component is missing from ActionButton. Adding RequireComponent should prevent this.");
             }

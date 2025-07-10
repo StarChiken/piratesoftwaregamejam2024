@@ -18,6 +18,8 @@ using System.Collections.Generic;
         /// <param name="fallbackProvider">Optional fallback provider when items are exhausted.</param>
         public NameProvider(List<T> items, Func<T> fallbackProvider = null)
         {
+            if (items == null)
+                throw new ArgumentNullException(nameof(items), "Items list cannot be null.");
             m_items = new List<T>(items);
             m_fallbackProvider = fallbackProvider;
         }

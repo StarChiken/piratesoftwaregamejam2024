@@ -8,13 +8,16 @@ using UnityEngine.EventSystems;
 /// </summary>
 public class ButtonShowText : MyMonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
-    [SerializeField] private Button m_button;
-    [SerializeField] private TextMeshProUGUI m_text;
-    [SerializeField] private string m_actionName;
+    [SerializeField, Tooltip("Button to show text")] private Button m_button;
+    [SerializeField, Tooltip("Text component to display action name")] private TextMeshProUGUI m_text;
+    [SerializeField, Tooltip("Action name to display on hover")] private string m_actionName;
 
     private void Start()
     {
-        m_button = GetComponent<Button>();
+        if (!TryGetComponent<Button>(out m_button))
+        {
+            Debug.LogError("Button component is missing from ButtonShowText.");
+        }
     }
 
     /// <summary>

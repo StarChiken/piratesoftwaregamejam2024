@@ -18,9 +18,11 @@ public class Map : MonoBehaviour
     [Header("Variation State")]
     [SerializeField] private PaddingVariationState paddingState;
 
+    [SerializeField] private ConfigManager m_configManager;
+
     // Config properties
-    private GameplayConfig GameplayConfig => ConfigManager.Instance.GetConfig<GameplayConfig>();
-    private BuildingConfig BuildingConfig => ConfigManager.Instance.GetConfig<BuildingConfig>();
+    private GameplayConfig GameplayConfig => m_configManager.GetConfig<GameplayConfig>();
+    private BuildingConfig BuildingConfig => m_configManager.GetConfig<BuildingConfig>();
 
     /// <summary>
     /// Enumeration of different variations on padding amount.
@@ -72,7 +74,14 @@ public class Map : MonoBehaviour
                 List<int> randomList = new() { 90, 180, 270 };
                 int randomYIndex = Random.Range(0, randomList.Count);
                 int randomY = randomList[randomYIndex];
-                obj.gameObject.GetComponent<Transform>().eulerAngles = new Vector3(0, randomY, 0);
+                if (obj.gameObject.TryGetComponent<Transform>(out var objTransform))
+                {
+                    objTransform.eulerAngles = new Vector3(0, randomY, 0);
+                }
+                else
+                {
+                    Debug.LogError($"Transform component missing on {obj.name}");
+                }
                 Color districtColor = GetDistrictColor(i);
                 //obj.gameObject.GetComponent<Renderer>().material.color = districtColor; 
             }

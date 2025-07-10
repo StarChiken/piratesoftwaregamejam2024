@@ -8,7 +8,8 @@ using Cinemachine;
 public class CameraController : MyMonoBehaviour
 {
     // Config properties
-    private CameraConfig m_cameraConfig => ConfigManager.Instance.GetConfig<CameraConfig>();
+    [SerializeField] private ConfigManager m_configManager;
+    private CameraConfig m_cameraConfig => m_configManager.GetConfig<CameraConfig>();
 
     [Header("Camera Zoom")]
     [SerializeField] private CinemachineVirtualCamera m_cinemachineVirtualCamera;
@@ -22,7 +23,10 @@ public class CameraController : MyMonoBehaviour
 
     private void Start()
     {
-        m_rb = GetComponent<Rigidbody>();
+        if (!TryGetComponent<Rigidbody>(out m_rb))
+        {
+            Debug.LogError("Rigidbody component is missing from CameraController.");
+        }
         Vector2 mouseMovementRange = new Vector2(Screen.width - (Screen.width / m_cameraConfig.MouseEdgeMoveRangeRatio), Screen.height - (Screen.height / m_cameraConfig.MouseEdgeMoveRangeRatio));
         m_mouseMovementRangeOffset = new Vector2(mouseMovementRange.x - (Screen.width / 2), mouseMovementRange.y - (Screen.height / 2));
     }

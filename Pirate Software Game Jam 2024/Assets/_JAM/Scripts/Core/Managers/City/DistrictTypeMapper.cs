@@ -35,6 +35,8 @@ using System.Collections.Generic;
         };
         public static DistrictType GetDistrictType(string districtName)
         {
+            if (string.IsNullOrEmpty(districtName))
+                throw new ArgumentNullException(nameof(districtName), "District name cannot be null or empty.");
             return s_mapping.TryGetValue(districtName, out var type) ? type : DistrictType.Default;
         }
     }

@@ -11,6 +11,8 @@ namespace Base.Core.Config.Editor
     [CustomEditor(typeof(BaseConfig), true)]
     public class BaseConfigInspector : UnityEditor.Editor
     {
+        [SerializeField] private ConfigManager m_configManager;
+
         public override VisualElement CreateInspectorGUI()
         {
             var root = new VisualElement();
@@ -72,11 +74,11 @@ namespace Base.Core.Config.Editor
             infoContainer.Add(new Label($"Asset Path: {AssetDatabase.GetAssetPath(config)}"));
             infoContainer.Add(new Label($"Config File Name: {config.GetType().Name}"));
             
-            var isLoaded = ConfigManager.Instance != null;
+            var isLoaded = m_configManager != null;
             if (isLoaded)
             {
                 var method = typeof(ConfigManager).GetMethod("GetConfig").MakeGenericMethod(config.GetType());
-                var loadedConfig = method.Invoke(ConfigManager.Instance, null) as BaseConfig;
+                var loadedConfig = method.Invoke(m_configManager, null) as BaseConfig;
                 isLoaded = loadedConfig != null;
                 infoContainer.Add(new Label($"Loaded Config: {loadedConfig?.name ?? "None"}"));
             }

@@ -9,6 +9,8 @@ public class BaseManager
 {
     #region Fields
     private readonly Action<BaseManager> m_onCompleteAction;
+    [SerializeField, Tooltip("Reference to the GameManager for this manager")]
+    protected GameManager m_gameManager;
     #endregion
 
     #region Properties
@@ -22,12 +24,11 @@ public class BaseManager
         {
             try
             {
-                var gameManager = GameManager.Instance;
-                if (gameManager == null)
+                if (m_gameManager == null)
                 {
                     throw new System.InvalidOperationException("GameManager instance is null. Ensure it's properly initialized.");
                 }
-                return gameManager;
+                return m_gameManager;
             }
             catch (System.Exception ex)
             {

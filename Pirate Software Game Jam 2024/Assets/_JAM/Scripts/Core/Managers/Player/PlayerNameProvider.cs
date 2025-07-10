@@ -10,6 +10,8 @@ using System.Collections.Generic;
         private readonly List<string> m_names;
         public PlayerNameProvider(List<string> names)
         {
+            if (names == null)
+                throw new ArgumentNullException(nameof(names), "Names list cannot be null.");
             m_names = new List<string>(names);
         }
         public string TakeRandom()

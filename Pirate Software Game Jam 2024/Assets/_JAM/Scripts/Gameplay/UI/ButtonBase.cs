@@ -6,8 +6,8 @@ using UnityEngine.UI;
 /// </summary>
 public class ButtonBase : MyMonoBehaviour
 {
-    [SerializeField] private GameObject m_panel;
-    [SerializeField] private GameObject[] m_otherPanels;
+    [SerializeField, Tooltip("Panel to open/close")] private GameObject m_panel;
+    [SerializeField, Tooltip("Other panels to manage")] private GameObject[] m_otherPanels;
     private bool m_panelState;
     private float m_startTime;
     

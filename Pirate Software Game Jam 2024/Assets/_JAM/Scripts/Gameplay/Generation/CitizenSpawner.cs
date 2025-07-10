@@ -32,10 +32,17 @@ public class CitizenSpawner
     public void SpawnCitizen(Vector3 position, Building building)
     {
         var citizenObj = Object.Instantiate(_citizenPrefab, position, Quaternion.identity, _parent);
-        var citizenAgent = citizenObj.GetComponent<CitizenAgent>();
-        citizenAgent.Init(_gridManager, _pathfindingTest);
-        citizenAgent.citizen = new Citizen();
-        citizenAgent.citizen.housePosition = new Vector2(position.x, position.z);
-        // Optionally, add the citizen to the building's population list here
+        CitizenAgent citizenAgent;
+        if (citizenObj.TryGetComponent<CitizenAgent>(out citizenAgent))
+        {
+            citizenAgent.Init(_gridManager, _pathfindingTest);
+            citizenAgent.citizen = new Citizen();
+            citizenAgent.citizen.housePosition = new Vector2(position.x, position.z);
+            // Optionally, add the citizen to the building's population list here
+        }
+        else
+        {
+            Debug.LogError($"CitizenAgent component missing on {citizenObj.name}");
+        }
     }
 } 

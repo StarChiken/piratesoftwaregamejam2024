@@ -10,8 +10,9 @@ using UnityEngine.InputSystem;
 public class GenerationTest : MyMonoBehaviour
 {
     // Config properties
-    public GameplayConfig GameplayConfig => ConfigManager.Instance.GetConfig<GameplayConfig>();
-    private BuildingConfig m_buildingConfig => ConfigManager.Instance.GetConfig<BuildingConfig>();
+    [SerializeField] private ConfigManager m_configManager;
+    public GameplayConfig GameplayConfig => m_configManager.GetConfig<GameplayConfig>();
+    private BuildingConfig m_buildingConfig => m_configManager.GetConfig<BuildingConfig>();
 
     private bool m_canSpawnTemple = true;
     private GameObject[] m_buildings = new GameObject[3];
@@ -27,7 +28,10 @@ public class GenerationTest : MyMonoBehaviour
     /// </summary>
     void Start()
     {
-        m_pathfindingScript = GetComponent<PathfindingTest>();
+        if (!TryGetComponent<PathfindingTest>(out m_pathfindingScript))
+        {
+            Debug.LogError("PathfindingTest component is missing from GenerationTest.");
+        }
         m_gridManager = new GridManager();
         m_citizenSpawner = new CitizenSpawner(m_buildingConfig.CitizenPrefab, m_gridManager, m_pathfindingScript);
         m_buildings[0] = m_buildingConfig.Building1x1;
@@ -114,7 +118,15 @@ public class GenerationTest : MyMonoBehaviour
                 int randomBuildingIndex = Random.Range(0, 3);
                 GameObject buildingObject = Instantiate(m_buildings[randomBuildingIndex], position, Quaternion.Euler(90, Random.Range(1, 4) * 90, 0));
                 int buildingTypeIndex = (buildingsSpawned < houses) ? 0 : Random.Range(1, 4);
-                buildingObject.GetComponent<BuildingObject>().SetRoofMaterial(m_buildingMaterials[buildingTypeIndex]);
+                BuildingObject buildingObjComponent;
+                if (buildingObject.TryGetComponent<BuildingObject>(out buildingObjComponent))
+                {
+                    buildingObjComponent.SetRoofMaterial(m_buildingMaterials[buildingTypeIndex]);
+                }
+                else
+                {
+                    Debug.LogError($"BuildingObject component missing on {buildingObject.name}");
+                }
                 Transform[] childObjects = buildingObject.GetComponentsInChildren<Transform>();
                 List<Vector2> buildingChildrenPositions = new();
                 // Collect all grid tile positions for this building

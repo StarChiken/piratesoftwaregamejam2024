@@ -10,7 +10,7 @@ public class ConfigManager : MonoBehaviour
 {
     #region Fields
     [SerializeField, Tooltip("Reference to the ConfigManager instance for dependency injection")]
-    private static ConfigManager s_instance;
+    private ConfigManager m_instance;
     
     private readonly Dictionary<Type, BaseConfig> m_configCache = new();
     #endregion
@@ -19,23 +19,23 @@ public class ConfigManager : MonoBehaviour
     /// <summary>
     /// Gets the ConfigManager instance. Must be set via dependency injection.
     /// </summary>
-    public static ConfigManager Instance
+    public ConfigManager Instance
     {
         get
         {
-            if (s_instance == null)
+            if (m_instance == null)
             {
                 Debug.LogError("ConfigManager instance is null! Ensure it's properly initialized via dependency injection.");
             }
-            return s_instance;
+            return m_instance;
         }
         set
         {
-            if (s_instance != null && s_instance != value)
+            if (m_instance != null && m_instance != value)
             {
                 Debug.LogWarning("ConfigManager instance is being overwritten. This may indicate a setup issue.");
             }
-            s_instance = value;
+            m_instance = value;
         }
     }
     #endregion
@@ -43,12 +43,12 @@ public class ConfigManager : MonoBehaviour
     #region Unity Lifecycle
     private void Awake()
     {
-        if (s_instance == null)
+        if (m_instance == null)
         {
-            s_instance = this;
+            m_instance = this;
             DontDestroyOnLoad(gameObject);
         }
-        else if (s_instance != this)
+        else if (m_instance != this)
         {
             Debug.LogWarning("Multiple ConfigManager instances detected. Destroying duplicate.");
             Destroy(gameObject);
@@ -57,9 +57,9 @@ public class ConfigManager : MonoBehaviour
 
     private void OnDestroy()
     {
-        if (s_instance == this)
+        if (m_instance == this)
         {
-            s_instance = null;
+            m_instance = null;
         }
     }
     #endregion
@@ -73,7 +73,7 @@ public class ConfigManager : MonoBehaviour
     /// <exception cref="InvalidOperationException">Thrown when ConfigManager is not initialized.</exception>
     public T GetConfig<T>() where T : BaseConfig
     {
-        if (s_instance == null)
+        if (m_instance == null)
         {
             throw new InvalidOperationException("ConfigManager is not initialized. Ensure it's properly set up.");
         }
@@ -121,7 +121,7 @@ public class ConfigManager : MonoBehaviour
             throw new ArgumentNullException(nameof(configName), "Config name cannot be null or empty.");
         }
 
-        if (s_instance == null)
+        if (m_instance == null)
         {
             throw new InvalidOperationException("ConfigManager is not initialized. Ensure it's properly set up.");
         }
@@ -191,9 +191,9 @@ public class ConfigManager : MonoBehaviour
     /// </summary>
     /// <returns>A list of all loaded configs.</returns>
     /// <exception cref="InvalidOperationException">Thrown when ConfigManager is not initialized.</exception>
-    public static List<BaseConfig> GetAllConfigs()
+    public List<BaseConfig> GetAllConfigs()
     {
-        if (s_instance == null)
+        if (m_instance == null)
         {
             throw new InvalidOperationException("ConfigManager is not initialized. Ensure it's properly set up.");
         }
@@ -203,16 +203,15 @@ public class ConfigManager : MonoBehaviour
         try
         {
             // Load all known config types
-            var instance = Instance;
-            configs.Add(instance.GetConfig<CityConfig>());
-            configs.Add(instance.GetConfig<PlayerConfig>());
-            configs.Add(instance.GetConfig<DevotionConfig>());
-            configs.Add(instance.GetConfig<SaveLoadManagerConfig>());
-            configs.Add(instance.GetConfig<RandomEventsConfig>());
-            configs.Add(instance.GetConfig<GameplayConfig>());
-            configs.Add(instance.GetConfig<BuildingConfig>());
-            configs.Add(instance.GetConfig<AudioConfig>());
-            configs.Add(instance.GetConfig<CameraConfig>());
+            configs.Add(GetConfig<CityConfig>());
+            configs.Add(GetConfig<PlayerConfig>());
+            configs.Add(GetConfig<DevotionConfig>());
+            configs.Add(GetConfig<SaveLoadManagerConfig>());
+            configs.Add(GetConfig<RandomEventsConfig>());
+            configs.Add(GetConfig<GameplayConfig>());
+            configs.Add(GetConfig<BuildingConfig>());
+            configs.Add(GetConfig<AudioConfig>());
+            configs.Add(GetConfig<CameraConfig>());
             
             // Filter out null configs
             return configs.Where(c => c != null).ToList();
@@ -232,7 +231,7 @@ public class ConfigManager : MonoBehaviour
     /// <returns>True if properly initialized, false otherwise.</returns>
     private bool IsInitialized()
     {
-        return s_instance != null;
+        return m_instance != null;
     }
     #endregion
 } 

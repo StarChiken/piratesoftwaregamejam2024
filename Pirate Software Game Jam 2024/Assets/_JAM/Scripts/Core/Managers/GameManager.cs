@@ -7,35 +7,12 @@ using UnityEngine;
     public class GameManager : IGameManager
     {
         #region Fields
-        private static GameManager s_instance;
         private readonly Action m_onCompleteAction;
+        [SerializeField, Tooltip("Reference to the ConfigManager for game setup")]
+        private ConfigManager m_configManager;
         #endregion
 
         #region Properties
-        /// <summary>
-        /// Gets the GameManager instance. Must be properly initialized.
-        /// </summary>
-        /// <exception cref="System.InvalidOperationException">Thrown when GameManager is not initialized.</exception>
-        public static GameManager Instance
-        {
-            get
-            {
-                if (s_instance == null)
-                {
-                    throw new System.InvalidOperationException("GameManager instance is null! Ensure it's properly initialized.");
-                }
-                return s_instance;
-            }
-            private set
-            {
-                if (s_instance != null && s_instance != value)
-                {
-                    Debug.LogWarning("GameManager instance is being overwritten. This may indicate a setup issue.");
-                }
-                s_instance = value;
-            }
-        }
-
         /// <summary>
         /// Gets the current player instance.
         /// </summary>
@@ -70,16 +47,6 @@ using UnityEngine;
 
             try
             {
-                if (s_instance == null)
-                {
-                    Instance = this;
-                }
-                else
-                {
-                    Debug.LogError($"Two {typeof(GameManager)} instances exist, didn't create new one");
-                    return;
-                }
-
                 m_onCompleteAction = onComplete;
                 InitManagers(player, city, gameEvents);
             }
@@ -111,9 +78,9 @@ using UnityEngine;
                 }
 
                 // Load configs from ScriptableObjects
-                var playerConfig = ConfigManager.Instance?.GetConfig<PlayerConfig>();
-                var cityConfig = ConfigManager.Instance?.GetConfig<CityConfig>();
-                var randomEventsConfig = ConfigManager.Instance?.GetConfig<RandomEventsConfig>();
+                var playerConfig = m_configManager?.GetConfig<PlayerConfig>();
+                var cityConfig = m_configManager?.GetConfig<CityConfig>();
+                var randomEventsConfig = m_configManager?.GetConfig<RandomEventsConfig>();
 
                 if (playerConfig == null || cityConfig == null || randomEventsConfig == null)
                 {

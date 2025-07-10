@@ -21,7 +21,8 @@ using UnityEngine;
         public TextMeshProUGUI GameStateText;
         public GameObject CommandmentPanel;
         public CanvasGroup UI;
-        public List<int> DevotionMilestones => ConfigManager.Instance.GetConfig<GameplayConfig>()?.DevotionMilestones ?? new() { 12, 48, 192, 768 };
+        [SerializeField] private ConfigManager m_configManager;
+        public List<int> DevotionMilestones => m_configManager.GetConfig<GameplayConfig>()?.DevotionMilestones ?? new() { 12, 48, 192, 768 };
 
         public event Action<GameState> OnStateChanged;
 
@@ -138,7 +139,10 @@ using UnityEngine;
                 case GameState.StartGamePhase:
                     DevotionPointsText.text = Player.Devotion.DevotionPoints.ToString();
                     GameStateText.text = "Start Game Phase, Choose First Commandment";
-                    CommandmentPanel.GetComponent<EventsPanel>().OpenPanel(PanelType.ChooseCommandment);
+                    if (CommandmentPanel != null && CommandmentPanel.TryGetComponent<EventsPanel>(out var eventsPanel))
+                        eventsPanel.OpenPanel(PanelType.ChooseCommandment);
+                    else
+                        Debug.LogError("CommandmentPanel or EventsPanel component missing!");
                     break;
                 case GameState.PlayerTurnPhase:
                     DevotionPointsText.text = Player.Devotion.DevotionPoints.ToString();

@@ -11,7 +11,8 @@ using Random = UnityEngine.Random;
 public class CitizenAgent : MyMonoBehaviour
 {
     // Config properties
-    private GameplayConfig GameplayConfig => ConfigManager.Instance.GetConfig<GameplayConfig>();
+    [SerializeField] private ConfigManager m_configManager;
+    private GameplayConfig GameplayConfig => m_configManager.GetConfig<GameplayConfig>();
 
     public GenerationTest generationTestScript;
     public PathfindingTest pathfindingTestScript;

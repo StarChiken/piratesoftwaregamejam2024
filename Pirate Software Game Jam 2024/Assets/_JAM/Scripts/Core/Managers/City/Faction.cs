@@ -12,11 +12,11 @@ using System.Collections.Generic;
         public bool InFavor { get; set; }
         private readonly IGameManager m_gameManager;
 
-        public Faction(int factionGiveAmount, IGameManager gameManager = null)
+        public Faction(int factionGiveAmount, IGameManager gameManager)
         {
             FactionGiveAmount = factionGiveAmount;
             FactionAlignment = 10;
-            m_gameManager = gameManager ?? GameManager.Instance;
+            m_gameManager = gameManager;
         }
 
         /// <summary>

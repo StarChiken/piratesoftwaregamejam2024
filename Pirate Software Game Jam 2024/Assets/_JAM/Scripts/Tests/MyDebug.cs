@@ -36,8 +36,7 @@ public class DebugWindow : MyMonoBehaviour
     {
         if (m_text == null)
         {
-            m_text = GetComponent<TextMeshProUGUI>();
-            if (m_text == null)
+            if (!TryGetComponent<TextMeshProUGUI>(out m_text))
             {
                 Debug.LogError("TextMeshProUGUI component is missing from DebugWindow.");
             }

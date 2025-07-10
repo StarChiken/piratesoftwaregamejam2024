@@ -8,8 +8,8 @@ using UnityEngine;
     /// </summary>
     public class EventsPanel : MonoBehaviour
     {
-        [SerializeField] private GameObject m_panelCommandment;
-        [SerializeField] private GameObject m_panelEvent;
+        [SerializeField, Tooltip("Panel for commandment selection")] private GameObject m_panelCommandment;
+        [SerializeField, Tooltip("Panel for random events")] private GameObject m_panelEvent;
         
         /// <summary>
         /// Opens the specified panel type.
