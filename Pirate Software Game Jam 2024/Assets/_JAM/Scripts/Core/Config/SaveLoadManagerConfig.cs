@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using Base.Core.Managers;
 
 namespace Base.Core.Config
 {
@@ -20,7 +19,7 @@ namespace Base.Core.Config
         };
 
         // Public property for backward compatibility
-        public Dictionary<SettingsType, float> DefaultSettings => defaultSettings;
+        public Dictionary DefaultSettings => defaultSettings;
 
         protected override string ConfigFileName => "SaveLoadManagerConfig";
     }

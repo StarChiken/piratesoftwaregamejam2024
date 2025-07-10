@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using Base.Core.Components;
 using UnityEngine;
 using TMPro;
 

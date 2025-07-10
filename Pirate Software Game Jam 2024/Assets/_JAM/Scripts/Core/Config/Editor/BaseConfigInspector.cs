@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
-using Base.Core.Config;
 
 namespace Base.Core.Config.Editor
 {

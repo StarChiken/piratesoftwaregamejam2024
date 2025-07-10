@@ -1,0 +1,19 @@
+public enum FaithType
+{
+    PlayerGod,
+    GodOfLore,
+    GoddessOfPoetry,
+    SeekerGod,
+    FatherOfTheGods,
+    MotherOfTheGods,
+    TricksterGoddess,
+    ChaosGoddess,
+    BeautyGoddess,
+    LoveGod,
+    NatureGoddess,
+    FuryGoddess,
+    WarGod,
+    EvilGod,
+    WealthGod,
+    HouseholdGod
+} 

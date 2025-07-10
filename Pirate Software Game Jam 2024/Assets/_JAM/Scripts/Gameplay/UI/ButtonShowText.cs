@@ -1,4 +1,3 @@
-using Base.Core.Components;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;

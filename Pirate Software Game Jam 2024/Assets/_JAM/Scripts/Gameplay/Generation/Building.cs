@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using Base.Core.Managers;
 
 namespace Base.Gameplay
 {

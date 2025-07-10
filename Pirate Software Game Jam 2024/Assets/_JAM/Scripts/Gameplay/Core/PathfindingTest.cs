@@ -4,122 +4,119 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using TMPro;
 
-namespace Base.Gameplay
+/// <summary>
+/// Handles pathfinding logic for grid-based movement.
+/// </summary>
+public interface IPathfindingService
 {
-    /// <summary>
-    /// Handles pathfinding logic for grid-based movement.
-    /// </summary>
-    public interface IPathfindingService
+    Vector2[] FindPath(Vector2 start, Vector2 end);
+}
+
+public class PathfindingTest : IPathfindingService
+{
+    [SerializeField] private GenerationTest generationTestScript;
+    private Vector2[] adjacentPositions = new Vector2[8];
+
+    private void Start()
     {
-        Vector2[] FindPath(Vector2 start, Vector2 end);
+        adjacentPositions[0] = new Vector2(-1, 0);
+        adjacentPositions[1] = new Vector2(-1, 1);
+        adjacentPositions[2] = new Vector2(0, 1);
+        adjacentPositions[3] = new Vector2(1, 1);
+        adjacentPositions[4] = new Vector2(0, 1);
+        adjacentPositions[5] = new Vector2(1, 0);
+        adjacentPositions[6] = new Vector2(-1, 0);
+        adjacentPositions[7] = new Vector2(-1, -1);
     }
 
-    public class PathfindingTest : IPathfindingService
+    /// <summary>
+    /// Finds a path from start to end position using A* algorithm.
+    /// </summary>
+    public Vector2[] FindPath(Vector2 startPos, Vector2 endPos)
     {
-        [SerializeField] private GenerationTest generationTestScript;
-        private Vector2[] adjacentPositions = new Vector2[8];
-
-        private void Start()
+        List<Node> openList = new();
+        List<Node> closedList = new();
+        openList.Add(new Node(null, startPos));
+        List<Vector2> path = new();
+        int iteration = 0;
+        while (openList.Count > 0)
         {
-            adjacentPositions[0] = new Vector2(-1, 0);
-            adjacentPositions[1] = new Vector2(-1, 1);
-            adjacentPositions[2] = new Vector2(0, 1);
-            adjacentPositions[3] = new Vector2(1, 1);
-            adjacentPositions[4] = new Vector2(0, 1);
-            adjacentPositions[5] = new Vector2(1, 0);
-            adjacentPositions[6] = new Vector2(-1, 0);
-            adjacentPositions[7] = new Vector2(-1, -1);
-        }
-
-        /// <summary>
-        /// Finds a path from start to end position using A* algorithm.
-        /// </summary>
-        public Vector2[] FindPath(Vector2 startPos, Vector2 endPos)
-        {
-            List<Node> openList = new();
-            List<Node> closedList = new();
-            openList.Add(new Node(null, startPos));
-            List<Vector2> path = new();
-            int iteration = 0;
-            while (openList.Count > 0)
+            iteration++;
+            Node currentNode = openList[0];
+            for (int i = 0; i < openList.Count; i++)
             {
-                iteration++;
-                Node currentNode = openList[0];
-                for (int i = 0; i < openList.Count; i++)
+                if (openList[i].f < currentNode.f)
                 {
-                    if (openList[i].f < currentNode.f)
-                    {
-                        currentNode = openList[i];
-                    }
-                }
-                openList.Remove(currentNode);
-                closedList.Add(currentNode);
-                if (currentNode.GetPosition() == endPos || iteration == 128)
-                {
-                    while (currentNode.GetParent() != null)
-                    {
-                        path.Add(currentNode.GetPosition());
-                        currentNode = currentNode.GetParent();
-                    }
-                    path.Add(startPos);
-                    break;
-                }
-                List<Node> children = new();
-                for (int i = 0; i < 8; i++)
-                {
-                    Vector2 nodePos = currentNode.GetPosition() + adjacentPositions[i];
-                    if (nodePos.x < 0 || nodePos.x > generationTestScript.GameplayConfig.gridX || nodePos.y < 0 || nodePos.y > generationTestScript.GameplayConfig.gridZ)
-                    {
-                        continue;
-                    }
-                    if (nodePos != endPos && generationTestScript.GridManager.GetBuildingAt(nodePos) != null)
-                    {
-                        continue;
-                    }
-                    children.Add(new Node(currentNode, nodePos));
-                }
-                for (int i = 0; i < children.Count; i++)
-                {
-                    if (closedList.Contains(children[i]))
-                    {
-                        continue;
-                    }
-                    children[i].g = currentNode.g + 1;
-                    children[i].h = Mathf.Pow(children[i].GetPosition().x - endPos.x, 2) + Mathf.Pow(children[i].GetPosition().y - endPos.y, 2);
-                    children[i].f = children[i].g + children[i].h;
-                    if (openList.Contains(children[i]))
-                    {
-                        continue;
-                    }
-                    openList.Add(children[i]);
+                    currentNode = openList[i];
                 }
             }
-            return path.ToArray();
+            openList.Remove(currentNode);
+            closedList.Add(currentNode);
+            if (currentNode.GetPosition() == endPos || iteration == 128)
+            {
+                while (currentNode.GetParent() != null)
+                {
+                    path.Add(currentNode.GetPosition());
+                    currentNode = currentNode.GetParent();
+                }
+                path.Add(startPos);
+                break;
+            }
+            List<Node> children = new();
+            for (int i = 0; i < 8; i++)
+            {
+                Vector2 nodePos = currentNode.GetPosition() + adjacentPositions[i];
+                if (nodePos.x < 0 || nodePos.x > generationTestScript.GameplayConfig.gridX || nodePos.y < 0 || nodePos.y > generationTestScript.GameplayConfig.gridZ)
+                {
+                    continue;
+                }
+                if (nodePos != endPos && generationTestScript.GridManager.GetBuildingAt(nodePos) != null)
+                {
+                    continue;
+                }
+                children.Add(new Node(currentNode, nodePos));
+            }
+            for (int i = 0; i < children.Count; i++)
+            {
+                if (closedList.Contains(children[i]))
+                {
+                    continue;
+                }
+                children[i].g = currentNode.g + 1;
+                children[i].h = Mathf.Pow(children[i].GetPosition().x - endPos.x, 2) + Mathf.Pow(children[i].GetPosition().y - endPos.y, 2);
+                children[i].f = children[i].g + children[i].h;
+                if (openList.Contains(children[i]))
+                {
+                    continue;
+                }
+                openList.Add(children[i]);
+            }
         }
+        return path.ToArray();
     }
+}
 
-    /// <summary>
-    /// Node class for A* pathfinding.
-    /// </summary>
-    public class Node
+/// <summary>
+/// Node class for A* pathfinding.
+/// </summary>
+public class Node
+{
+    private Vector2 position;
+    private Node parent;
+    public float g = 0;
+    public float h = 0;
+    public float f = 0;
+    public Node(Node _parent, Vector2 _position)
     {
-        private Vector2 position;
-        private Node parent;
-        public float g = 0;
-        public float h = 0;
-        public float f = 0;
-        public Node(Node _parent, Vector2 _position)
-        {
-            parent = _parent;
-            position = _position;
-        }
-        public Vector2 GetPosition()
-        {
-            return position;
-        }
-        public Node GetParent()
-        {
-            return parent;
-        }
+        parent = _parent;
+        position = _position;
+    }
+    public Vector2 GetPosition()
+    {
+        return position;
+    }
+    public Node GetParent()
+    {
+        return parent;
     }
 }

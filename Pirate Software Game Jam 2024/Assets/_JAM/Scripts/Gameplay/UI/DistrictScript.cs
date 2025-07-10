@@ -1,6 +1,3 @@
-using Base.Core.Components;
-using Base.Core.Managers;
-using TMPro;
 using UnityEngine;
 
 namespace Base.Gameplay

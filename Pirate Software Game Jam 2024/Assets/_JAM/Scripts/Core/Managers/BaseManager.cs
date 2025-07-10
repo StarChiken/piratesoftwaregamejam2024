@@ -1,34 +1,92 @@
 ﻿using System;
 using System.Threading.Tasks;
+using UnityEngine;
 
-namespace Base.Core.Managers
+/// <summary>
+/// Base class for all managers, providing async initialization and GameManager access.
+/// </summary>
+public class BaseManager
 {
+    #region Fields
+    private readonly Action<BaseManager> m_onCompleteAction;
+    #endregion
+
+    #region Properties
     /// <summary>
-    /// Base class for all managers, providing async initialization and GameManager access.
+    /// Provides access to the global GameManager instance.
     /// </summary>
-    public class BaseManager
+    /// <exception cref="System.InvalidOperationException">Thrown when GameManager is not initialized.</exception>
+    protected GameManager GameManager
     {
-        /// <summary>
-        /// Provides access to the global GameManager instance.
-        /// </summary>
-        protected GameManager GameManager => GameManager.Instance;
-        private readonly Action<BaseManager> _onCompleteAction;
-
-        /// <summary>
-        /// Constructs a new BaseManager and stores the completion callback.
-        /// </summary>
-        protected BaseManager(Action<BaseManager> onComplete)
+        get
         {
-            _onCompleteAction = onComplete;
-        }
-
-        /// <summary>
-        /// Marks initialization as complete and invokes the callback asynchronously.
-        /// </summary>
-        protected async void OnInitComplete()
-        {
-            await Task.Delay(500);
-            _onCompleteAction?.Invoke(this);
+            try
+            {
+                var gameManager = GameManager.Instance;
+                if (gameManager == null)
+                {
+                    throw new System.InvalidOperationException("GameManager instance is null. Ensure it's properly initialized.");
+                }
+                return gameManager;
+            }
+            catch (System.Exception ex)
+            {
+                Debug.LogError($"Error accessing GameManager: {ex.Message}");
+                return null;
+            }
         }
     }
+    #endregion
+
+    #region Constructor
+    /// <summary>
+    /// Constructs a new BaseManager and stores the completion callback.
+    /// </summary>
+    /// <param name="onComplete">Callback to invoke when initialization is complete.</param>
+    /// <exception cref="System.ArgumentNullException">Thrown when onComplete is null.</exception>
+    protected BaseManager(Action<BaseManager> onComplete)
+    {
+        if (onComplete == null)
+        {
+            throw new System.ArgumentNullException(nameof(onComplete), "Completion callback cannot be null.");
+        }
+
+        m_onCompleteAction = onComplete;
+    }
+    #endregion
+
+    #region Protected Methods
+    /// <summary>
+    /// Marks initialization as complete and invokes the callback asynchronously.
+    /// </summary>
+    protected async void OnInitComplete()
+    {
+        try
+        {
+            await Task.Delay(500);
+            m_onCompleteAction?.Invoke(this);
+        }
+        catch (System.Exception ex)
+        {
+            Debug.LogError($"Error in OnInitComplete: {ex.Message}");
+        }
+    }
+
+    /// <summary>
+    /// Validates that the manager is properly initialized.
+    /// </summary>
+    /// <returns>True if properly initialized, false otherwise.</returns>
+    protected bool ValidateInitialization()
+    {
+        try
+        {
+            return GameManager != null;
+        }
+        catch (System.Exception ex)
+        {
+            Debug.LogError($"Error validating manager initialization: {ex.Message}");
+            return false;
+        }
+    }
+    #endregion
 }

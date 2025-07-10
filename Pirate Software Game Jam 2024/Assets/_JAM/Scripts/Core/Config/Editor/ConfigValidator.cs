@@ -3,7 +3,6 @@ using System.Linq;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
-using Base.Core.Config;
 
 namespace Base.Core.Config.Editor
 {

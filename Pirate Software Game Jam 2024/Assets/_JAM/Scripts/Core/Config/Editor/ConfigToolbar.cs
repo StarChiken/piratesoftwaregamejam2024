@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
-using Base.Core.Config;
 
 namespace Base.Core.Config.Editor
 {
